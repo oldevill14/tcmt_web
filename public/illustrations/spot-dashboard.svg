@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" role="img" aria-label="Analytics dashboard illustration" width="200" height="200">
+  <title>Analytics &amp; business intelligence</title>
+  <circle cx="100" cy="100" r="92" fill="#eef5ff"/>
+  <rect x="44" y="50" width="112" height="100" rx="10" fill="#fff" stroke="#d7e6ff" stroke-width="2"/>
+  <rect x="44" y="50" width="112" height="20" rx="10" fill="#1565d8"/>
+  <rect x="44" y="60" width="112" height="10" fill="#1565d8"/>
+  <circle cx="55" cy="60" r="3" fill="#fff"/><circle cx="64" cy="60" r="3" fill="#a9d1ff"/>
+  <!-- bars -->
+  <rect x="58" y="116" width="12" height="20" rx="2.5" fill="#6fb1fc"/>
+  <rect x="76" y="106" width="12" height="30" rx="2.5" fill="#2f80ed"/>
+  <rect x="94" y="96" width="12" height="40" rx="2.5" fill="#1565d8"/>
+  <!-- trend -->
+  <path d="M60 100l18-10 18 6 18-14 16-4" stroke="#f5a524" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="146" cy="84" r="3.6" fill="#f5a524"/>
+  <!-- donut -->
+  <circle cx="130" cy="118" r="15" fill="none" stroke="#e0ecff" stroke-width="6"/>
+  <path d="M130 103a15 15 0 0 1 12 24" fill="none" stroke="#2bb6a3" stroke-width="6" stroke-linecap="round"/>
+</svg>

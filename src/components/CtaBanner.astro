@@ -1,6 +1,7 @@
 ---
-// Full-width gradient CTA banner pointing to /contact.
-// DESIGN V2 — premium animated gradient with glow, glass motif chip, dual CTA.
+// Full-width solid TCM-blue CTA banner pointing to /contact.
+// DESIGN V4 (TANGERINE-STYLE) — solid blue band, white rounded-full pill CTAs.
+// No aurora / glow / glass. Mirrors Tangerine's orange "Contact Us" band but in TCM blue.
 import { t, localizePath, type Lang } from '../i18n/ui';
 import Button from './Button.astro';
 
@@ -14,30 +15,27 @@ const { lang } = Astro.props;
   <div class="container-tcm">
     <div
       class="relative overflow-hidden rounded-3xl text-white"
-      style="background: linear-gradient(135deg, #0b3d91 0%, #1565d8 40%, #2f80ed 70%, #38bdf8 100%);"
+      style="background: linear-gradient(135deg, #0a3580 0%, #0b3d91 45%, #1565d8 100%);"
       data-reveal
     >
-      <!-- Animated aurora blobs inside banner -->
+      <!-- Subtle flat light-scatter — two soft white radials, no animation, no blur overload -->
       <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl" aria-hidden="true">
         <div
-          class="absolute -top-[30%] left-[5%] h-[70%] w-[40%] rounded-full opacity-50 blur-3xl animate-aurora"
-          style="background: radial-gradient(circle, rgba(255,255,255,0.25), transparent 70%);"
+          class="absolute -top-[40%] left-[-5%] h-[90%] w-[50%] rounded-full opacity-[0.07]"
+          style="background: radial-gradient(circle, #ffffff, transparent 70%);"
         ></div>
         <div
-          class="absolute bottom-[-25%] right-[5%] h-[70%] w-[35%] rounded-full opacity-40 blur-3xl animate-aurora [animation-delay:-8s]"
-          style="background: radial-gradient(circle, rgba(94,234,212,0.40), transparent 70%);"
+          class="absolute bottom-[-40%] right-[-5%] h-[90%] w-[45%] rounded-full opacity-[0.06]"
+          style="background: radial-gradient(circle, #a9d1ff, transparent 70%);"
         ></div>
       </div>
-
-      <!-- Faint grid texture -->
-      <div class="pointer-events-none absolute inset-0 bg-grid-dark bg-grid opacity-[0.3] rounded-3xl" aria-hidden="true"></div>
 
       <!-- Content -->
       <div class="relative px-8 py-14 sm:px-14 sm:py-20">
         <div class="mx-auto max-w-2xl text-center">
           <!-- Eyebrow chip -->
-          <span class="mb-5 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-white/90 ring-1 ring-inset ring-white/25 backdrop-blur-sm">
-            <span class="h-1.5 w-1.5 rounded-full bg-accent-cyan animate-glow-pulse" aria-hidden="true"></span>
+          <span class="mb-5 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-white ring-1 ring-inset ring-white/25">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand-200" aria-hidden="true"></span>
             {lang === 'th' ? 'ปรึกษาฟรี' : 'Free consultation'}
           </span>
 
@@ -45,11 +43,11 @@ const { lang } = Astro.props;
             {t(lang, 'home.cta.title')}
           </h2>
 
-          <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/80">
+          <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white">
             {t(lang, 'home.cta.subtitle')}
           </p>
 
-          <!-- T4 — Contact Sales is the PRIMARY conversion; view services is secondary -->
+          <!-- Contact Sales = PRIMARY (white pill on blue), View Services = secondary (outline) -->
           <div class="mt-9 flex flex-wrap items-center justify-center gap-4">
             <Button href={localizePath('/contact', lang)} variant="white" size="lg">
               {t(lang, 'btn.contactSales')}

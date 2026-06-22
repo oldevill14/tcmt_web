@@ -1,7 +1,8 @@
 ---
-// ServiceCard (DESIGN V2 bento) — glass card with pillar accent, icon, hover glow.
-// variant: 'hardware' (brand blue accent) | 'software' (cyan accent) | 'default' (neutral)
-// accent: true = dark canvas hero card spanning full height
+// ServiceCard (DESIGN V4 Tangerine-style) — flat light card with stroke icon,
+// navy title, muted summary, blue arrow. All cards use the same clean white
+// card-surface style; the dark `accent` variant is retired in the light system.
+// pillar prop kept for forward-compat but no longer changes card bg.
 import { withBase } from '../i18n/ui';
 
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
   icon?: string;
   href?: string;
   pillar?: 'hardware' | 'software';
-  accent?: boolean; // true = dark feature card (canvas-900 bg)
+  accent?: boolean; // kept for API compat — ignored (always renders light card)
 }
 
 const {
@@ -21,7 +22,6 @@ const {
   icon = 'network',
   href,
   pillar = 'hardware',
-  accent = false,
 } = Astro.props;
 const url = href ?? withBase(`/services/${slug}`);
 
@@ -45,52 +45,15 @@ const icons: Record<string, string> = {
     '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16" />',
 };
 const iconPath = icons[icon] ?? icons.network;
-
-// Accent colours per pillar
-const iconBg = accent
-  ? 'bg-accent-gradient-soft text-white shadow-glow-cyan'
-  : pillar === 'software'
-    ? 'bg-accent-cyan/10 text-accent-cyan'
-    : 'bg-brand-500/10 text-brand-600';
-
-const arrowColor = accent
-  ? 'text-accent-cyan'
-  : pillar === 'software'
-    ? 'text-accent-cyan'
-    : 'text-brand-500';
 ---
 
 <a
   href={url}
-  class:list={[
-    'group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl p-6 transition-all duration-300',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan focus-visible:ring-offset-2',
-    accent
-      ? 'bg-canvas-900 text-white hover-lift gradient-border'
-      : 'card-surface hover-lift',
-  ]}
+  class="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-[3px] hover:border-brand-200 hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
 >
-  {/* Glow orb on dark accent cards */}
-  {accent && (
-    <div
-      class="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-accent-gradient opacity-20 blur-2xl transition-opacity duration-500 group-hover:opacity-35"
-      aria-hidden="true"
-    />
-  )}
-  {/* Faint circuit grid texture on dark cards */}
-  {accent && (
-    <div
-      class="pointer-events-none absolute inset-0 bg-grid-dark bg-grid opacity-[0.35]"
-      aria-hidden="true"
-    />
-  )}
-
-  {/* Icon */}
+  {/* Blue icon badge */}
   <span
-    class:list={[
-      'relative mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl',
-      iconBg,
-    ]}
+    class="mb-5 inline-flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-brand-50 text-brand-600 transition-colors duration-200 group-hover:bg-brand-100"
     aria-hidden="true"
   >
     <svg
@@ -101,38 +64,31 @@ const arrowColor = accent
       stroke-width="1.75"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="relative h-6 w-6"
+      class="h-6 w-6"
       set:html={iconPath}
     />
   </span>
 
   {/* Content */}
-  <h3
-    class:list={[
-      'relative text-lg font-semibold leading-snug',
-      accent ? 'text-white' : 'text-ink',
-    ]}
-  >
+  <h3 class="text-lg font-semibold leading-snug text-ink">
     {title}
   </h3>
-  <p
-    class:list={[
-      'relative mt-2 flex-1 text-sm leading-relaxed',
-      accent ? 'text-slate-300' : 'text-muted',
-    ]}
-  >
+  <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">
     {summary}
   </p>
 
   {/* Arrow CTA */}
   <span
-    class:list={[
-      'relative mt-5 inline-flex items-center gap-1.5 text-sm font-semibold transition-transform duration-200 group-hover:translate-x-1',
-      arrowColor,
-    ]}
+    class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 transition-transform duration-200 group-hover:translate-x-1"
     aria-hidden="true"
   >
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      class="h-4 w-4"
+    >
       <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   </span>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" role="img" aria-label="Network infrastructure illustration" width="200" height="200">
+  <title>Network infrastructure</title>
+  <circle cx="100" cy="100" r="92" fill="#eef5ff"/>
+  <!-- links -->
+  <g stroke="#6fb1fc" stroke-width="3" stroke-linecap="round">
+    <path d="M100 100 56 58M100 100 148 56M100 100 50 142M100 100 152 144"/>
+  </g>
+  <g stroke="#a9d1ff" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round">
+    <path d="M56 58 148 56M50 142 152 144M56 58 50 142M148 56 152 144"/>
+  </g>
+  <!-- center hub -->
+  <circle cx="100" cy="100" r="22" fill="#1565d8"/>
+  <path d="M91 100h18M100 91v18" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <!-- nodes -->
+  <g>
+    <circle cx="56" cy="58" r="13" fill="#fff" stroke="#2f80ed" stroke-width="3"/>
+    <circle cx="148" cy="56" r="13" fill="#fff" stroke="#2f80ed" stroke-width="3"/>
+    <circle cx="50" cy="142" r="13" fill="#2bb6a3"/>
+    <circle cx="152" cy="144" r="13" fill="#fff" stroke="#2f80ed" stroke-width="3"/>
+  </g>
+  <circle cx="50" cy="142" r="4" fill="#fff"/>
+</svg>

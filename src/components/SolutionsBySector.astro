@@ -160,7 +160,7 @@ const sectors: {
                 {s.items.map((item) => (
                   <li class="flex items-start gap-3">
                     <span
-                      class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-accent-gradient-soft text-white"
+                      class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-600 text-white"
                       aria-hidden="true"
                     >
                       <svg
@@ -194,6 +194,7 @@ const sectors: {
 
 <style>
   /* ---- CSS-only tab styling + no-JS panel switching ---- */
+  /* Inactive pill: white bg, hairline border, navy text */
   .sector-tab {
     background: #fff;
     color: var(--ink);
@@ -203,18 +204,20 @@ const sectors: {
   .sector-tab:hover {
     border-color: var(--brand-300);
     color: var(--brand-700);
+    background: var(--brand-50);
   }
 
   /* No-JS: each radio (sibling) maps to its tab + panel.
      Order in DOM: radio.gov, radio.edu, radio.enterprise, then tablist, then panels.
      Use :checked ~ to target the matching label & panel. */
+  /* Active pill: solid blue fill, white text, no glow shadow (flat Tangerine style) */
   .sector-radio:nth-of-type(1):checked ~ .sector-tablist [data-sector-tab='gov'],
   .sector-radio:nth-of-type(2):checked ~ .sector-tablist [data-sector-tab='edu'],
   .sector-radio:nth-of-type(3):checked ~ .sector-tablist [data-sector-tab='enterprise'] {
-    background: var(--accent-gradient-soft);
+    background: var(--brand-600);
     color: #fff;
     border-color: transparent;
-    box-shadow: 0 8px 22px -10px rgba(47, 128, 237, 0.6);
+    box-shadow: var(--shadow-pill);
   }
 
   /* Hide all panels, then reveal the one matching the checked radio. */
@@ -249,11 +252,12 @@ const sectors: {
     display: block;
     animation: sector-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
+  /* Active tab in JS mode: solid blue, no glow */
   .sector-tabs.js-on .sector-tab[aria-selected='true'] {
-    background: var(--accent-gradient-soft);
+    background: var(--brand-600);
     color: #fff;
     border-color: transparent;
-    box-shadow: 0 8px 22px -10px rgba(47, 128, 237, 0.6);
+    box-shadow: var(--shadow-pill);
   }
 
   @media (prefers-reduced-motion: reduce) {

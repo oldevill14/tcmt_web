@@ -1,10 +1,9 @@
 ---
 // English projects list page — served at /en/projects
+// DESIGN V4 (TANGERINE-STYLE) — light page header + cream bg, flat cards, pill tabs.
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import SectionTitle from '../../../components/SectionTitle.astro';
-import Card from '../../../components/Card.astro';
-import Button from '../../../components/Button.astro';
 import CtaBanner from '../../../components/CtaBanner.astro';
 import { t, localizePath, type Lang } from '../../../i18n/ui';
 import { filterByLocale, entrySlug } from '../../../lib/content';
@@ -15,9 +14,9 @@ const allProjects = await getCollection('projects');
 const projects = filterByLocale(allProjects, lang);
 
 const sectorLabels: Record<string, string> = {
-  all: t(lang, 'projects.filter.all'),
-  gov: t(lang, 'projects.filter.gov'),
-  edu: t(lang, 'projects.filter.edu'),
+  all:     t(lang, 'projects.filter.all'),
+  gov:     t(lang, 'projects.filter.gov'),
+  edu:     t(lang, 'projects.filter.edu'),
   private: t(lang, 'projects.filter.private'),
 };
 ---
@@ -28,36 +27,41 @@ const sectorLabels: Record<string, string> = {
   title={t(lang, 'projects.title')}
   description={t(lang, 'projects.subtitle')}
 >
-  <!-- Page header -->
-  <section class="section bg-brand-900">
+  <!-- Page header — LIGHT (was dark bg-brand-900) -->
+  <section class="py-20 sm:py-24" style="background-color: var(--bg-soft);">
     <div class="container-tcm">
       <SectionTitle
         as="h1"
         eyebrow={t(lang, 'nav.projects')}
         title={t(lang, 'projects.title')}
         subtitle={t(lang, 'projects.subtitle')}
-        invert
       />
     </div>
   </section>
 
-  <!-- Filter tabs + grid -->
-  <section class="section">
+  <!-- Filter tabs + grid — white bg -->
+  <section class="section bg-white">
     <div class="container-tcm">
-      <div class="mb-10 flex flex-wrap justify-center gap-3" role="tablist" aria-label={t(lang, 'projects.filter.all')}>
+      <!-- Sector filter: Tangerine-style rounded-full pill tabs -->
+      <div
+        class="mb-10 flex flex-wrap justify-center gap-3"
+        role="tablist"
+        aria-label={t(lang, 'projects.filter.all')}
+      >
         {Object.entries(sectorLabels).map(([key, label]) => (
           <button
             type="button"
             role="tab"
             aria-selected={key === 'all' ? 'true' : 'false'}
             data-sector={key}
-            class={[
-              'sector-tab inline-flex min-h-[44px] cursor-pointer items-center rounded-full px-5 py-2.5 text-sm font-semibold transition-colors duration-200',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan focus-visible:ring-offset-2',
+            class:list={[
+              'sector-tab',
+              'inline-flex min-h-[44px] cursor-pointer items-center rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-200',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2',
               key === 'all'
-                ? 'bg-brand-600 text-white'
-                : 'bg-slate-100 text-slate-700 hover:bg-brand-500/10 hover:text-brand-700',
-            ].join(' ')}
+                ? 'bg-brand-600 text-white shadow-pill'
+                : 'pill-outline',
+            ]}
           >
             {label}
           </button>
@@ -67,56 +71,64 @@ const sectorLabels: Record<string, string> = {
       {projects.length === 0 ? (
         <p class="py-16 text-center text-muted">{t(lang, 'projects.empty')}</p>
       ) : (
-        <div id="projects-grid" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div id="projects-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => {
             const slug = entrySlug(project);
             return (
               <article data-sector={project.data.sector} class="project-card">
-                <Card href={localizePath(`/projects/${slug}`, lang)} hover class="h-full flex flex-col">
+                <!-- Flat light card — hairline border, soft shadow, hover-lift -->
+                <a
+                  href={localizePath(`/projects/${slug}`, lang)}
+                  class="group block h-full rounded-2xl border border-line bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover hover:border-brand-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 cursor-pointer"
+                  aria-label={project.data.title}
+                >
                   <div class="flex flex-col gap-3 h-full">
-                    {/* Sector chip + case-study marker (T3) */}
+                    <!-- Sector chip + case-study marker -->
                     <div class="flex flex-wrap items-center gap-2">
-                      <span class="inline-flex w-fit items-center gap-1.5 rounded-full bg-brand-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-600">
-                        <span class="h-1.5 w-1.5 rounded-full bg-accent-gradient-soft" aria-hidden="true" />
+                      <span class="pill-soft">
+                        <span class="h-1.5 w-1.5 rounded-full bg-brand-600" aria-hidden="true"></span>
                         {sectorLabels[project.data.sector]}
                       </span>
-                      <span class="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-slate-600">
+                      <span class="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-muted">
                         {t(lang, 'projects.caseStudy')}
                       </span>
                     </div>
-                    <h2 class="text-lg font-bold text-ink leading-snug">
+
+                    <h2 class="text-lg font-bold text-ink leading-snug group-hover:text-brand-700 transition-colors duration-200">
                       {project.data.title}
                     </h2>
-                    <p class="text-sm text-muted line-clamp-3">
+                    <p class="text-sm text-muted line-clamp-3 leading-relaxed">
                       {project.data.summary}
                     </p>
-                    {/* T3 — services delivered chips (credible scope, no metrics) */}
+
+                    {/* Services scope chips */}
                     {project.data.services.length > 0 && (
                       <div class="flex flex-wrap gap-1.5">
                         {project.data.services.slice(0, 3).map((svc) => (
-                          <span class="rounded-md bg-slate-50 px-2 py-0.5 text-[0.72rem] font-medium text-slate-600 ring-1 ring-inset ring-slate-200">
+                          <span class="rounded-full bg-brand-50 px-2.5 py-0.5 text-[0.72rem] font-medium text-brand-700 ring-1 ring-inset ring-brand-100">
                             {svc}
                           </span>
                         ))}
                         {project.data.services.length > 3 && (
-                          <span class="rounded-md px-1.5 py-0.5 text-[0.72rem] font-semibold text-brand-600">
+                          <span class="rounded-full px-1.5 py-0.5 text-[0.72rem] font-semibold text-brand-600">
                             +{project.data.services.length - 3}
                           </span>
                         )}
                       </div>
                     )}
-                    <dl class="mt-auto flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted border-t border-slate-100 pt-4">
+
+                    <dl class="mt-auto flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted border-t border-line pt-4">
                       <div>
-                        <dt class="inline font-medium text-ink">{t(lang, 'projects.client')}: </dt>
+                        <dt class="inline font-semibold text-ink">{t(lang, 'projects.client')}: </dt>
                         <dd class="inline">{project.data.client}</dd>
                       </div>
                       <div>
-                        <dt class="inline font-medium text-ink">{t(lang, 'projects.year')}: </dt>
+                        <dt class="inline font-semibold text-ink">{t(lang, 'projects.year')}: </dt>
                         <dd class="inline">{project.data.year}</dd>
                       </div>
                     </dl>
                   </div>
-                </Card>
+                </a>
               </article>
             );
           })}
@@ -137,17 +149,23 @@ const sectorLabels: Record<string, string> = {
     tab.addEventListener('click', () => {
       const sector = tab.dataset.sector ?? 'all';
 
+      // Update tab styles + ARIA state
       tabs.forEach((t) => {
         const isActive = t.dataset.sector === sector;
         t.setAttribute('aria-selected', isActive ? 'true' : 'false');
-        t.classList.toggle('bg-brand-600', isActive);
-        t.classList.toggle('text-white', isActive);
-        t.classList.toggle('bg-slate-100', !isActive);
-        t.classList.toggle('text-slate-700', !isActive);
-        t.classList.toggle('hover:bg-brand-500/10', !isActive);
-        t.classList.toggle('hover:text-brand-700', !isActive);
+
+        if (isActive) {
+          t.classList.add('bg-brand-600', 'text-white', 'shadow-pill');
+          t.classList.remove('bg-white', 'text-ink', 'ring-1', 'ring-inset', 'ring-line', 'shadow-sm',
+            'hover:ring-brand-300', 'hover:text-brand-700');
+        } else {
+          t.classList.remove('bg-brand-600', 'text-white', 'shadow-pill');
+          t.classList.add('bg-white', 'text-ink', 'ring-1', 'ring-inset', 'ring-line', 'shadow-sm',
+            'hover:ring-brand-300', 'hover:text-brand-700');
+        }
       });
 
+      // Show/hide cards
       cards.forEach((card) => {
         const cardSector = card.dataset.sector ?? '';
         const visible = sector === 'all' || cardSector === sector;

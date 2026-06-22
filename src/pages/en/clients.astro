@@ -64,35 +64,20 @@ const marqueeItems = [...partnerItems, ...partnerItems];
   title={t(lang, 'clients.title')}
   description={t(lang, 'clients.subtitle')}
 >
-  <!-- ── Page Hero (dark canvas) ──────────────────────────────────────── -->
-  <section class="relative overflow-hidden bg-canvas-950 pb-24 pt-20 sm:pt-28">
-    <!-- Grid texture -->
-    <div
-      class="pointer-events-none absolute inset-0 bg-grid-dark bg-grid opacity-[0.35]"
-      aria-hidden="true"
-    ></div>
-    <!-- Accent glow orb -->
-    <div
-      class="pointer-events-none absolute -top-32 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full"
-      style="background: radial-gradient(ellipse, rgba(47,128,237,0.22) 0%, transparent 70%);"
-      aria-hidden="true"
-    ></div>
-
+  <!-- ── Page Hero (light, Tangerine-style) ───────────────────────────── -->
+  <section class="relative overflow-hidden pb-16 pt-16 sm:pt-24" style="background-color: var(--bg-soft);">
     <div class="container-tcm relative text-center">
-      <p class="eyebrow-light mb-5">
-        <span
-          style="display:inline-block;width:1.75rem;height:2px;border-radius:1px;background:linear-gradient(90deg,#2f80ed,#38bdf8);margin-right:0.6rem;vertical-align:middle;"
-          aria-hidden="true"
-        ></span>
+      <p class="eyebrow justify-center mb-5">
+        <span class="inline-block h-1 w-5 rounded-full bg-brand-600" aria-hidden="true"></span>
         {t(lang, 'nav.clients')}
       </p>
       <h1
-        class="text-display-sm font-extrabold text-white sm:text-display lg:text-display-lg"
+        class="text-display-sm font-extrabold text-ink sm:text-display lg:text-display-lg"
         style="text-wrap:balance;"
       >
-        <span class="gradient-text-light">{t(lang, 'clients.title')}</span>
+        {t(lang, 'clients.title')}
       </h1>
-      <p class="mx-auto mt-5 max-w-2xl text-base text-brand-300 sm:text-lg">
+      <p class="mx-auto mt-5 max-w-2xl text-base text-muted sm:text-lg">
         {t(lang, 'clients.subtitle')}
       </p>
     </div>
@@ -141,8 +126,7 @@ const marqueeItems = [...partnerItems, ...partnerItems];
       <div class="mt-10 rounded-2xl border border-slate-200 bg-white p-8 shadow-card" data-reveal>
         <div class="flex gap-4">
           <div
-            class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-            style="background: linear-gradient(135deg, #1565d8, #38bdf8);"
+            class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-600"
             aria-hidden="true"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -245,18 +229,16 @@ const marqueeItems = [...partnerItems, ...partnerItems];
 </BaseLayout>
 
 <style>
-  /* Gov client glass cards */
+  /* Gov client flat light cards (Tangerine-style: no blur, solid white, hairline border) */
   .gov-card {
     display: flex;
     align-items: center;
     gap: 1rem;
     padding: 1.1rem 1.25rem;
     border-radius: 1rem;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05), 0 4px 16px -8px rgba(15, 23, 42, 0.08);
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-card);
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
       box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
       border-color 0.3s ease;
@@ -265,8 +247,8 @@ const marqueeItems = [...partnerItems, ...partnerItems];
 
   .gov-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 28px -10px rgba(21, 101, 216, 0.22), 0 2px 8px -4px rgba(15, 23, 42, 0.12);
-    border-color: rgba(47, 128, 237, 0.22);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--brand-300);
   }
 
   .gov-card__badge {
@@ -276,7 +258,7 @@ const marqueeItems = [...partnerItems, ...partnerItems];
     min-width: 2.75rem;
     height: 2.75rem;
     border-radius: 0.6rem;
-    background: linear-gradient(135deg, #1565d8 0%, #38bdf8 100%);
+    background: #1565d8;
     color: #fff;
     font-size: 0.6rem;
     font-weight: 700;
@@ -330,13 +312,13 @@ const marqueeItems = [...partnerItems, ...partnerItems];
     padding: 0 1.5rem;
     border-radius: 1rem;
     background: #fff;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
-    border: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--line);
     transition: box-shadow 0.3s ease, border-color 0.3s ease;
   }
 
   .partner-logo-card:hover {
-    box-shadow: 0 4px 20px -8px rgba(21, 101, 216, 0.25);
-    border-color: rgba(47, 128, 237, 0.2);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--brand-300);
   }
 </style>

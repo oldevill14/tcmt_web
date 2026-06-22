@@ -22,13 +22,13 @@
   }
 
   body {
+    /* LIGHT base — white page background, navy ink text */
     @apply bg-white text-ink antialiased;
     font-family: var(--font-sans);
-    /* subtle blue-tinted selection */
   }
   ::selection {
-    background: rgba(47, 128, 237, 0.22);
-    color: var(--brand-900);
+    background: rgba(21, 101, 216, 0.16);
+    color: var(--brand-700);
   }
 
   /* Thai content reads better with the Thai-first stack */
@@ -37,7 +37,7 @@
   }
 
   h1, h2, h3, h4 {
-    @apply font-semibold tracking-tight text-ink;
+    @apply font-bold tracking-tight text-ink;
     text-wrap: balance;
   }
 
@@ -46,7 +46,7 @@
   }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-accent-cyan ring-offset-2;
+    @apply outline-none ring-2 ring-brand-500 ring-offset-2;
   }
 }
 
@@ -59,99 +59,100 @@
     @apply py-16 sm:py-20 lg:py-28;
   }
 
-  /* ---- gradient text (the signature headline treatment) ---- */
+  /* ---- headline treatment ----
+     In the light system `gradient-text` is FLAT navy ink (not a rainbow), so
+     every legacy `gradient`-flagged heading renders as dark navy on light bg
+     (contrast-safe). A faint navy->blue clip keeps a touch of brand life. */
   .gradient-text {
     background-image: var(--text-gradient-ink);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: transparent;
+    color: var(--ink); /* fallback for no-clip engines: solid navy ink */
   }
-  /* light-on-dark variant for hero / dark sections */
+  /* "light on dark" variant — for headlines on the dark navy surfaces (footer /
+     CTA band / legacy dark sections). Soft white->light-blue clip for life; falls
+     back to solid white so it always stays readable on dark. */
   .gradient-text-light {
-    background-image: var(--text-gradient);
+    background-image: linear-gradient(100deg, #ffffff 0%, #a9d1ff 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: transparent;
+    color: #ffffff;
   }
 
-  /* ---- gradient border (rounded, 1px accent ring via mask) ---- */
+  /* ---- flat surfaces (NO heavy glass / blur) ---- */
+  /* light "glass" — flat opaque white card (no blur) for light surfaces */
+  .glass {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-card);
+  }
+  /* "glass-dark" — translucent panel for the dark navy surfaces (legacy dark
+     sections / footer). Subtle, flat. */
+  .glass-dark {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* ---- elevated card base (reusable) — flat light card, rounded-2xl ---- */
+  .card-surface {
+    @apply rounded-2xl border border-line bg-white p-6 shadow-card;
+  }
+
+  /* ---- gradient-border name kept; now just a hairline ring (no rainbow) ---- */
   .gradient-border {
     position: relative;
     isolation: isolate;
+    border: 1px solid var(--line);
   }
   .gradient-border::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: var(--accent-gradient);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    pointer-events: none;
-    z-index: -1;
+    content: none;
   }
 
-  /* ---- glass surfaces ---- */
-  /* light glass — for cards over light/soft backgrounds */
-  .glass {
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(14px) saturate(140%);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: var(--shadow-card);
-  }
-  /* dark glass — for cards/panels over the deep navy canvas */
-  .glass-dark {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-  }
-
-  /* ---- elevated card base (reusable) ---- */
-  .card-surface {
-    @apply rounded-2xl bg-white p-6 shadow-card ring-1 ring-slate-100;
-  }
-
-  /* ---- hover lift + glow (interactive surfaces) ---- */
+  /* ---- hover lift (flat, soft shadow — no glow) ---- */
   .hover-lift {
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.3s ease;
   }
   .hover-lift:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow: var(--shadow-card-hover);
   }
+  /* "hover-glow" name kept — now a soft blue-tinted lift, not a neon glow */
   .hover-glow {
-    transition: box-shadow 0.35s ease, transform 0.35s ease;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
   .hover-glow:hover {
     box-shadow: var(--shadow-glow);
   }
 
-  /* ---- scroll reveal (CSS-only, progressive enhancement) ----
-     Add `data-reveal` to any element; it animates in on view.
-     Without JS / IntersectionObserver it simply stays visible. */
+  /* ---- PILL primitives (reusable across Header / tabs / chips) ---- */
+  /* solid blue primary pill */
+  .pill-primary {
+    @apply inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-pill transition-all duration-200 hover:bg-brand-700 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2;
+  }
+  /* white pill with hairline border (inactive tab / secondary) */
+  .pill-outline {
+    @apply inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-full border border-line bg-white px-5 py-2.5 text-sm font-semibold text-ink shadow-sm transition-all duration-200 hover:border-brand-300 hover:text-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2;
+  }
+  /* soft-wash pill / chip (e.g. tag) */
+  .pill-soft {
+    @apply inline-flex items-center gap-2 rounded-full bg-brand-50 px-3.5 py-1.5 text-xs font-semibold text-brand-700;
+  }
+
+  /* ---- scroll reveal (CSS-only, progressive enhancement) ---- */
   [data-reveal] {
     opacity: 0;
-    transform: translateY(22px);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
   }
   [data-reveal].is-visible {
     opacity: 1;
     transform: translateY(0);
-  }
-
-  /* ---- dark-section textures ---- */
-  .texture-grid {
-    background-image: var(--tw-bg-grid, none);
   }
 
   /* ---- marquee (infinite logo strip) ---- */
@@ -181,12 +182,13 @@
     animation-play-state: paused;
   }
 
-  /* ---- eyebrow kicker (consistent across sections) ---- */
+  /* ---- eyebrow kicker — BLUE uppercase, AA-safe (brand-700 = 8.4:1 on white, passes on cream/soft too) ---- */
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-brand-600;
+    @apply inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-brand-700;
   }
+  /* on the single dark navy band — lighter blue for contrast on navy */
   .eyebrow-light {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent-cyan;
+    @apply inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-brand-200;
   }
 }
 

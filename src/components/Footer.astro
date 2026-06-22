@@ -22,15 +22,15 @@ const nav: { key: Parameters<typeof t>[1]; path: string }[] = [
 const logoSrc = withBase('/logo-tcm-inverse.svg');
 ---
 
-<footer class="relative overflow-hidden bg-canvas-900 text-slate-300">
-  <!-- faint dot texture + top accent hairline -->
+<footer class="relative overflow-hidden bg-navy-deep text-slate-300">
+  <!-- faint dot texture + top accent hairline (the single allowed dark surface) -->
   <div
     class="pointer-events-none absolute inset-0 bg-dot-dark bg-dot opacity-[0.5]"
     aria-hidden="true"
   >
   </div>
   <div
-    class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-cyan/40 to-transparent"
+    class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-400/50 to-transparent"
     aria-hidden="true"
   >
   </div>
@@ -49,7 +49,7 @@ const logoSrc = withBase('/logo-tcm-inverse.svg');
       <p class="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
         {t(lang, 'footer.tagline')}
       </p>
-      <p class="mt-4 text-sm font-medium text-accent-cyan">{site.slogan}</p>
+      <p class="mt-4 text-sm font-medium text-brand-300">{site.slogan}</p>
     </div>
 
     <!-- Nav -->
@@ -63,7 +63,7 @@ const logoSrc = withBase('/logo-tcm-inverse.svg');
             <li>
               <a
                 href={localizePath(item.path, lang)}
-                class="cursor-pointer text-slate-400 transition hover:text-accent-cyan"
+                class="cursor-pointer text-slate-400 transition hover:text-brand-300"
               >
                 {t(lang, item.key)}
               </a>
@@ -84,7 +84,7 @@ const logoSrc = withBase('/logo-tcm-inverse.svg');
             <li>
               <a
                 href={localizePath(`/services/${s.slug}`, lang)}
-                class="cursor-pointer text-slate-400 transition hover:text-accent-cyan"
+                class="cursor-pointer text-slate-400 transition hover:text-brand-300"
               >
                 {s.title[lang]}
               </a>
@@ -102,12 +102,12 @@ const logoSrc = withBase('/logo-tcm-inverse.svg');
       <address class="mt-4 space-y-2.5 text-sm not-italic text-slate-400">
         <p>{companyAddress(lang)}</p>
         <p>
-          <a href={`tel:${site.phoneIntl}`} class="transition hover:text-accent-cyan"
+          <a href={`tel:${site.phoneIntl}`} class="transition hover:text-brand-300"
             >{site.phone}</a
           >
         </p>
         <p>
-          <a href={`mailto:${site.email}`} class="transition hover:text-accent-cyan"
+          <a href={`mailto:${site.email}`} class="transition hover:text-brand-300"
             >{site.email}</a
           >
         </p>
@@ -122,7 +122,7 @@ const logoSrc = withBase('/logo-tcm-inverse.svg');
       <p>{copyrightLine(lang)} · {t(lang, 'footer.rights')}</p>
       <a
         href={localizePath('/privacy-policy', lang)}
-        class="transition hover:text-accent-cyan"
+        class="transition hover:text-brand-300"
       >
         {t(lang, 'footer.privacy')}
       </a>

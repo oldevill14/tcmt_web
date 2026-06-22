@@ -31,15 +31,8 @@ const logoSrc = withBase('/logo-tcm.svg');
 ---
 
 <header
-  class="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/65"
+  class="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur-xl supports-[backdrop-filter]:bg-white/80"
 >
-  <!-- hairline accent gradient on the bottom edge -->
-  <div
-    class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-cyan/50 to-transparent"
-    aria-hidden="true"
-  >
-  </div>
-
   <div class="container-tcm flex h-16 items-center justify-between gap-4">
     <a
       href={localizePath('/', lang)}
@@ -63,22 +56,13 @@ const logoSrc = withBase('/logo-tcm.svg');
             href={localizePath(item.path, lang)}
             aria-current={isActive(item.path) ? 'page' : undefined}
             class:list={[
-              'relative inline-flex min-h-[44px] cursor-pointer items-center rounded-full px-3.5 py-2 text-sm font-medium transition-colors',
+              'relative inline-flex min-h-[44px] cursor-pointer items-center rounded-full px-4 py-2 text-sm font-semibold transition-colors',
               isActive(item.path)
-                ? 'text-brand-700'
-                : 'text-ink/80 hover:text-brand-700',
+                ? 'bg-brand-50 text-brand-700'
+                : 'text-ink/75 hover:bg-bg-soft hover:text-brand-700',
             ]}
           >
             {t(lang, item.key)}
-            <span
-              class:list={[
-                'pointer-events-none absolute inset-x-3.5 -bottom-px h-0.5 rounded-full bg-accent-gradient-soft transition-transform duration-300',
-                isActive(item.path)
-                  ? 'scale-x-100'
-                  : 'scale-x-0',
-              ]}
-              aria-hidden="true"
-            />
           </a>
         ))
       }
@@ -86,8 +70,8 @@ const logoSrc = withBase('/logo-tcm.svg');
 
     <div class="hidden items-center gap-3 lg:flex">
       <LangSwitcher lang={lang} />
-      <!-- T4 — Contact Sales is the PRIMARY conversion (header) -->
-      <Button href={localizePath('/contact', lang)} variant="gradient" size="sm">
+      <!-- T4 — Contact Sales is the PRIMARY conversion (header) — blue pill -->
+      <Button href={localizePath('/contact', lang)} variant="primary" size="sm">
         {t(lang, 'btn.contactSales')}
       </Button>
     </div>
@@ -96,7 +80,7 @@ const logoSrc = withBase('/logo-tcm.svg');
     <input id="nav-toggle" type="checkbox" class="peer hidden" aria-hidden="true" />
     <label
       for="nav-toggle"
-      class="grid h-10 w-10 cursor-pointer place-items-center rounded-xl text-ink ring-1 ring-slate-200 transition hover:ring-brand-300 lg:hidden"
+      class="grid h-11 w-11 cursor-pointer place-items-center rounded-full text-ink ring-1 ring-line transition hover:ring-brand-300 hover:text-brand-700 lg:hidden"
       aria-label={t(lang, 'a11y.openMenu')}
     >
       <svg
@@ -114,7 +98,7 @@ const logoSrc = withBase('/logo-tcm.svg');
     </label>
 
     <div
-      class="absolute inset-x-0 top-16 hidden border-b border-slate-200/70 bg-white/95 shadow-lg backdrop-blur-xl peer-checked:block lg:!hidden"
+      class="absolute inset-x-0 top-16 hidden border-b border-line bg-white/98 shadow-card backdrop-blur-xl peer-checked:block lg:!hidden"
     >
       <nav class="container-tcm flex flex-col py-3" aria-label="Mobile">
         {
@@ -123,10 +107,10 @@ const logoSrc = withBase('/logo-tcm.svg');
               href={localizePath(item.path, lang)}
               aria-current={isActive(item.path) ? 'page' : undefined}
               class:list={[
-                'rounded-xl px-3 py-3 text-base font-medium transition',
+                'rounded-xl px-3 py-3 text-base font-semibold transition',
                 isActive(item.path)
-                  ? 'bg-brand-500/10 text-brand-700'
-                  : 'text-ink hover:bg-slate-50',
+                  ? 'bg-brand-50 text-brand-700'
+                  : 'text-ink hover:bg-bg-soft',
               ]}
             >
               {t(lang, item.key)}
@@ -137,7 +121,7 @@ const logoSrc = withBase('/logo-tcm.svg');
         <div class="px-3 pt-2">
           <Button
             href={localizePath('/contact', lang)}
-            variant="gradient"
+            variant="primary"
             size="md"
             class="w-full"
           >

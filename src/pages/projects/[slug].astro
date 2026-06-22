@@ -1,5 +1,6 @@
 ---
 // Thai project detail page — served at /projects/[slug]
+// DESIGN V4 (TANGERINE-STYLE) — light page hero, flat meta strip, flat services panel.
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/Button.astro';
@@ -23,8 +24,8 @@ const { project, lang } = Astro.props as {
 };
 
 const sectorLabel: Record<string, string> = {
-  gov: t(lang, 'projects.filter.gov'),
-  edu: t(lang, 'projects.filter.edu'),
+  gov:     t(lang, 'projects.filter.gov'),
+  edu:     t(lang, 'projects.filter.edu'),
   private: t(lang, 'projects.filter.private'),
 };
 
@@ -38,37 +39,40 @@ const { Content } = await render(project);
   title={project.data.title}
   description={project.data.summary}
 >
-  <!-- Page hero -->
-  <section class="bg-brand-900 pb-16 pt-24 sm:pt-28">
+  <!-- Page hero — LIGHT soft-blue bg (was dark brand-900) -->
+  <section class="pb-16 pt-24 sm:pt-28" style="background-color: var(--bg-soft);">
     <div class="container-tcm">
-      <nav class="mb-6 flex flex-wrap items-center gap-2 text-sm text-brand-300" aria-label="breadcrumb">
-        <a href={localizePath('/', lang)} class="hover:text-white transition-colors">{t(lang, 'nav.home')}</a>
-        <span aria-hidden="true">›</span>
-        <a href={localizePath('/projects', lang)} class="hover:text-white transition-colors">{t(lang, 'nav.projects')}</a>
-        <span aria-hidden="true">›</span>
-        <span class="text-white" aria-current="page">{project.data.client}</span>
+      <!-- Breadcrumb — navy ink on soft bg (AA-safe) -->
+      <nav class="mb-6 flex flex-wrap items-center gap-2 text-sm text-muted" aria-label="breadcrumb">
+        <a href={localizePath('/', lang)} class="hover:text-brand-700 transition-colors">{t(lang, 'nav.home')}</a>
+        <span aria-hidden="true" class="text-line">›</span>
+        <a href={localizePath('/projects', lang)} class="hover:text-brand-700 transition-colors">{t(lang, 'nav.projects')}</a>
+        <span aria-hidden="true" class="text-line">›</span>
+        <span class="text-ink font-medium" aria-current="page">{project.data.client}</span>
       </nav>
 
-      <span class="mb-4 inline-flex rounded-full bg-brand-600/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-300">
+      <!-- Sector pill -->
+      <span class="pill-soft mb-4 inline-flex">
+        <span class="h-1.5 w-1.5 rounded-full bg-brand-600" aria-hidden="true"></span>
         {sectorLabel[project.data.sector]}
       </span>
 
-      <h1 class="mt-2 max-w-3xl text-4xl font-bold text-white sm:text-5xl leading-tight">
+      <h1 class="mt-3 max-w-3xl text-4xl font-bold text-ink sm:text-5xl leading-tight">
         {project.data.title}
       </h1>
-      <p class="mt-4 max-w-2xl text-lg text-brand-300">
+      <p class="mt-4 max-w-2xl text-lg text-muted">
         {project.data.summary}
       </p>
       <div class="mt-8">
-        <Button href={localizePath('/contact', lang)} variant="white" size="md">
+        <Button href={localizePath('/contact', lang)} variant="primary" size="md">
           {t(lang, 'btn.contactSales')}
         </Button>
       </div>
     </div>
   </section>
 
-  <!-- Meta strip -->
-  <section class="border-b border-slate-100 bg-white py-8">
+  <!-- Meta strip — white bg with hairline bottom border -->
+  <section class="border-b border-line bg-white py-8">
     <div class="container-tcm">
       <dl class="flex flex-wrap gap-x-10 gap-y-4 text-sm">
         <div>
@@ -88,7 +92,7 @@ const { Content } = await render(project);
             <dt class="font-semibold text-ink">Tags</dt>
             <dd class="mt-1 flex flex-wrap gap-2">
               {project.data.tags.map((tag) => (
-                <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs text-slate-600">{tag}</span>
+                <span class="rounded-full bg-brand-50 px-3 py-0.5 text-xs text-brand-700 ring-1 ring-inset ring-brand-100">{tag}</span>
               ))}
             </dd>
           </div>
@@ -97,21 +101,22 @@ const { Content } = await render(project);
     </div>
   </section>
 
-  <!-- Main body -->
-  <section class="section">
+  <!-- Main body — white bg -->
+  <section class="section bg-white">
     <div class="container-tcm">
       <div class="mx-auto max-w-3xl">
-        {/* T3 — Scope / services delivered (credible case-study framing, no metrics) */}
+        {/* Scope / services delivered — flat soft-blue panel */}
         {project.data.services.length > 0 && (
-          <div class="mb-10 rounded-2xl bg-bg-soft p-7 ring-1 ring-slate-100 sm:p-8" style="background-color: var(--bg-soft);">
-            <h2 class="text-sm font-semibold uppercase tracking-[0.14em] text-brand-600">
+          <div class="mb-10 rounded-2xl border border-line p-7 sm:p-8" style="background-color: var(--bg-soft);">
+            <p class="eyebrow mb-4">
+              <span class="inline-block h-1 w-5 rounded-full bg-brand-600" aria-hidden="true"></span>
               {t(lang, 'projects.services')}
-            </h2>
-            <ul class="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+            </p>
+            <ul class="grid gap-x-8 gap-y-3 sm:grid-cols-2">
               {project.data.services.map((svc) => (
                 <li class="flex items-start gap-3">
                   <span
-                    class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-accent-gradient-soft text-white"
+                    class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-600 text-white"
                     aria-hidden="true"
                   >
                     <svg
@@ -167,17 +172,18 @@ const { Content } = await render(project);
 </BaseLayout>
 
 <style>
+  /* Project body content typography — light system colors */
   .project-content :global(h2) {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--ink);
     margin-top: 2.5rem;
     margin-bottom: 1rem;
   }
   .project-content :global(h3) {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #0f172a;
+    color: var(--ink);
     margin-top: 2rem;
     margin-bottom: 0.75rem;
   }
@@ -200,7 +206,7 @@ const { Content } = await render(project);
     margin-bottom: 0.375rem;
   }
   .project-content :global(blockquote) {
-    border-left: 4px solid #2f80ed;
+    border-left: 4px solid #1565d8;
     padding-left: 1rem;
     margin: 1.5rem 0;
     color: var(--muted);
@@ -208,7 +214,7 @@ const { Content } = await render(project);
   }
   .project-content :global(strong) {
     font-weight: 600;
-    color: #0f172a;
+    color: var(--ink);
   }
   .project-content :global(a) {
     color: #1565d8;

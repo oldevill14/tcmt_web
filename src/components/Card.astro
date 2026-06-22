@@ -1,12 +1,13 @@
 ---
-// Generic surface card (DESIGN V2). Wrap arbitrary content. Optionally a link card.
-// variant: 'surface' (default white card), 'glass' (frosted, over soft/dark bg),
-//          'gradient-border' (white card with an accent gradient ring), 'dark' (over navy).
+// Generic surface card (DESIGN V4 — flat light). Wrap arbitrary content.
+// variant: 'surface' (default flat white card, hairline border),
+//          'glass' (flat white — kept name), 'gradient-border' (white + hairline),
+//          'soft' (cream/soft-blue wash card), 'dark' (flat white — legacy alias).
 interface Props {
   href?: string;
   class?: string;
   hover?: boolean;
-  variant?: 'surface' | 'glass' | 'gradient-border' | 'dark';
+  variant?: 'surface' | 'glass' | 'gradient-border' | 'soft' | 'dark';
   padded?: boolean;
 }
 
@@ -19,10 +20,11 @@ const {
 } = Astro.props;
 
 const variants: Record<string, string> = {
-  surface: 'bg-white shadow-card ring-1 ring-slate-100',
-  glass: 'glass',
-  'gradient-border': 'gradient-border bg-white shadow-card',
-  dark: 'glass-dark',
+  surface: 'border border-line bg-white shadow-card',
+  glass: 'border border-line bg-white shadow-card',
+  'gradient-border': 'border border-line bg-white shadow-card',
+  soft: 'border border-line bg-bg-soft',
+  dark: 'border border-line bg-white shadow-card',
 };
 
 const base = 'block rounded-2xl';

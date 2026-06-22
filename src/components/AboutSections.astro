@@ -1,9 +1,14 @@
 ---
-// Shared about page body. Both th and en about pages import this with their lang.
-// DESIGN V2 — premium tech aesthetic: dark hero (aurora canvas), timeline,
-// glass vision/mission cards, hardware+software bento split, credibility stats,
-// why-us grid. Uses all existing tokens/utilities from the design manifest.
-import { t, localizePath, type Lang } from '../i18n/ui';
+// Shared about page body (DESIGN V4 — TANGERINE-STYLE LIGHT).
+// Replaces the previous dark aurora canvas with:
+//   - Light/cream page hero with blue eyebrow + navy heading
+//   - Warm-cream illustrated timeline strip
+//   - Flat white Vision/Mission cards + soft-blue slogan band
+//   - Light "Capabilities" bento (replaces dark glass bento)
+//   - Light "Why Us" cards (replaces dark canvas section)
+// All dark backgrounds, aurora blobs, and glass/glow effects removed.
+// Uses ONLY manifest tokens/components/illustrations.
+import { t, localizePath, withBase, type Lang } from '../i18n/ui';
 import { site, services } from '../data/site';
 import SectionTitle from './SectionTitle.astro';
 import StatsStrip from './StatsStrip.astro';
@@ -15,13 +20,13 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-// Timeline milestones — factual, from BUILD-BRIEF §6
+// Timeline milestones
 const milestones = lang === 'th'
   ? [
-      { year: '2541', label: 'ก่อตั้งบริษัท', body: 'เริ่มก้าวแรกในฐานะ System Integrator ที่ให้บริการด้านไอทีครบวงจร' },
-      { year: '2545–', label: 'ขยายพอร์ตโฟลิโอ', body: 'เพิ่มบริการระบบเครือข่าย ดาต้าเซ็นเตอร์ และระบบความปลอดภัยสารสนเทศ' },
-      { year: '2555–', label: 'ลูกค้าภาครัฐ', body: 'รับความไว้วางใจจากกระทรวงแรงงาน กรมต่างๆ และหน่วยงานวิจัยระดับชาติ' },
-      { year: '2566+', label: 'ซอฟต์แวร์และเว็บ', body: 'ขยายศักยภาพสู่การพัฒนาซอฟต์แวร์ เว็บแอปพลิเคชัน และดิจิทัลโซลูชัน' },
+      { year: '2541', label: 'ก่อตั้งบริษัท', body: 'เริ่มก้าวแรกในฐานะ System Integrator ให้บริการไอทีครบวงจร' },
+      { year: '2545–', label: 'ขยายพอร์ตโฟลิโอ', body: 'เพิ่มบริการเครือข่าย ดาต้าเซ็นเตอร์ และระบบความปลอดภัยสารสนเทศ' },
+      { year: '2555–', label: 'ลูกค้าภาครัฐ', body: 'รับความไว้วางใจจากกระทรวงแรงงาน กรมต่างๆ และสถาบันวิจัยระดับชาติ' },
+      { year: '2566+', label: 'ซอฟต์แวร์และเว็บ', body: 'ขยายสู่การพัฒนาซอฟต์แวร์ เว็บแอปพลิเคชัน และดิจิทัลโซลูชัน' },
     ]
   : [
       { year: '1998', label: 'Founded', body: 'First steps as a System Integrator providing end-to-end IT solutions.' },
@@ -30,126 +35,112 @@ const milestones = lang === 'th'
       { year: '2023+', label: 'Software & Web', body: 'Expanded into custom software, web applications and digital solutions.' },
     ];
 
-// Why-us items with distinct icons per pillar
+// Why-us items
 const whyUsItems = lang === 'th'
   ? [
       { icon: 'clock', title: '25+ ปีของประสบการณ์', body: 'ดำเนินธุรกิจมาตั้งแต่ปี 2541 ด้วยทีมที่ผ่านการรับรองจากผู้ผลิตชั้นนำระดับโลก' },
-      { icon: 'gov', title: 'ไว้วางใจจากภาครัฐ', body: 'ให้บริการหน่วยงานภาครัฐชั้นนำกว่า 6 แห่ง รวมถึงกระทรวงและสถาบันวิจัยระดับชาติ' },
-      { icon: 'full', title: 'โซลูชันครบวงจร', body: 'ที่ปรึกษา ออกแบบ ติดตั้ง อบรม และบำรุงรักษาในทีมเดียว ไม่ต้องประสานงานหลายผู้ให้บริการ' },
+      { icon: 'gov',   title: 'ไว้วางใจจากภาครัฐ', body: 'ให้บริการหน่วยงานภาครัฐชั้นนำกว่า 6 แห่ง รวมถึงกระทรวงและสถาบันวิจัยระดับชาติ' },
+      { icon: 'full',  title: 'โซลูชันครบวงจร', body: 'ที่ปรึกษา ออกแบบ ติดตั้ง อบรม และบำรุงรักษาในทีมเดียว ไม่ต้องประสานงานหลายผู้ให้บริการ' },
       { icon: 'support', title: 'บริการหลังการขาย 24/7', body: 'ทีม NOC พร้อมเฝ้าระวังและแก้ไขปัญหาตลอด 24 ชั่วโมง เพื่อให้ระบบทำงานต่อเนื่อง' },
     ]
   : [
-      { icon: 'clock', title: '25+ Years of Experience', body: 'Operating since 1998 with a team certified by leading global manufacturers.' },
-      { icon: 'gov', title: 'Trusted by Government', body: 'Serving more than six leading government agencies including ministries and national research institutions.' },
-      { icon: 'full', title: 'End-to-end Solutions', body: 'Consulting, design, installation, training and maintenance under one roof — no need to coordinate multiple vendors.' },
+      { icon: 'clock',  title: '25+ Years of Experience', body: 'Operating since 1998 with a team certified by leading global manufacturers.' },
+      { icon: 'gov',    title: 'Trusted by Government', body: 'Serving more than six leading government agencies including ministries and national research institutions.' },
+      { icon: 'full',   title: 'End-to-end Solutions', body: 'Consulting, design, installation, training and maintenance under one roof — no need to coordinate multiple vendors.' },
       { icon: 'support', title: '24/7 After-sales Support', body: 'Our NOC team monitors and resolves issues around the clock to keep your systems running without interruption.' },
     ];
 
 // Inline SVG paths keyed by icon name
 const icons: Record<string, string> = {
-  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>',
-  gov: '<path d="M3 21h18M5 21V9l7-6 7 6v12M9 21v-6h6v6"/>',
-  full: '<path d="M12 3 5 6v5c0 4.4 2.9 7.9 7 9 4.1-1.1 7-4.6 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+  clock:   '<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>',
+  gov:     '<path d="M3 21h18M5 21V9l7-6 7 6v12M9 21v-6h6v6"/>',
+  full:    '<path d="M12 3 5 6v5c0 4.4 2.9 7.9 7 9 4.1-1.1 7-4.6 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
   support: '<path d="M3 12h4l2 5 4-12 2 7h6"/>',
-  server: '<rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M7 17h.01"/>',
-  code: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/>',
+  server:  '<rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M7 17h.01"/>',
+  code:    '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/>',
 };
 
-// Hardware services (all slugs from BUILD-BRIEF)
+// Hardware services
 const hwServices = services.filter(s =>
   ['networking', 'data-center', 'security', 'isp', 'it-infrastructure', 'av-videowall', 'hvac'].includes(s.slug)
 );
 
-// Pre-resolve capability copy (same as HomeSections pattern, avoids inline type casts)
 type K = Parameters<typeof t>[1];
-const capHw = {
-  title: t(lang, 'home.capabilities.hardware.title' as K),
-  body: t(lang, 'home.capabilities.hardware.body' as K),
-};
-const capSw = {
-  title: t(lang, 'home.capabilities.software.title' as K),
-  body: t(lang, 'home.capabilities.software.body' as K),
-};
-const capSup = {
-  title: t(lang, 'home.capabilities.support.title' as K),
-  body: t(lang, 'home.capabilities.support.body' as K),
-};
+const capHw  = { title: t(lang, 'home.capabilities.hardware.title' as K), body: t(lang, 'home.capabilities.hardware.body' as K) };
+const capSw  = { title: t(lang, 'home.capabilities.software.title' as K), body: t(lang, 'home.capabilities.software.body' as K) };
+const capSup = { title: t(lang, 'home.capabilities.support.title' as K),  body: t(lang, 'home.capabilities.support.body' as K) };
 ---
 
 <!-- ============================================================
-  PAGE HERO — dark aurora canvas, same visual grammar as site hero
+  PAGE HERO — light/cream, blue eyebrow, navy headline
+  Replaces: dark aurora canvas hero
   ============================================================ -->
-<section class="relative overflow-hidden bg-canvas-950 text-white">
-  <!-- Aurora gradient mesh (CSS-only, matches Hero.astro) -->
-  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-    <div
-      class="absolute -left-[12%] -top-[20%] h-[60vh] w-[60vh] rounded-full opacity-60 blur-3xl animate-aurora"
-      style="background: radial-gradient(circle, rgba(47,128,237,0.50), transparent 65%);"
-    ></div>
-    <div
-      class="absolute right-[-6%] top-[10%] h-[44vh] w-[44vh] rounded-full opacity-55 blur-3xl animate-aurora [animation-delay:-7s]"
-      style="background: radial-gradient(circle, rgba(56,189,248,0.45), transparent 65%);"
-    ></div>
-    <div
-      class="absolute bottom-[-18%] left-[35%] h-[44vh] w-[44vh] rounded-full opacity-40 blur-3xl animate-aurora [animation-delay:-13s]"
-      style="background: radial-gradient(circle, rgba(94,234,212,0.28), transparent 65%);"
-    ></div>
-  </div>
+<section class="relative overflow-hidden bg-white py-24 sm:py-32 lg:py-36">
+  <!-- Subtle warm cream blush in upper-right (purely decorative, low-opacity) -->
+  <div
+    class="pointer-events-none absolute right-[-10%] top-[-8%] h-[55vh] w-[55vh] rounded-full opacity-[0.35]"
+    style="background: radial-gradient(circle, #eef5ff, transparent 68%);"
+    aria-hidden="true"
+  ></div>
 
-  <!-- Circuit grid texture -->
-  <div class="pointer-events-none absolute inset-0 bg-grid-dark bg-grid opacity-[0.45]" aria-hidden="true"></div>
-  <!-- Bottom fade -->
-  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-canvas-950 to-transparent" aria-hidden="true"></div>
-
-  <div class="container-tcm relative py-24 sm:py-32 lg:py-40">
-    <div class="mx-auto max-w-3xl text-center">
-      <!-- Eyebrow -->
-      <p class="eyebrow-light animate-fade-up justify-center">
-        <span class="inline-block h-1.5 w-1.5 rounded-full bg-accent-cyan animate-glow-pulse" aria-hidden="true"></span>
+  <div class="container-tcm relative">
+    <div class="mx-auto max-w-3xl text-center" data-reveal>
+      <!-- Blue eyebrow kicker -->
+      <p class="eyebrow mb-3 justify-center">
+        <span class="inline-block h-1 w-5 rounded-full bg-brand-600" aria-hidden="true"></span>
         {site.founded}&nbsp;–&nbsp;{lang === 'th' ? 'ปัจจุบัน' : 'present'}
       </p>
 
-      <!-- Headline -->
-      <h1 class="mt-5 text-display-sm font-extrabold text-white animate-fade-up [animation-delay:80ms] sm:text-display">
-        <span class="block">{t(lang, 'about.title')}</span>
-        <span class="gradient-text-light">{t(lang, 'about.subtitle')}</span>
+      <!-- Headline: navy ink on white -->
+      <h1 class="mt-2 text-4xl font-extrabold text-ink sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
+        {t(lang, 'about.title')}
+        <span class="block mt-1 text-brand-600">{t(lang, 'about.subtitle')}</span>
       </h1>
 
       <!-- Intro paragraph -->
-      <p class="mt-6 max-w-2xl mx-auto text-base leading-relaxed text-slate-300 animate-fade-up [animation-delay:160ms] sm:text-lg">
+      <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
         {t(lang, 'about.intro')}
       </p>
 
-      <!-- Stats row on hero -->
-      <div class="mt-12 animate-fade-up [animation-delay:240ms]">
-        <StatsStrip lang={lang} invert />
+      <!-- Stats row below hero text -->
+      <div class="mt-12">
+        <StatsStrip lang={lang} />
       </div>
     </div>
+  </div>
+
+  <!-- Flat spot illustration — network diagram in lower-right on wider screens -->
+  <div class="pointer-events-none absolute right-[3%] bottom-[6%] hidden h-36 w-36 opacity-70 lg:block" aria-hidden="true">
+    <img
+      src={withBase('/illustrations/spot-network.svg')}
+      alt=""
+      width="144"
+      height="144"
+      loading="lazy"
+    />
   </div>
 </section>
 
 <!-- ============================================================
-  TIMELINE — since 1998 editorial strip
+  TIMELINE — soft cream band with connected year bubbles
+  Replaces: dark canvas-900 with dot texture + glowing ring year bubbles
   ============================================================ -->
-<section class="relative bg-canvas-900 py-16 sm:py-20">
-  <!-- Dot texture -->
-  <div class="pointer-events-none absolute inset-0 bg-dot-dark bg-dot opacity-[0.35]" aria-hidden="true"></div>
-  <!-- Accent hairline dividers -->
-  <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-cyan/30 to-transparent" aria-hidden="true"></div>
-  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-500/20 to-transparent" aria-hidden="true"></div>
-
-  <div class="container-tcm relative">
+<section class="py-16 sm:py-20" style="background-color: var(--bg-cream);">
+  <div class="container-tcm">
     <div class="mb-10 text-center" data-reveal>
-      <p class="eyebrow-light justify-center">
-        <span class="inline-block h-1 w-4 rounded-full bg-accent-cyan" aria-hidden="true"></span>
+      <p class="eyebrow justify-center">
+        <span class="inline-block h-1 w-5 rounded-full bg-brand-600" aria-hidden="true"></span>
         {lang === 'th' ? 'เส้นทางของเรา' : 'Our journey'}
       </p>
     </div>
 
     <!-- Timeline grid -->
     <div class="relative grid gap-0 sm:grid-cols-4">
-      <!-- Horizontal connecting line (desktop) -->
-      <div class="pointer-events-none absolute top-[2.25rem] left-0 right-0 hidden h-px bg-gradient-to-r from-brand-700/40 via-accent-cyan/40 to-brand-700/40 sm:block" aria-hidden="true"></div>
+      <!-- Horizontal hairline connector (desktop) -->
+      <div
+        class="pointer-events-none absolute top-[2.25rem] left-0 right-0 hidden h-px bg-brand-100 sm:block"
+        aria-hidden="true"
+      ></div>
 
       {milestones.map((m, i) => (
         <div
@@ -157,13 +148,12 @@ const capSup = {
           data-reveal
           data-reveal-delay={i * 80}
         >
-          <!-- Year bubble -->
-          <div class="relative mb-5 grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full bg-accent-gradient-soft text-white shadow-glow ring-4 ring-canvas-900">
+          <!-- Year bubble — flat solid blue -->
+          <div class="relative mb-5 grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full bg-brand-600 text-white ring-4 ring-white shadow-card">
             <span class="text-xs font-bold tracking-tight leading-none">{m.year}</span>
           </div>
-          <!-- Label + body -->
-          <h3 class="text-sm font-semibold text-white">{m.label}</h3>
-          <p class="mt-2 text-xs leading-relaxed text-slate-400">{m.body}</p>
+          <h3 class="text-sm font-semibold text-ink">{m.label}</h3>
+          <p class="mt-2 text-xs leading-relaxed text-muted">{m.body}</p>
         </div>
       ))}
     </div>
@@ -171,7 +161,8 @@ const capSup = {
 </section>
 
 <!-- ============================================================
-  VISION & MISSION — glass cards over soft background
+  VISION & MISSION — flat white cards on soft-blue bg
+  Replaces: dark-canvas-900 vision card + gradient-border card + dark slogan bar
   ============================================================ -->
 <section class="section" style="background-color: var(--bg-soft);">
   <div class="container-tcm">
@@ -187,20 +178,17 @@ const capSup = {
     </div>
 
     <div class="mt-12 grid gap-6 sm:grid-cols-2">
-      <!-- Vision — dark gradient card -->
+      <!-- Vision — flat white card with blue top accent bar -->
       <div
-        class="relative overflow-hidden rounded-3xl bg-canvas-900 p-8 text-white hover-lift"
+        class="card-surface relative overflow-hidden hover-lift"
         data-reveal
         data-reveal-delay="60"
       >
-        <!-- Subtle glow accent -->
-        <div class="pointer-events-none absolute -top-10 -right-10 h-40 w-40 rounded-full opacity-30 blur-2xl bg-accent-gradient" aria-hidden="true"></div>
-        <!-- Grid texture -->
-        <div class="pointer-events-none absolute inset-0 bg-grid-dark bg-grid opacity-[0.35] rounded-3xl" aria-hidden="true"></div>
-
-        <div class="relative">
+        <!-- Blue accent bar at top -->
+        <div class="absolute inset-x-0 top-0 h-1 bg-brand-600 rounded-t-2xl" aria-hidden="true"></div>
+        <div class="pt-2">
           <!-- Icon badge -->
-          <span class="mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-accent-gradient-soft shadow-glow-cyan text-white">
+          <span class="mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-brand-600 text-white">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
               class="h-5 w-5" aria-hidden="true">
@@ -208,66 +196,65 @@ const capSup = {
               <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
             </svg>
           </span>
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-accent-cyan">{t(lang, 'about.vision.title')}</p>
-          <h2 class="mt-3 text-xl font-bold text-white sm:text-2xl">{t(lang, 'about.vision.body')}</h2>
+          <p class="eyebrow mb-2">{t(lang, 'about.vision.title')}</p>
+          <h2 class="text-xl font-bold text-ink sm:text-2xl">{t(lang, 'about.vision.body')}</h2>
         </div>
       </div>
 
-      <!-- Mission — glass gradient-border card -->
+      <!-- Mission — flat white card, blue check marks -->
       <div
-        class="gradient-border rounded-3xl bg-white p-8 shadow-card hover-lift"
+        class="card-surface relative overflow-hidden hover-lift"
         data-reveal
         data-reveal-delay="120"
       >
-        <!-- Icon badge -->
-        <span class="mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-brand-600/10 text-brand-600">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
-            class="h-5 w-5" aria-hidden="true">
-            <path d="M12 3 5 6v5c0 4.4 2.9 7.9 7 9 4.1-1.1 7-4.6 7-9V6l-7-3Z"/>
-            <path d="m9 12 2 2 4-4"/>
-          </svg>
-        </span>
-        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">{t(lang, 'about.mission.title')}</p>
-        <ul class="mt-3 space-y-3" role="list">
-          {t(lang, 'about.mission.body').split('·').map((item: string) => (
-            <li class="flex items-start gap-3 text-sm leading-relaxed text-muted">
-              <span
-                class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-gradient-soft"
-                aria-hidden="true"
-              ></span>
-              {item.trim()}
-            </li>
-          ))}
-        </ul>
+        <div class="absolute inset-x-0 top-0 h-1 bg-brand-400 rounded-t-2xl" aria-hidden="true"></div>
+        <div class="pt-2">
+          <span class="mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
+              class="h-5 w-5" aria-hidden="true">
+              <path d="M12 3 5 6v5c0 4.4 2.9 7.9 7 9 4.1-1.1 7-4.6 7-9V6l-7-3Z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </span>
+          <p class="eyebrow mb-2">{t(lang, 'about.mission.title')}</p>
+          <ul class="mt-3 space-y-3" role="list">
+            {t(lang, 'about.mission.body').split('·').map((item: string) => (
+              <li class="flex items-start gap-3 text-sm leading-relaxed text-muted">
+                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-600" aria-hidden="true"></span>
+                {item.trim()}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
 
-    <!-- Slogan bar -->
+    <!-- Slogan — solid blue band (the one permitted dark element per section) -->
     <div
-      class="mt-8 relative overflow-hidden rounded-3xl bg-canvas-950 px-8 py-10 text-center text-white"
+      class="mt-8 relative overflow-hidden rounded-3xl px-8 py-10 text-center text-white"
+      style="background: linear-gradient(135deg, #0a3580 0%, #0b3d91 45%, #1565d8 100%);"
       data-reveal
       data-reveal-delay="180"
     >
-      <div class="pointer-events-none absolute -left-8 top-1/2 -translate-y-1/2 h-32 w-32 rounded-full opacity-40 blur-2xl" style="background: radial-gradient(circle, rgba(47,128,237,0.6), transparent 70%);" aria-hidden="true"></div>
-      <div class="pointer-events-none absolute -right-8 top-1/2 -translate-y-1/2 h-32 w-32 rounded-full opacity-40 blur-2xl" style="background: radial-gradient(circle, rgba(56,189,248,0.5), transparent 70%);" aria-hidden="true"></div>
-      <div class="relative">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent-cyan">
-          {lang === 'th' ? 'สโลแกน' : 'Slogan'}
-        </p>
-        <p class="mt-3 text-2xl font-bold italic sm:text-3xl gradient-text-light">
-          "{t(lang, 'about.slogan')}"
-        </p>
-        <p class="mt-2 text-sm text-slate-400">{t(lang, 'about.values')}</p>
-      </div>
+      <p class="eyebrow-light justify-center mb-3">
+        <span class="inline-block h-1 w-5 rounded-full bg-brand-300" aria-hidden="true"></span>
+        {lang === 'th' ? 'สโลแกน' : 'Slogan'}
+      </p>
+      <p class="text-2xl font-bold italic text-white sm:text-3xl">
+        "{t(lang, 'about.slogan')}"
+      </p>
+      <p class="mt-3 text-sm text-brand-50">{t(lang, 'about.values')}</p>
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-  WHAT WE DO — hardware+software bento split (the positioning statement)
+  WHAT WE DO — bento grid: hardware + software + 24/7
+  Replaces: dark canvas-900 bento with glow/grid-texture dark cards
+  Now: all light cards on white bg; hardware = blue-accent card (NOT dark bg)
   ============================================================ -->
-<section class="section">
+<section class="section bg-white">
   <div class="container-tcm">
     <div data-reveal>
       <SectionTitle
@@ -280,23 +267,36 @@ const capSup = {
       />
     </div>
 
-    <!-- Bento grid — asymmetric, matches HomeSections capabilities pattern -->
     <div class="mt-12 grid gap-5 lg:grid-cols-6">
 
-      <!-- Hardware — large dark accent card (lg: col 1-3, 2 rows) -->
+      <!-- Hardware — blue-accent flat card (lg: col 1-3, 2 rows) -->
+      <!-- NOT dark bg; uses brand-600 as accent with white card bg for Tangerine style -->
       <div
-        class="group relative flex flex-col overflow-hidden rounded-3xl p-8 hover-lift lg:col-span-3 lg:row-span-2 bg-canvas-900 text-white"
+        class="group relative flex flex-col overflow-hidden rounded-2xl border border-brand-200 bg-brand-600 p-8 text-white hover-lift lg:col-span-3 lg:row-span-2"
         data-reveal
         data-reveal-delay="0"
       >
-        <!-- Circuit texture -->
-        <div class="pointer-events-none absolute inset-0 bg-grid-dark bg-grid opacity-[0.4] rounded-3xl" aria-hidden="true"></div>
-        <!-- Glow accent -->
-        <div class="pointer-events-none absolute -top-12 -right-12 h-52 w-52 rounded-full opacity-35 blur-3xl bg-accent-gradient group-hover:opacity-50 transition-opacity duration-500" aria-hidden="true"></div>
+        <!-- Subtle light scatter -->
+        <div
+          class="pointer-events-none absolute -top-12 -right-12 h-48 w-48 rounded-full opacity-[0.08]"
+          style="background: radial-gradient(circle, #ffffff, transparent 70%);"
+          aria-hidden="true"
+        ></div>
+
+        <!-- Spot illustration in bottom-right -->
+        <div class="pointer-events-none absolute bottom-5 right-5 h-24 w-24 opacity-25" aria-hidden="true">
+          <img
+            src={withBase('/illustrations/spot-network.svg')}
+            alt=""
+            width="96"
+            height="96"
+            loading="lazy"
+          />
+        </div>
 
         <div class="relative flex flex-col h-full">
           <!-- Icon -->
-          <span class="mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-accent-gradient-soft shadow-glow-cyan text-white">
+          <span class="mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-white/15 text-white">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
               class="h-6 w-6" aria-hidden="true"
@@ -304,96 +304,102 @@ const capSup = {
             />
           </span>
 
-          <h3 class="text-xl font-bold text-white sm:text-2xl">
-            {capHw.title}
-          </h3>
-          <p class="mt-3 text-sm leading-relaxed text-slate-400">
-            {capHw.body}
-          </p>
+          <h3 class="text-xl font-bold text-white sm:text-2xl">{capHw.title}</h3>
+          <p class="mt-3 text-sm leading-relaxed text-brand-100">{capHw.body}</p>
 
-          <!-- Service pills -->
+          <!-- Service pills — white/glass on blue -->
           <div class="mt-6 flex flex-wrap gap-2">
             {hwServices.map(s => (
-              <span class="inline-flex items-center rounded-full bg-white/[0.08] px-3 py-1 text-xs font-medium text-slate-300 ring-1 ring-inset ring-white/10">
+              <span class="inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white ring-1 ring-inset ring-white/25">
                 {s.title[lang]}
               </span>
             ))}
           </div>
 
-          <!-- Glass CTA at bottom -->
           <div class="mt-auto pt-8">
-            <Button href={localizePath('/services', lang)} variant="glass" size="sm">
+            <Button href={localizePath('/services', lang)} variant="white" size="sm">
               {t(lang, 'btn.viewServices')}
             </Button>
           </div>
         </div>
       </div>
 
-      <!-- Software — light card (lg: col 4-6) -->
+      <!-- Software — flat white card (lg: col 4-6) -->
       <div
-        class="group relative flex flex-col overflow-hidden rounded-3xl p-8 card-surface !p-8 hover-lift lg:col-span-3"
+        class="group relative flex flex-col overflow-hidden rounded-2xl card-surface !rounded-2xl hover-lift lg:col-span-3"
         data-reveal
         data-reveal-delay="90"
       >
-        <!-- Subtle gradient accent in corner -->
-        <div class="pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full opacity-20 blur-2xl bg-accent-gradient group-hover:opacity-35 transition-opacity duration-500" aria-hidden="true"></div>
-
-        <span class="mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-brand-600/10 text-brand-600">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
-            class="h-6 w-6" aria-hidden="true"
-            set:html={icons.code}
+        <!-- Spot illustration in corner -->
+        <div class="pointer-events-none absolute bottom-5 right-5 h-20 w-20 opacity-60" aria-hidden="true">
+          <img
+            src={withBase('/illustrations/spot-software.svg')}
+            alt=""
+            width="80"
+            height="80"
+            loading="lazy"
           />
-        </span>
+        </div>
 
-        <h3 class="text-xl font-bold text-ink sm:text-2xl">
-          {capSw.title}
-        </h3>
-        <p class="mt-3 text-sm leading-relaxed text-muted">
-          {capSw.body}
-        </p>
+        <div class="relative">
+          <span class="mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
+              class="h-6 w-6" aria-hidden="true"
+              set:html={icons.code}
+            />
+          </span>
 
-        <div class="mt-6 flex flex-wrap gap-2">
-          {(lang === 'th'
-            ? ['เว็บไซต์', 'ระบบงานภายใน', 'แอปพลิเคชัน', 'ระบบฐานข้อมูล', 'UI/UX Design']
-            : ['Websites', 'Internal systems', 'Web applications', 'Database systems', 'UI/UX Design']
-          ).map((label: string) => (
-            <span class="inline-flex items-center rounded-full bg-brand-500/8 px-3 py-1 text-xs font-medium text-brand-700 ring-1 ring-inset ring-brand-300/40">
-              {label}
-            </span>
-          ))}
+          <h3 class="text-xl font-bold text-ink sm:text-2xl">{capSw.title}</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">{capSw.body}</p>
+
+          <div class="mt-6 flex flex-wrap gap-2">
+            {(lang === 'th'
+              ? ['เว็บไซต์', 'ระบบงานภายใน', 'แอปพลิเคชัน', 'ระบบฐานข้อมูล', 'UI/UX Design']
+              : ['Websites', 'Internal systems', 'Web applications', 'Database systems', 'UI/UX Design']
+            ).map((label: string) => (
+              <span class="pill-soft">{label}</span>
+            ))}
+          </div>
         </div>
       </div>
 
-      <!-- 24/7 Support — light card (lg: col 4-6, row 2) -->
+      <!-- 24/7 Support — flat white card (lg: col 4-6, row 2) -->
       <div
-        class="group relative flex flex-col overflow-hidden rounded-3xl p-8 card-surface !p-8 hover-lift lg:col-span-3"
+        class="group relative flex flex-col overflow-hidden rounded-2xl card-surface !rounded-2xl hover-lift lg:col-span-3"
         data-reveal
         data-reveal-delay="180"
       >
-        <div class="pointer-events-none absolute -bottom-8 -left-8 h-28 w-28 rounded-full opacity-15 blur-2xl bg-accent-gradient group-hover:opacity-30 transition-opacity duration-500" aria-hidden="true"></div>
-
-        <span class="mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-brand-600/10 text-brand-600">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
-            class="h-6 w-6" aria-hidden="true"
-            set:html={icons.support}
+        <!-- Spot illustration in corner -->
+        <div class="pointer-events-none absolute bottom-5 right-5 h-20 w-20 opacity-60" aria-hidden="true">
+          <img
+            src={withBase('/illustrations/spot-dashboard.svg')}
+            alt=""
+            width="80"
+            height="80"
+            loading="lazy"
           />
-        </span>
+        </div>
 
-        <h3 class="text-xl font-bold text-ink sm:text-2xl">
-          {capSup.title}
-        </h3>
-        <p class="mt-3 text-sm leading-relaxed text-muted">
-          {capSup.body}
-        </p>
+        <div class="relative">
+          <span class="mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
+              class="h-6 w-6" aria-hidden="true"
+              set:html={icons.support}
+            />
+          </span>
 
-        <div class="mt-auto pt-6">
-          <div class="flex items-center gap-2">
-            <span class="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true"></span>
-            <span class="text-xs font-semibold text-emerald-600">
-              {lang === 'th' ? 'NOC พร้อมให้บริการ' : 'NOC online'}
-            </span>
+          <h3 class="text-xl font-bold text-ink sm:text-2xl">{capSup.title}</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">{capSup.body}</p>
+
+          <div class="mt-auto pt-6">
+            <div class="flex items-center gap-2">
+              <span class="inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
+              <span class="text-xs font-semibold text-emerald-700">
+                {lang === 'th' ? 'NOC พร้อมให้บริการ' : 'NOC online'}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -402,17 +408,11 @@ const capSup = {
 </section>
 
 <!-- ============================================================
-  WHY US — 2×2 grid with gradient icon badges
+  WHY US — 2×2 grid of flat white cards on cream background
+  Replaces: dark canvas-950 with aurora + glass-dark cards
   ============================================================ -->
-<section class="section relative bg-canvas-950 text-white overflow-hidden">
-  <!-- Aurora blob top-right -->
-  <div class="pointer-events-none absolute -top-20 right-0 h-[50vh] w-[50vh] rounded-full opacity-30 blur-3xl animate-aurora" style="background: radial-gradient(circle, rgba(47,128,237,0.45), transparent 65%);" aria-hidden="true"></div>
-  <!-- Dot texture -->
-  <div class="pointer-events-none absolute inset-0 bg-dot-dark bg-dot opacity-[0.35]" aria-hidden="true"></div>
-  <!-- Accent hairlines -->
-  <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-cyan/30 to-transparent" aria-hidden="true"></div>
-
-  <div class="container-tcm relative">
+<section class="section" style="background-color: var(--bg-cream);">
+  <div class="container-tcm">
     <div data-reveal>
       <SectionTitle
         eyebrow={lang === 'th' ? 'จุดแข็งของเรา' : 'Our strengths'}
@@ -420,7 +420,6 @@ const capSup = {
         subtitle={lang === 'th'
           ? 'เหตุผลที่ลูกค้าภาครัฐและเอกชนชั้นนำไว้วางใจเราซ้ำแล้วซ้ำเล่า'
           : 'Why leading government and private-sector clients come back to us, time after time'}
-        invert
         gradient
       />
     </div>
@@ -428,36 +427,30 @@ const capSup = {
     <div class="mt-12 grid gap-5 sm:grid-cols-2">
       {whyUsItems.map((item, i) => (
         <div
-          class="group relative overflow-hidden rounded-3xl glass-dark p-8 hover-lift"
+          class="card-surface flex gap-5 hover-lift"
           data-reveal
           data-reveal-delay={i * 80}
         >
-          <!-- Per-card subtle glow -->
-          <div
-            class="pointer-events-none absolute -top-8 -left-8 h-28 w-28 rounded-full opacity-0 group-hover:opacity-40 transition-opacity duration-500 blur-2xl bg-accent-gradient"
-            aria-hidden="true"
-          ></div>
+          <!-- Icon badge — solid blue -->
+          <span class="shrink-0 grid h-12 w-12 place-items-center rounded-2xl bg-brand-600 text-white self-start">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
+              class="h-5 w-5" aria-hidden="true"
+              set:html={icons[item.icon]}
+            />
+          </span>
 
-          <div class="relative">
-            <!-- Icon badge -->
-            <span class="mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-accent-gradient-soft shadow-glow-cyan text-white">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
-                class="h-5 w-5" aria-hidden="true"
-                set:html={icons[item.icon]}
-              />
-            </span>
-
-            <h3 class="text-base font-bold text-white">{item.title}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-slate-400">{item.body}</p>
+          <div>
+            <h3 class="text-base font-bold text-ink">{item.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
           </div>
         </div>
       ))}
     </div>
 
-    <!-- Contact CTA inside dark section -->
+    <!-- Contact CTA — solid pill on light cream bg -->
     <div class="mt-12 text-center" data-reveal>
-      <Button href={localizePath('/contact', lang)} variant="gradient" size="lg">
+      <Button href={localizePath('/contact', lang)} variant="primary" size="lg">
         {t(lang, 'btn.contactUs')}
       </Button>
     </div>
