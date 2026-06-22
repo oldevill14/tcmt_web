@@ -1,0 +1,141 @@
+# Decap CMS configuration for TCM Technology.
+# GitHub backend → commits Markdown/JSON to the repo → Actions rebuild → Pages redeploy.
+# Login requires the OAuth worker (see oauth-worker/README.md) once deployed;
+# set `base_url` to the worker URL below. The site builds/deploys without it.
+
+backend:
+  name: github
+  repo: oldevill14/tcmt_web
+  branch: main
+  # base_url: https://tcmt-decap-oauth.<your-subdomain>.workers.dev
+  # auth_endpoint: auth
+
+# Local backend for editing without OAuth: run `npx decap-server` then visit
+# /admin/?#/ with this enabled.
+local_backend: true
+
+media_folder: public/uploads
+public_folder: /tcmt_web/uploads
+
+# Editorial workflow keeps edits as PRs/drafts before publish.
+publish_mode: editorial_workflow
+
+i18n:
+  structure: multiple_files
+  locales: [th, en]
+  default_locale: th
+
+collections:
+  # ---- Services (per-locale markdown files) ----
+  - name: services
+    label: Services / บริการ
+    label_singular: Service
+    folder: src/content/services
+    create: true
+    # filename pattern: <slug>.<locale>.md
+    path: '{{fields.slug}}.{{fields.locale}}'
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}-{{fields.locale}}'
+    identifier_field: slug
+    summary: '{{title}} ({{locale}})'
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: slug, label: Slug, widget: string, hint: 'e.g. networking (same for both locales)' }
+      - { name: locale, label: Locale, widget: select, options: ['th', 'en'], default: 'th' }
+      - name: icon
+        label: Icon
+        widget: select
+        default: network
+        options: [network, server, shield, globe, layers, monitor, wind]
+      - { name: summary, label: Summary, widget: text }
+      - { name: order, label: Order, widget: number, default: 0, value_type: int }
+      - { name: cover, label: Cover image, widget: image, required: false }
+      - { name: draft, label: Draft, widget: boolean, default: false }
+      - { name: body, label: Body, widget: markdown }
+
+  # ---- Projects (per-locale markdown files) ----
+  - name: projects
+    label: Projects / ผลงาน
+    label_singular: Project
+    folder: src/content/projects
+    create: true
+    path: '{{fields.slug}}.{{fields.locale}}'
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}-{{fields.locale}}'
+    identifier_field: slug
+    summary: '{{title}} ({{locale}})'
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: slug, label: Slug, widget: string }
+      - { name: locale, label: Locale, widget: select, options: ['th', 'en'], default: 'th' }
+      - { name: client, label: Client, widget: string }
+      - name: sector
+        label: Sector
+        widget: select
+        options: [gov, edu, private]
+        default: gov
+      - { name: year, label: Year, widget: number, value_type: int, default: 2025 }
+      - { name: summary, label: Summary, widget: text }
+      - { name: cover, label: Cover image, widget: image, required: false }
+      - { name: tags, label: Tags, widget: list, required: false }
+      - { name: order, label: Order, widget: number, default: 0, value_type: int }
+      - { name: draft, label: Draft, widget: boolean, default: false }
+      - { name: body, label: Body, widget: markdown }
+
+  # ---- Site settings + lists (file collections editing src/data) ----
+  - name: data
+    label: Site Data
+    files:
+      - name: clients
+        label: Clients / ลูกค้า
+        file: src/data/clients.json
+        description: 'Government / education / private client list.'
+        fields:
+          - name: clients
+            label: Clients
+            widget: list
+            fields:
+              - { name: name_th, label: Name (TH), widget: string }
+              - { name: name_en, label: Name (EN), widget: string }
+              - name: sector
+                label: Sector
+                widget: select
+                options: [gov, edu, private]
+                default: gov
+              - { name: logo, label: Logo, widget: image, required: false }
+              - { name: url, label: URL, widget: string, required: false }
+
+      - name: partners
+        label: Partners / พันธมิตร
+        file: src/data/partners.json
+        description: 'Technology partner brands.'
+        fields:
+          - name: partners
+            label: Partners
+            widget: list
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: logo, label: Logo, widget: image, required: false }
+              - { name: url, label: URL, widget: string, required: false }
+
+      - name: settings
+        label: Site Settings / ตั้งค่าเว็บไซต์
+        file: src/data/settings.json
+        description: 'Company contact details shown across the site.'
+        fields:
+          - { name: name_th, label: Company name (TH), widget: string }
+          - { name: name_en, label: Company name (EN), widget: string }
+          - { name: address_th, label: Address (TH), widget: text }
+          - { name: address_en, label: Address (EN), widget: text }
+          - { name: phone, label: Phone, widget: string }
+          - { name: email, label: Email, widget: string }
+          - { name: webmail, label: Webmail URL, widget: string }
+          - name: socials
+            label: Social links
+            widget: object
+            fields:
+              - { name: facebook, label: Facebook, widget: string, required: false }
+              - { name: linkedin, label: LinkedIn, widget: string, required: false }
+              - { name: line, label: LINE, widget: string, required: false }

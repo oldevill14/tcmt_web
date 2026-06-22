@@ -1,0 +1,148 @@
+---
+// Shared about page body. Both th and en about pages import this with their lang.
+import { t, localizePath, type Lang } from '../i18n/ui';
+import { site } from '../data/site';
+import SectionTitle from './SectionTitle.astro';
+import StatsStrip from './StatsStrip.astro';
+import CtaBanner from './CtaBanner.astro';
+import Button from './Button.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const whyUsItems = lang === 'th'
+  ? [
+      { icon: 'clock', title: '25+ ปีของประสบการณ์', body: 'ดำเนินธุรกิจมาตั้งแต่ปี 2541 ด้วยทีมงานที่มีความเชี่ยวชาญและผ่านการรับรองจากผู้ผลิตชั้นนำ' },
+      { icon: 'gov', title: 'ไว้วางใจจากภาครัฐ', body: 'ให้บริการหน่วยงานภาครัฐชั้นนำกว่า 6 แห่ง รวมถึงกระทรวงและสถาบันวิจัยระดับประเทศ' },
+      { icon: 'full', title: 'โซลูชันครบวงจร', body: 'ให้คำปรึกษา ออกแบบ ติดตั้ง อบรม และบำรุงรักษาในทีมเดียว ไม่ต้องประสานงานหลายผู้ให้บริการ' },
+      { icon: 'support', title: 'บริการหลังการขาย 24/7', body: 'ทีม NOC พร้อมดูแลและแก้ไขปัญหาตลอด 24 ชั่วโมง 7 วัน เพื่อให้ระบบของคุณทำงานได้อย่างต่อเนื่อง' },
+    ]
+  : [
+      { icon: 'clock', title: '25+ Years of Experience', body: 'Operating since 1998 with a team of seasoned engineers certified by leading manufacturers worldwide.' },
+      { icon: 'gov', title: 'Trusted by Government', body: 'Serving more than six leading government agencies including ministries and national research institutions.' },
+      { icon: 'full', title: 'End-to-end Solutions', body: 'Consulting, design, installation, training and maintenance under one roof — no need to coordinate multiple vendors.' },
+      { icon: 'support', title: '24/7 After-sales Support', body: 'Our NOC team monitors and resolves issues around the clock, keeping your systems running without interruption.' },
+    ];
+---
+
+<!-- Page Hero -->
+<section class="bg-brand-900 pb-16 pt-24 sm:pt-28">
+  <div class="container-tcm text-center">
+    <p class="mb-3 text-sm font-semibold uppercase tracking-wider text-brand-300">
+      {site.founded}&nbsp;–&nbsp;{lang === 'th' ? 'ปัจจุบัน' : 'present'}
+    </p>
+    <h1 class="text-4xl font-bold text-white sm:text-5xl">
+      {t(lang, 'about.title')}
+    </h1>
+    <p class="mx-auto mt-4 max-w-2xl text-lg text-brand-300">
+      {t(lang, 'about.subtitle')}
+    </p>
+  </div>
+</section>
+
+<!-- Intro + Stats -->
+<section class="section">
+  <div class="container-tcm">
+    <div class="mx-auto max-w-3xl">
+      <p class="text-center text-base leading-relaxed text-muted sm:text-lg">
+        {t(lang, 'about.intro')}
+      </p>
+    </div>
+    <div class="mt-14">
+      <StatsStrip lang={lang} />
+    </div>
+  </div>
+</section>
+
+<!-- Vision & Mission -->
+<section class="section bg-slate-50">
+  <div class="container-tcm">
+    <SectionTitle
+      title={lang === 'th' ? 'วิสัยทัศน์และพันธกิจ' : 'Vision & Mission'}
+      subtitle={lang === 'th' ? 'หลักการที่ขับเคลื่อนทุกสิ่งที่เราทำ' : 'The principles that drive everything we do'}
+    />
+    <div class="mt-12 grid gap-8 sm:grid-cols-2">
+      <!-- Vision -->
+      <div class="rounded-2xl bg-brand-gradient p-8 text-white shadow-card">
+        <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/25">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
+            class="h-5 w-5" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 8v4l3 3" />
+          </svg>
+        </div>
+        <h2 class="text-xl font-bold">{t(lang, 'about.vision.title')}</h2>
+        <p class="mt-3 text-sm leading-relaxed text-white/85">{t(lang, 'about.vision.body')}</p>
+      </div>
+
+      <!-- Mission -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-8 shadow-card">
+        <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600/10 text-brand-600">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
+            class="h-5 w-5" aria-hidden="true">
+            <path d="M12 3 5 6v5c0 4.4 2.9 7.9 7 9 4.1-1.1 7-4.6 7-9V6l-7-3Z" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+        </div>
+        <h2 class="text-xl font-bold text-ink">{t(lang, 'about.mission.title')}</h2>
+        <ul class="mt-3 space-y-2">
+          {t(lang, 'about.mission.body').split('·').map((item) => (
+            <li class="flex items-start gap-2 text-sm leading-relaxed text-muted">
+              <span class="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span>
+              {item.trim()}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Slogan -->
+    <div class="mt-12 rounded-2xl bg-brand-900 px-8 py-10 text-center text-white">
+      <p class="text-sm font-semibold uppercase tracking-widest text-brand-300">
+        {lang === 'th' ? 'สโลแกน' : 'Slogan'}
+      </p>
+      <p class="mt-2 text-2xl font-bold italic sm:text-3xl">
+        "{t(lang, 'about.slogan')}"
+      </p>
+      <p class="mt-2 text-brand-300">{t(lang, 'about.values')}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Why Us -->
+<section class="section">
+  <div class="container-tcm">
+    <SectionTitle
+      title={t(lang, 'about.whyUs.title')}
+      subtitle={lang === 'th'
+        ? 'เหตุผลที่ลูกค้าภาครัฐและเอกชนชั้นนำไว้วางใจเราซ้ำแล้วซ้ำเล่า'
+        : 'Why leading government and private-sector clients come back to us, time after time'}
+    />
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {whyUsItems.map((item) => (
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-card transition-shadow hover:shadow-card-hover">
+          <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600/10 text-brand-600">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
+              class="h-5 w-5" aria-hidden="true">
+              <path d="m9 12 2 2 4-4M12 3 5 6v5c0 4.4 2.9 7.9 7 9 4.1-1.1 7-4.6 7-9V6l-7-3Z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-ink">{item.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
+        </div>
+      ))}
+    </div>
+    <div class="mt-10 text-center">
+      <Button href={localizePath('/contact', lang)} variant="primary" size="md">
+        {t(lang, 'btn.contactUs')}
+      </Button>
+    </div>
+  </div>
+</section>
+
+<CtaBanner lang={lang} />

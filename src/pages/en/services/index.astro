@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ServicesSections from '../../../components/ServicesSections.astro';
+import { t } from '../../../i18n/ui';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout
+  lang={lang}
+  path="/services"
+  title={t(lang, 'services.title')}
+  description={t(lang, 'services.subtitle')}
+>
+  <ServicesSections lang={lang} />
+</BaseLayout>

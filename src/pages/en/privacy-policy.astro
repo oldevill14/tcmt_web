@@ -1,0 +1,192 @@
+---
+// English privacy policy — PDPA-aligned. No @tailwindcss/typography plugin available;
+// body text is styled with inline Tailwind utility classes.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import { t } from '../../i18n/ui';
+import { site, companyName, companyAddress } from '../../data/site';
+
+const lang = 'en' as const;
+const updated = '22 June 2026';
+---
+
+<BaseLayout
+  lang={lang}
+  path="/privacy-policy"
+  title={t(lang, 'privacy.title')}
+  description={t(lang, 'privacy.subtitle')}
+>
+  <!-- Page hero -->
+  <section class="bg-brand-900 py-16 sm:py-20">
+    <div class="container-tcm text-center">
+      <SectionTitle
+        title={t(lang, 'privacy.title')}
+        subtitle={t(lang, 'privacy.subtitle')}
+        invert
+      />
+      <p class="mt-4 text-sm text-brand-300">Last updated: {updated}</p>
+    </div>
+  </section>
+
+  <!-- Policy body -->
+  <section class="section">
+    <div class="container-tcm">
+      <div class="mx-auto max-w-3xl space-y-10 text-base leading-relaxed text-muted">
+
+        <!-- 1 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">1. Data Controller</h2>
+          <p class="mb-2">
+            <strong class="text-ink">{companyName(lang)}</strong><br />
+            {companyAddress(lang)}<br />
+            Tel: {site.phone} · Email:
+            <a href={`mailto:${site.email}`} class="text-brand-600 hover:underline">{site.email}</a>
+          </p>
+          <p>
+            ("the Company" or "we") acts as the Data Controller under the
+            Personal Data Protection Act B.E. 2562 (2019) ("PDPA") of Thailand.
+          </p>
+        </div>
+
+        <!-- 2 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">2. Personal Data We Collect</h2>
+          <p class="mb-3">We may collect personal data from you in the following circumstances:</p>
+          <ul class="list-disc space-y-2 pl-6">
+            <li><strong class="text-ink">Contact data</strong> — full name, email address, phone number, organisation name</li>
+            <li><strong class="text-ink">Usage data</strong> — IP address, browser type, pages visited, visit timestamps (via cookies / analytics)</li>
+            <li><strong class="text-ink">Communication data</strong> — messages submitted through the contact form on this website</li>
+          </ul>
+        </div>
+
+        <!-- 3 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">3. Purposes and Legal Bases for Processing</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse text-sm">
+              <thead>
+                <tr class="bg-slate-50">
+                  <th class="border border-slate-200 px-4 py-3 text-left font-semibold text-ink">Purpose</th>
+                  <th class="border border-slate-200 px-4 py-3 text-left font-semibold text-ink">Legal Basis</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border border-slate-200 px-4 py-3">Responding to your enquiries and requests</td>
+                  <td class="border border-slate-200 px-4 py-3">Consent / Legitimate interests</td>
+                </tr>
+                <tr class="bg-slate-50/50">
+                  <td class="border border-slate-200 px-4 py-3">Sending service information and promotions (with your consent)</td>
+                  <td class="border border-slate-200 px-4 py-3">Consent</td>
+                </tr>
+                <tr>
+                  <td class="border border-slate-200 px-4 py-3">Analysing and improving the website</td>
+                  <td class="border border-slate-200 px-4 py-3">Legitimate interests</td>
+                </tr>
+                <tr class="bg-slate-50/50">
+                  <td class="border border-slate-200 px-4 py-3">Complying with applicable laws and regulations</td>
+                  <td class="border border-slate-200 px-4 py-3">Legal obligation</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">4. Disclosure of Personal Data</h2>
+          <p class="mb-3">We may disclose your personal data to third parties only when necessary, including:</p>
+          <ul class="list-disc space-y-2 pl-6">
+            <li>Third-party service providers (e.g. Web3Forms for the contact form, analytics services) bound by contractual data-processing obligations</li>
+            <li>Government agencies where required by law or court order</li>
+          </ul>
+          <p class="mt-3">We do not sell your personal data to third parties for marketing purposes.</p>
+        </div>
+
+        <!-- 5 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">5. Retention Period</h2>
+          <p>
+            We retain your personal data for as long as necessary for the stated purposes or as
+            required by law — generally no longer than <strong class="text-ink">3 years</strong> from the date of
+            collection, unless a longer period is legally required.
+          </p>
+        </div>
+
+        <!-- 6 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">6. Your Rights as a Data Subject</h2>
+          <p class="mb-3">Under the PDPA you have the following rights:</p>
+          <ul class="list-disc space-y-2 pl-6">
+            <li><strong class="text-ink">Right of access</strong> — request a copy of your personal data</li>
+            <li><strong class="text-ink">Right to rectification</strong> — request correction of inaccurate data</li>
+            <li><strong class="text-ink">Right to erasure</strong> — request deletion of your personal data</li>
+            <li><strong class="text-ink">Right to object</strong> — object to the processing of your personal data</li>
+            <li><strong class="text-ink">Right to restriction</strong> — request a temporary halt to processing</li>
+            <li><strong class="text-ink">Right to withdraw consent</strong> — withdraw consent at any time</li>
+            <li><strong class="text-ink">Right to data portability</strong> — receive your data in a machine-readable format</li>
+          </ul>
+          <p class="mt-3">
+            To exercise any of these rights, contact us at
+            <a href={`mailto:${site.email}`} class="text-brand-600 hover:underline">{site.email}</a>.
+            We will respond within 30 days of receiving your request.
+          </p>
+        </div>
+
+        <!-- 7 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">7. Cookies and Tracking Technologies</h2>
+          <p>
+            Our website may use cookies to enhance your browsing experience. You may configure
+            your browser to refuse cookies; however, doing so may affect some website functionality.
+          </p>
+        </div>
+
+        <!-- 8 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">8. Data Security</h2>
+          <p>
+            We implement appropriate technical and organisational security measures to protect
+            personal data against unauthorised access, loss or destruction, including HTTPS
+            transmission and suitable data-at-rest encryption.
+          </p>
+        </div>
+
+        <!-- 9 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">9. Links to External Websites</h2>
+          <p>
+            Our website may contain links to third-party websites. We are not responsible for the
+            privacy practices of those sites and encourage you to review their privacy policies.
+          </p>
+        </div>
+
+        <!-- 10 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">10. Changes to This Policy</h2>
+          <p>
+            We may update this Privacy Policy from time to time. Changes will be communicated
+            by updating the date shown above. Continued use of the website after any change
+            constitutes acceptance of the revised policy.
+          </p>
+        </div>
+
+        <!-- 11 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">11. Contact Us</h2>
+          <p class="mb-3">
+            If you have questions about this Privacy Policy or wish to exercise your PDPA rights,
+            please contact:
+          </p>
+          <address class="not-italic space-y-1 rounded-xl bg-slate-50 p-5 text-sm">
+            <p class="font-semibold text-ink">{companyName(lang)}</p>
+            <p>{companyAddress(lang)}</p>
+            <p>Tel: <a href={`tel:${site.phoneIntl}`} class="text-brand-600 hover:underline">{site.phone}</a></p>
+            <p>Email: <a href={`mailto:${site.email}`} class="text-brand-600 hover:underline">{site.email}</a></p>
+          </address>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>

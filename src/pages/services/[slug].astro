@@ -1,0 +1,147 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t, localizePath, type Lang } from '../../i18n/ui';
+import { services as serviceMeta } from '../../data/site';
+import { filterByLocale, entrySlug } from '../../lib/content';
+import SectionTitle from '../../components/SectionTitle.astro';
+import Button from '../../components/Button.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+
+export async function getStaticPaths() {
+  const lang = 'th' as const;
+  const all = await getCollection('services');
+  const entries = filterByLocale(all, lang);
+  return entries.map((entry) => ({
+    params: { slug: entrySlug(entry) },
+    props: { entry },
+  }));
+}
+
+const lang = 'th' as const;
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const slug = entrySlug(entry);
+
+// Related services (exclude current)
+const related = serviceMeta.filter((s) => s.slug !== slug).slice(0, 3);
+---
+
+<BaseLayout
+  lang={lang}
+  path={`/services/${slug}`}
+  title={entry.data.title}
+  description={entry.data.summary}
+>
+  <!-- Page Hero -->
+  <section class="bg-brand-900 pb-16 pt-24 sm:pt-28">
+    <div class="container-tcm">
+      <nav class="mb-6 flex items-center gap-2 text-sm text-brand-300" aria-label={lang === 'th' ? 'Breadcrumb' : 'Breadcrumb'}>
+        <a href={localizePath('/', lang)} class="hover:text-white transition-colors">{t(lang, 'nav.home')}</a>
+        <span aria-hidden="true">›</span>
+        <a href={localizePath('/services', lang)} class="hover:text-white transition-colors">{t(lang, 'nav.services')}</a>
+        <span aria-hidden="true">›</span>
+        <span class="text-white">{entry.data.title}</span>
+      </nav>
+      <h1 class="text-4xl font-bold text-white sm:text-5xl">
+        {entry.data.title}
+      </h1>
+      <p class="mt-4 max-w-2xl text-lg text-brand-300">
+        {entry.data.summary}
+      </p>
+      <div class="mt-8">
+        <Button href={localizePath('/contact', lang)} variant="white" size="md">
+          {t(lang, 'btn.getQuote')}
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content body -->
+  <section class="section">
+    <div class="container-tcm">
+      <div class="mx-auto max-w-3xl">
+        <div class="service-content">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related services -->
+  {related.length > 0 && (
+    <section class="section bg-slate-50">
+      <div class="container-tcm">
+        <SectionTitle
+          title={lang === 'th' ? 'บริการอื่นๆ ของเรา' : 'Other Services'}
+          subtitle={lang === 'th' ? 'สำรวจโซลูชันไอทีครบวงจรที่เราให้บริการ' : 'Explore our full range of IT solutions'}
+        />
+        <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {related.map((s) => (
+            <ServiceCard
+              slug={s.slug}
+              title={s.title[lang]}
+              summary={s.summary[lang]}
+              icon={s.icon}
+              href={localizePath(`/services/${s.slug}`, lang)}
+            />
+          ))}
+        </div>
+        <div class="mt-10 text-center">
+          <Button href={localizePath('/services', lang)} variant="secondary" size="md">
+            {t(lang, 'btn.viewServices')}
+          </Button>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CtaBanner lang={lang} />
+</BaseLayout>
+
+<style is:global>
+  .service-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .service-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .service-content p {
+    margin-bottom: 1rem;
+    color: #64748b;
+    line-height: 1.75;
+  }
+  .service-content ul,
+  .service-content ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+  .service-content li {
+    margin-bottom: 0.5rem;
+    color: #64748b;
+    line-height: 1.7;
+  }
+  .service-content ul > li {
+    list-style-type: disc;
+  }
+  .service-content ol > li {
+    list-style-type: decimal;
+  }
+  .service-content strong {
+    font-weight: 600;
+    color: #0f172a;
+  }
+  .service-content a {
+    color: #1565d8;
+    text-decoration: underline;
+  }
+</style>

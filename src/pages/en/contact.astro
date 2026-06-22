@@ -1,0 +1,245 @@
+---
+// English contact page — Web3Forms static form + address block + Google Maps embed.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import Button from '../../components/Button.astro';
+import { t } from '../../i18n/ui';
+import { site, companyAddress } from '../../data/site';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout
+  lang={lang}
+  path="/contact"
+  title={t(lang, 'contact.title')}
+  description={t(lang, 'contact.subtitle')}
+>
+  <!-- Page hero -->
+  <section class="bg-brand-900 py-16 sm:py-20">
+    <div class="container-tcm text-center">
+      <SectionTitle
+        eyebrow={t(lang, 'nav.contact')}
+        title={t(lang, 'contact.title')}
+        subtitle={t(lang, 'contact.subtitle')}
+        invert
+      />
+    </div>
+  </section>
+
+  <!-- Form + info -->
+  <section class="section">
+    <div class="container-tcm">
+      <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+
+        <!-- Contact form -->
+        <div>
+          <form
+            id="contact-form"
+            action="https://api.web3forms.com/submit"
+            method="POST"
+            class="space-y-5"
+          >
+            <!-- Web3Forms access key -->
+            <input type="hidden" name="access_key" value={import.meta.env.PUBLIC_WEB3FORMS_KEY ?? ''} />
+            <input type="hidden" name="subject" value="[TCM Website] Message from website" />
+            <input type="hidden" name="from_name" value="TCM Technology Website" />
+            <!-- Honeypot anti-spam -->
+            <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+            <!-- Name -->
+            <div>
+              <label for="name" class="mb-1 block text-sm font-medium text-ink">
+                {t(lang, 'contact.form.name')} <span class="text-red-500">*</span>
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                autocomplete="name"
+                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                placeholder={t(lang, 'contact.form.name')}
+              />
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="email" class="mb-1 block text-sm font-medium text-ink">
+                {t(lang, 'contact.form.email')} <span class="text-red-500">*</span>
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                autocomplete="email"
+                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                placeholder="email@example.com"
+              />
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <label for="phone" class="mb-1 block text-sm font-medium text-ink">
+                {t(lang, 'contact.form.phone')}
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                autocomplete="tel"
+                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                placeholder="+66 x-xxxx-xxxx"
+              />
+            </div>
+
+            <!-- Company -->
+            <div>
+              <label for="company" class="mb-1 block text-sm font-medium text-ink">
+                {t(lang, 'contact.form.company')}
+              </label>
+              <input
+                id="company"
+                name="company"
+                type="text"
+                autocomplete="organization"
+                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                placeholder={t(lang, 'contact.form.company')}
+              />
+            </div>
+
+            <!-- Message -->
+            <div>
+              <label for="message" class="mb-1 block text-sm font-medium text-ink">
+                {t(lang, 'contact.form.message')} <span class="text-red-500">*</span>
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows="5"
+                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                placeholder={t(lang, 'contact.form.message')}
+              ></textarea>
+            </div>
+
+            <!-- Success / Error messages (hidden, shown by JS) -->
+            <p id="form-success" class="hidden rounded-xl bg-green-50 px-4 py-3 text-sm text-green-700">
+              {t(lang, 'contact.form.success')}
+            </p>
+            <p id="form-error" class="hidden rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+              {t(lang, 'contact.form.error')}
+            </p>
+
+            <Button type="submit" variant="primary" size="lg" class="w-full sm:w-auto">
+              {t(lang, 'contact.form.submit')}
+            </Button>
+          </form>
+        </div>
+
+        <!-- Contact info + map -->
+        <div class="space-y-8">
+          <div>
+            <h2 class="mb-5 text-xl font-bold text-ink">{t(lang, 'contact.info.title')}</h2>
+            <dl class="space-y-4 text-sm">
+              <!-- Address -->
+              <div class="flex gap-3">
+                <dt class="w-24 shrink-0 font-semibold text-brand-700">{t(lang, 'contact.info.address')}</dt>
+                <dd class="text-muted leading-relaxed">
+                  {companyAddress(lang)}
+                </dd>
+              </div>
+              <!-- Phone -->
+              <div class="flex gap-3">
+                <dt class="w-24 shrink-0 font-semibold text-brand-700">{t(lang, 'contact.info.phone')}</dt>
+                <dd>
+                  <a href={`tel:${site.phoneIntl}`} class="text-brand-600 hover:underline">
+                    {site.phone}
+                  </a>
+                </dd>
+              </div>
+              <!-- Email -->
+              <div class="flex gap-3">
+                <dt class="w-24 shrink-0 font-semibold text-brand-700">{t(lang, 'contact.info.email')}</dt>
+                <dd>
+                  <a href={`mailto:${site.email}`} class="text-brand-600 hover:underline">
+                    {site.email}
+                  </a>
+                </dd>
+              </div>
+              <!-- Webmail -->
+              <div class="flex gap-3">
+                <dt class="w-24 shrink-0 font-semibold text-brand-700">{t(lang, 'contact.info.webmail')}</dt>
+                <dd>
+                  <a href={site.webmail} target="_blank" rel="noopener noreferrer" class="text-brand-600 hover:underline">
+                    {site.webmail.replace('https://', '')}
+                  </a>
+                </dd>
+              </div>
+              <!-- Hours -->
+              <div class="flex gap-3">
+                <dt class="w-24 shrink-0 font-semibold text-brand-700">{t(lang, 'contact.info.hours')}</dt>
+                <dd class="text-muted">{t(lang, 'contact.info.hoursValue')}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Google Maps embed -->
+          <div class="overflow-hidden rounded-2xl shadow-card">
+            <iframe
+              title="CTI Tower — 191/40 Ratchadaphisek Road, Bangkok"
+              src={site.mapEmbed}
+              width="100%"
+              height="300"
+              style="border:0;"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              class="block w-full"
+            ></iframe>
+          </div>
+
+          <a
+            href={site.mapLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 text-sm text-brand-600 hover:underline"
+          >
+            Open in Google Maps →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Intercept Web3Forms submit, show success/error message without page reload.
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const successEl = document.getElementById('form-success');
+  const errorEl = document.getElementById('form-error');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: data,
+      });
+      const json = await res.json();
+      if (json.success) {
+        form.reset();
+        successEl?.classList.remove('hidden');
+        errorEl?.classList.add('hidden');
+      } else {
+        throw new Error('web3forms error');
+      }
+    } catch {
+      errorEl?.classList.remove('hidden');
+      successEl?.classList.add('hidden');
+    }
+  });
+</script>

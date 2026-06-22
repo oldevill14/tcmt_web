@@ -1,0 +1,61 @@
+---
+// Dark navy homepage hero with the TCM TECHNOLOGY wordmark + subtle tech gradient.
+import { t, localizePath, type Lang } from '../i18n/ui';
+import { site } from '../data/site';
+import Button from './Button.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section class="relative overflow-hidden bg-brand-900 text-white">
+  <!-- subtle tech gradient glow -->
+  <div
+    class="pointer-events-none absolute inset-0"
+    aria-hidden="true"
+    style="background:
+      radial-gradient(600px circle at 80% 10%, rgba(47,128,237,.35), transparent 60%),
+      radial-gradient(700px circle at 10% 90%, rgba(111,177,252,.18), transparent 55%);"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.07]"
+    aria-hidden="true"
+    style="background-image:
+      linear-gradient(to right, #fff 1px, transparent 1px),
+      linear-gradient(to bottom, #fff 1px, transparent 1px);
+      background-size: 56px 56px;"
+  >
+  </div>
+
+  <div class="container-tcm relative py-24 sm:py-28 lg:py-36">
+    <div class="max-w-3xl animate-fade-up">
+      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-brand-300">
+        {t(lang, 'home.hero.eyebrow')}
+      </p>
+      <h1
+        class="text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl lg:text-7xl"
+      >
+        {site.wordmark}
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
+        {t(lang, 'home.hero.subtitle')}
+      </p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <Button href={localizePath('/contact', lang)} variant="white" size="lg">
+          {t(lang, 'home.hero.cta')}
+        </Button>
+        <Button
+          href={localizePath('/services', lang)}
+          variant="ghost"
+          size="lg"
+          class="!text-white ring-1 ring-inset ring-white/30 hover:bg-white/10"
+        >
+          {t(lang, 'home.hero.ctaSecondary')}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>

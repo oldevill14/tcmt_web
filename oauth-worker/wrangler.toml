@@ -1,0 +1,12 @@
+name = "tcmt-decap-oauth"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Secrets (set with `wrangler secret put ...`, never commit them):
+#   GITHUB_CLIENT_ID
+#   GITHUB_CLIENT_SECRET
+#
+# Optional vars:
+#   ALLOWED_ORIGIN — the CMS origin allowed to receive the token postMessage.
+[vars]
+ALLOWED_ORIGIN = "https://oldevill14.github.io"

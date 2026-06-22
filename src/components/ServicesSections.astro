@@ -1,0 +1,48 @@
+---
+// Shared services overview body. Both th and en services/index pages use this.
+import { t, localizePath, type Lang } from '../i18n/ui';
+import { services } from '../data/site';
+import ServiceCard from './ServiceCard.astro';
+import CtaBanner from './CtaBanner.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<!-- Page Hero -->
+<section class="bg-brand-900 pb-16 pt-24 sm:pt-28">
+  <div class="container-tcm text-center">
+    <p class="mb-3 text-sm font-semibold uppercase tracking-wider text-brand-300">
+      {lang === 'th' ? 'โซลูชันไอทีครบวงจร' : 'End-to-end IT Solutions'}
+    </p>
+    <h1 class="text-4xl font-bold text-white sm:text-5xl">
+      {t(lang, 'services.title')}
+    </h1>
+    <p class="mx-auto mt-4 max-w-2xl text-lg text-brand-300">
+      {t(lang, 'services.subtitle')}
+    </p>
+  </div>
+</section>
+
+<!-- Services Grid -->
+<section class="section">
+  <div class="container-tcm">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        services.map((s) => (
+          <ServiceCard
+            slug={s.slug}
+            title={s.title[lang]}
+            summary={s.summary[lang]}
+            icon={s.icon}
+            href={localizePath(`/services/${s.slug}`, lang)}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<CtaBanner lang={lang} />

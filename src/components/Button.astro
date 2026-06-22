@@ -1,0 +1,52 @@
+---
+// Button / link component. Renders an <a> when `href` is given, else a <button>.
+// Variants follow the brand system (BUILD-BRIEF §3).
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'white';
+  size?: 'sm' | 'md' | 'lg';
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:opacity-60 disabled:pointer-events-none';
+
+const variants: Record<string, string> = {
+  primary: 'bg-brand-600 text-white hover:bg-brand-700 shadow-sm hover:shadow-md',
+  secondary:
+    'bg-brand-50/0 text-brand-700 ring-1 ring-inset ring-brand-300 hover:bg-brand-300/10',
+  ghost: 'text-brand-700 hover:bg-brand-300/10',
+  white: 'bg-white text-brand-700 hover:bg-slate-100 shadow-sm',
+};
+
+const sizes: Record<string, string> = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-5 py-2.5 text-sm',
+  lg: 'px-7 py-3.5 text-base',
+};
+
+const cls = [base, variants[variant], sizes[size], className].join(' ');
+---
+
+{
+  href ? (
+    <a href={href} class={cls} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={cls} {...rest}>
+      <slot />
+    </button>
+  )
+}

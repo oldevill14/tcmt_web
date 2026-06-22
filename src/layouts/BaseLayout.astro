@@ -1,0 +1,63 @@
+---
+// Base page layout. Sets <html lang>, renders <Seo/>, Header, slot, Footer.
+// Every page should use this and pass at least { lang, title, description }.
+import '../styles/global.css';
+import { getLang, t, withBase, type Lang } from '../i18n/ui';
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Override the auto-detected lang. Defaults to deriving it from the URL. */
+  lang?: Lang;
+  /** Path without base/locale prefix (e.g. '/about') for SEO alternates. */
+  path?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  path = '/',
+  image,
+  noindex = false,
+  lang: langProp,
+} = Astro.props;
+
+const lang: Lang = langProp ?? getLang(Astro.url);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <Seo
+      lang={lang}
+      title={title}
+      description={description}
+      path={path}
+      image={image}
+      noindex={noindex}
+    />
+    <slot name="head" />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand-700 focus:px-4 focus:py-2 focus:text-white"
+    >
+      {t(lang, 'a11y.skipToContent')}
+    </a>
+    <Header lang={lang} />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

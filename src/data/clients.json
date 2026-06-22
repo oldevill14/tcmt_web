@@ -1,0 +1,10 @@
+{
+  "clients": [
+    { "name_th": "กระทรวงแรงงาน", "name_en": "Ministry of Labour", "sector": "gov", "logo": "", "url": "" },
+    { "name_th": "กรมการจัดหางาน", "name_en": "Department of Employment", "sector": "gov", "logo": "", "url": "" },
+    { "name_th": "กรมพัฒนาฝีมือแรงงาน", "name_en": "Department of Skill Development", "sector": "gov", "logo": "", "url": "" },
+    { "name_th": "สำนักงานประกันสังคม", "name_en": "Social Security Office", "sector": "gov", "logo": "", "url": "" },
+    { "name_th": "กระทรวงการอุดมศึกษา วิทยาศาสตร์ วิจัยและนวัตกรรม", "name_en": "Ministry of Higher Education, Science, Research and Innovation (MHESI)", "sector": "gov", "logo": "", "url": "" },
+    { "name_th": "สำนักงานพัฒนาเทคโนโลยีอวกาศและภูมิสารสนเทศ (GISTDA)", "name_en": "GISTDA", "sector": "gov", "logo": "", "url": "" }
+  ]
+}

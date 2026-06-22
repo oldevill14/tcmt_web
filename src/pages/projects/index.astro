@@ -1,0 +1,136 @@
+---
+// Thai projects list page — served at /projects
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import Card from '../../components/Card.astro';
+import Button from '../../components/Button.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import { t, localizePath, type Lang } from '../../i18n/ui';
+import { filterByLocale, entrySlug } from '../../lib/content';
+
+const lang = 'th' as const;
+
+const allProjects = await getCollection('projects');
+const projects = filterByLocale(allProjects, lang);
+
+const sectorLabels: Record<string, string> = {
+  all: t(lang, 'projects.filter.all'),
+  gov: t(lang, 'projects.filter.gov'),
+  edu: t(lang, 'projects.filter.edu'),
+  private: t(lang, 'projects.filter.private'),
+};
+---
+
+<BaseLayout
+  lang={lang}
+  path="/projects"
+  title={t(lang, 'projects.title')}
+  description={t(lang, 'projects.subtitle')}
+>
+  <!-- Page header -->
+  <section class="section bg-brand-900">
+    <div class="container-tcm">
+      <SectionTitle
+        as="h1"
+        eyebrow={t(lang, 'nav.projects')}
+        title={t(lang, 'projects.title')}
+        subtitle={t(lang, 'projects.subtitle')}
+        invert
+      />
+    </div>
+  </section>
+
+  <!-- Filter tabs + grid -->
+  <section class="section">
+    <div class="container-tcm">
+      {/* Sector filter tabs — JS-free: all sectors shown; active state via URL hash is a nice-to-have upgrade */}
+      <div class="mb-10 flex flex-wrap justify-center gap-3" role="tablist" aria-label={t(lang, 'projects.filter.all')}>
+        {Object.entries(sectorLabels).map(([key, label]) => (
+          <span
+            role="tab"
+            data-sector={key}
+            class={[
+              'sector-tab cursor-pointer rounded-full px-5 py-2 text-sm font-semibold transition-colors duration-200',
+              key === 'all'
+                ? 'bg-brand-600 text-white'
+                : 'bg-slate-100 text-slate-600 hover:bg-brand-50 hover:text-brand-700',
+            ].join(' ')}
+          >
+            {label}
+          </span>
+        ))}
+      </div>
+
+      {projects.length === 0 ? (
+        <p class="py-16 text-center text-muted">{t(lang, 'projects.empty')}</p>
+      ) : (
+        <div id="projects-grid" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project) => {
+            const slug = entrySlug(project);
+            return (
+              <article data-sector={project.data.sector} class="project-card">
+                <Card href={localizePath(`/projects/${slug}`, lang)} hover class="h-full flex flex-col">
+                  <div class="flex flex-col gap-3 h-full">
+                    {/* Sector badge */}
+                    <span class="inline-flex w-fit rounded-full bg-brand-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-600">
+                      {sectorLabels[project.data.sector]}
+                    </span>
+                    <h2 class="text-lg font-bold text-ink leading-snug">
+                      {project.data.title}
+                    </h2>
+                    <p class="text-sm text-muted line-clamp-3 flex-1">
+                      {project.data.summary}
+                    </p>
+                    <dl class="mt-auto flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted border-t border-slate-100 pt-4">
+                      <div>
+                        <dt class="inline font-medium text-ink">{t(lang, 'projects.client')}: </dt>
+                        <dd class="inline">{project.data.client}</dd>
+                      </div>
+                      <div>
+                        <dt class="inline font-medium text-ink">{t(lang, 'projects.year')}: </dt>
+                        <dd class="inline">{project.data.year}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                </Card>
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <CtaBanner lang={lang} />
+</BaseLayout>
+
+<script>
+  // Sector filter — pure JS, no framework needed.
+  const tabs = document.querySelectorAll<HTMLElement>('.sector-tab');
+  const cards = document.querySelectorAll<HTMLElement>('.project-card');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const sector = tab.dataset.sector ?? 'all';
+
+      // Update tab styles
+      tabs.forEach((t) => {
+        const isActive = t.dataset.sector === sector;
+        t.classList.toggle('bg-brand-600', isActive);
+        t.classList.toggle('text-white', isActive);
+        t.classList.toggle('bg-slate-100', !isActive);
+        t.classList.toggle('text-slate-600', !isActive);
+        t.classList.toggle('hover:bg-brand-50', !isActive);
+        t.classList.toggle('hover:text-brand-700', !isActive);
+      });
+
+      // Show/hide cards
+      cards.forEach((card) => {
+        const cardSector = card.dataset.sector ?? '';
+        const visible = sector === 'all' || cardSector === sector;
+        card.style.display = visible ? '' : 'none';
+      });
+    });
+  });
+</script>

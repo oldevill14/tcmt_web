@@ -1,0 +1,64 @@
+---
+// Logo grid / strip for clients or partners. Falls back to a neutral text chip
+// when no logo image is provided (placeholder until real vector logos arrive).
+interface LogoItem {
+  name: string;
+  logo?: string; // path under /public (already base-prefixed by caller) or external
+  url?: string;
+}
+
+interface Props {
+  items: LogoItem[];
+  columns?: 2 | 3 | 4 | 6;
+  class?: string;
+}
+
+const { items, columns = 6, class: className = '' } = Astro.props;
+
+const colCls: Record<number, string> = {
+  2: 'grid-cols-2',
+  3: 'grid-cols-2 sm:grid-cols-3',
+  4: 'grid-cols-2 sm:grid-cols-4',
+  6: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6',
+};
+---
+
+<ul class:list={['grid items-stretch gap-4', colCls[columns], className]}>
+  {
+    items.map((item) => {
+      const inner = item.logo ? (
+        <img
+          src={item.logo}
+          alt={item.name}
+          loading="lazy"
+          decoding="async"
+          class="max-h-12 w-auto object-contain opacity-80 transition group-hover:opacity-100"
+        />
+      ) : (
+        <span class="text-center text-sm font-medium text-muted">{item.name}</span>
+      );
+      return (
+        <li>
+          {item.url ? (
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={item.name}
+              class="group flex h-24 items-center justify-center rounded-xl bg-white p-4 ring-1 ring-slate-100 transition hover:shadow-card"
+            >
+              {inner}
+            </a>
+          ) : (
+            <div
+              title={item.name}
+              class="group flex h-24 items-center justify-center rounded-xl bg-white p-4 ring-1 ring-slate-100 transition hover:shadow-card"
+            >
+              {inner}
+            </div>
+          )}
+        </li>
+      );
+    })
+  }
+</ul>

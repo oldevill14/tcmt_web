@@ -1,0 +1,95 @@
+---
+// Composes the full homepage body for a given lang, so the th + en index pages
+// stay thin (each just sets <BaseLayout> + <HomeSections lang=.../>).
+import { t, localizePath, type Lang } from '../i18n/ui';
+import { services, clients, partners } from '../data/site';
+import Hero from './Hero.astro';
+import SectionTitle from './SectionTitle.astro';
+import ServiceCard from './ServiceCard.astro';
+import StatsStrip from './StatsStrip.astro';
+import LogoGrid from './LogoGrid.astro';
+import CtaBanner from './CtaBanner.astro';
+import Button from './Button.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const govClients = clients
+  .filter((c) => c.sector === 'gov')
+  .map((c) => ({ name: c.name[lang], logo: c.logo, url: c.url }));
+const partnerItems = partners.map((p) => ({
+  name: p.name,
+  logo: p.logo,
+  url: p.url,
+}));
+---
+
+<Hero lang={lang} />
+
+<!-- Stats strip on dark continuation -->
+<section class="bg-brand-900 pb-16 pt-2 sm:pb-20">
+  <div class="container-tcm">
+    <StatsStrip lang={lang} invert />
+  </div>
+</section>
+
+<!-- Services preview -->
+<section class="section">
+  <div class="container-tcm">
+    <SectionTitle
+      eyebrow={t(lang, 'nav.services')}
+      title={t(lang, 'home.services.title')}
+      subtitle={t(lang, 'home.services.subtitle')}
+    />
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        services.map((s) => (
+          <ServiceCard
+            slug={s.slug}
+            title={s.title[lang]}
+            summary={s.summary[lang]}
+            icon={s.icon}
+            href={localizePath(`/services/${s.slug}`, lang)}
+          />
+        ))
+      }
+    </div>
+    <div class="mt-10 text-center">
+      <Button href={localizePath('/services', lang)} variant="secondary" size="md">
+        {t(lang, 'btn.viewServices')}
+      </Button>
+    </div>
+  </div>
+</section>
+
+<!-- Clients strip -->
+<section class="section bg-slate-50">
+  <div class="container-tcm">
+    <SectionTitle
+      eyebrow={t(lang, 'nav.clients')}
+      title={t(lang, 'home.clients.title')}
+      subtitle={t(lang, 'home.clients.subtitle')}
+    />
+    <div class="mt-12">
+      <LogoGrid items={govClients} columns={3} />
+    </div>
+  </div>
+</section>
+
+<!-- Partners strip -->
+<section class="section">
+  <div class="container-tcm">
+    <SectionTitle
+      eyebrow={t(lang, 'clients.partners.title')}
+      title={t(lang, 'home.partners.title')}
+      subtitle={t(lang, 'home.partners.subtitle')}
+    />
+    <div class="mt-12">
+      <LogoGrid items={partnerItems} columns={4} />
+    </div>
+  </div>
+</section>
+
+<CtaBanner lang={lang} />

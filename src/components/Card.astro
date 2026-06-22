@@ -1,0 +1,28 @@
+---
+// Generic surface card. Wrap arbitrary content. Optionally a link card.
+interface Props {
+  href?: string;
+  class?: string;
+  hover?: boolean;
+}
+
+const { href, class: className = '', hover = true } = Astro.props;
+
+const base = 'block rounded-2xl bg-white p-6 shadow-card ring-1 ring-slate-100';
+const hoverCls = hover
+  ? 'transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover'
+  : '';
+const cls = [base, hoverCls, className].join(' ');
+---
+
+{
+  href ? (
+    <a href={href} class={cls}>
+      <slot />
+    </a>
+  ) : (
+    <div class={cls}>
+      <slot />
+    </div>
+  )
+}

@@ -1,0 +1,38 @@
+---
+// Trust stats strip (25+ yrs, gov clients, etc). Reads from site.stats.
+import { t, type Lang } from '../i18n/ui';
+import { stats } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  invert?: boolean; // dark background variant
+}
+const { lang, invert = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    'grid grid-cols-2 gap-6 sm:grid-cols-4',
+    invert ? 'text-white' : 'text-ink',
+  ]}
+>
+  {
+    stats.map((s) => (
+      <div class="text-center">
+        <div
+          class:list={[
+            'text-3xl font-extrabold sm:text-4xl',
+            invert ? 'text-white' : 'text-brand-700',
+          ]}
+        >
+          {s.value}
+        </div>
+        <div
+          class:list={['mt-1 text-sm', invert ? 'text-brand-300' : 'text-muted']}
+        >
+          {t(lang, s.labelKey)}
+        </div>
+      </div>
+    ))
+  }
+</div>

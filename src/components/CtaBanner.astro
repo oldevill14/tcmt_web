@@ -1,0 +1,30 @@
+---
+// Full-width gradient CTA banner pointing to /contact.
+import { t, localizePath, type Lang } from '../i18n/ui';
+import Button from './Button.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<section class="section">
+  <div class="container-tcm">
+    <div
+      class="relative overflow-hidden rounded-3xl bg-brand-gradient px-6 py-14 text-center text-white shadow-card sm:px-12 sm:py-16"
+    >
+      <h2 class="mx-auto max-w-2xl text-2xl font-bold sm:text-3xl">
+        {t(lang, 'home.cta.title')}
+      </h2>
+      <p class="mx-auto mt-3 max-w-xl text-white/90">
+        {t(lang, 'home.cta.subtitle')}
+      </p>
+      <div class="mt-8">
+        <Button href={localizePath('/contact', lang)} variant="white" size="lg">
+          {t(lang, 'btn.contactUs')}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>

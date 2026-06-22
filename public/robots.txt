@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://oldevill14.github.io/tcmt_web/sitemap-index.xml

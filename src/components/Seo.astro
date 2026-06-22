@@ -1,0 +1,101 @@
+---
+// <head> SEO block: title, description, canonical, OG/Twitter, hreflang th/en
+// alternates, and JSON-LD (Organization + LocalBusiness).
+import { type Lang, switchLangPath, withBase } from '../i18n/ui';
+import { site, companyName } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Path WITHOUT base/locale prefix, e.g. '/about'. Used to build hreflang alternates. */
+  path?: string;
+  image?: string; // absolute or root-relative OG image
+  noindex?: boolean;
+}
+
+const { lang, title, description, image, noindex = false } = Astro.props;
+
+const siteOrigin = Astro.site?.origin ?? 'https://oldevill14.github.io';
+const canonical = new URL(Astro.url.pathname, siteOrigin).href;
+
+// hreflang alternates: derive the th + en URLs for the current page.
+const thHref = new URL(switchLangPath(Astro.url, 'th'), siteOrigin).href;
+const enHref = new URL(switchLangPath(Astro.url, 'en'), siteOrigin).href;
+
+const ogImage = image
+  ? new URL(image, siteOrigin).href
+  : new URL(withBase('/og-default.png'), siteOrigin).href;
+
+const fullTitle = `${title} · ${site.shortName}`;
+const ogLocale = lang === 'th' ? 'th_TH' : 'en_US';
+
+const organizationLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: companyName(lang),
+  alternateName: site.shortName,
+  url: siteOrigin,
+  slogan: site.slogan,
+  foundingDate: String(site.founded),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '191/40 Ratchadaphisek Road, CTI Tower 22F',
+    addressLocality: 'Khlong Toei',
+    addressRegion: 'Bangkok',
+    postalCode: '10110',
+    addressCountry: 'TH',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: site.phoneIntl,
+    email: site.email,
+    contactType: 'customer support',
+  },
+};
+
+const localBusinessLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: companyName(lang),
+  url: siteOrigin,
+  telephone: site.phoneIntl,
+  email: site.email,
+  priceRange: '$$',
+  address: organizationLd.address,
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: site.geo.latitude,
+    longitude: site.geo.longitude,
+  },
+};
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- hreflang alternates -->
+<link rel="alternate" hreflang="th" href={thHref} />
+<link rel="alternate" hreflang="en" href={enHref} />
+<link rel="alternate" hreflang="x-default" href={thHref} />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.shortName} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={ogLocale} />
+<meta property="og:image" content={ogImage} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<!-- JSON-LD -->
+<script is:inline type="application/ld+json" set:html={JSON.stringify(organizationLd)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(localBusinessLd)} />

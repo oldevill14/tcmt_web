@@ -1,0 +1,194 @@
+---
+// Thai privacy policy — PDPA-aligned. No @tailwindcss/typography plugin available,
+// so body text is styled with inline Tailwind utility classes.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import { t } from '../i18n/ui';
+import { site, companyName, companyAddress } from '../data/site';
+
+const lang = 'th' as const;
+const updated = '22 มิถุนายน 2569';
+---
+
+<BaseLayout
+  lang={lang}
+  path="/privacy-policy"
+  title={t(lang, 'privacy.title')}
+  description={t(lang, 'privacy.subtitle')}
+>
+  <!-- Page hero -->
+  <section class="bg-brand-900 py-16 sm:py-20">
+    <div class="container-tcm text-center">
+      <SectionTitle
+        title={t(lang, 'privacy.title')}
+        subtitle={t(lang, 'privacy.subtitle')}
+        invert
+      />
+      <p class="mt-4 text-sm text-brand-300">ปรับปรุงล่าสุด: {updated}</p>
+    </div>
+  </section>
+
+  <!-- Policy body -->
+  <section class="section">
+    <div class="container-tcm">
+      <div class="mx-auto max-w-3xl space-y-10 text-base leading-relaxed text-muted">
+
+        <!-- 1 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">1. ข้อมูลเกี่ยวกับผู้ควบคุมข้อมูลส่วนบุคคล</h2>
+          <p class="mb-2">
+            <strong class="text-ink">{companyName(lang)}</strong><br />
+            {companyAddress(lang)}<br />
+            โทร: {site.phone} · อีเมล:
+            <a href={`mailto:${site.email}`} class="text-brand-600 hover:underline">{site.email}</a>
+          </p>
+          <p>
+            ("บริษัทฯ" หรือ "เรา") เป็นผู้ควบคุมข้อมูลส่วนบุคคล (Data Controller)
+            ตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)
+          </p>
+        </div>
+
+        <!-- 2 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">2. ข้อมูลส่วนบุคคลที่เราเก็บรวบรวม</h2>
+          <p class="mb-3">เราอาจเก็บรวบรวมข้อมูลส่วนบุคคลของท่านในกรณีต่าง ๆ ได้แก่:</p>
+          <ul class="list-disc space-y-2 pl-6">
+            <li><strong class="text-ink">ข้อมูลติดต่อ</strong> — ชื่อ-นามสกุล, อีเมล, เบอร์โทรศัพท์, ชื่อองค์กร</li>
+            <li><strong class="text-ink">ข้อมูลการใช้งาน</strong> — ที่อยู่ IP, ประเภทเบราว์เซอร์, หน้าที่เยี่ยมชม, เวลาเข้าชม (ผ่าน cookies/analytics)</li>
+            <li><strong class="text-ink">ข้อมูลการติดต่อสื่อสาร</strong> — ข้อความที่ส่งผ่านแบบฟอร์มติดต่อบนเว็บไซต์</li>
+          </ul>
+        </div>
+
+        <!-- 3 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">3. วัตถุประสงค์และฐานทางกฎหมายในการประมวลผล</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse text-sm">
+              <thead>
+                <tr class="bg-slate-50">
+                  <th class="border border-slate-200 px-4 py-3 text-left font-semibold text-ink">วัตถุประสงค์</th>
+                  <th class="border border-slate-200 px-4 py-3 text-left font-semibold text-ink">ฐานทางกฎหมาย</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border border-slate-200 px-4 py-3">ตอบกลับคำถามและคำขอของท่าน</td>
+                  <td class="border border-slate-200 px-4 py-3">ความยินยอม / ประโยชน์อันชอบธรรม</td>
+                </tr>
+                <tr class="bg-slate-50/50">
+                  <td class="border border-slate-200 px-4 py-3">ส่งข้อมูลบริการและโปรโมชัน (หากท่านยินยอม)</td>
+                  <td class="border border-slate-200 px-4 py-3">ความยินยอม</td>
+                </tr>
+                <tr>
+                  <td class="border border-slate-200 px-4 py-3">วิเคราะห์และปรับปรุงเว็บไซต์</td>
+                  <td class="border border-slate-200 px-4 py-3">ประโยชน์อันชอบธรรม</td>
+                </tr>
+                <tr class="bg-slate-50/50">
+                  <td class="border border-slate-200 px-4 py-3">ปฏิบัติตามกฎหมายและข้อบังคับที่เกี่ยวข้อง</td>
+                  <td class="border border-slate-200 px-4 py-3">หน้าที่ตามกฎหมาย</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">4. การเปิดเผยข้อมูลส่วนบุคคล</h2>
+          <p class="mb-3">เราอาจเปิดเผยข้อมูลส่วนบุคคลของท่านแก่บุคคลภายนอกเฉพาะในกรณีจำเป็น ได้แก่:</p>
+          <ul class="list-disc space-y-2 pl-6">
+            <li>ผู้ให้บริการภายนอก (เช่น Web3Forms สำหรับระบบฟอร์ม, บริการ analytics) ในฐานะผู้ประมวลผลข้อมูลที่ผูกพันด้วยสัญญา</li>
+            <li>หน่วยงานภาครัฐ หากมีคำสั่งหรือกฎหมายกำหนด</li>
+          </ul>
+          <p class="mt-3">เราไม่ขายข้อมูลส่วนบุคคลของท่านให้บุคคลภายนอกเพื่อวัตถุประสงค์ทางการตลาด</p>
+        </div>
+
+        <!-- 5 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">5. ระยะเวลาเก็บรักษาข้อมูล</h2>
+          <p>
+            เราจะเก็บรักษาข้อมูลส่วนบุคคลของท่านตราบเท่าที่จำเป็นตามวัตถุประสงค์ที่ระบุ
+            หรือตามที่กฎหมายกำหนด โดยทั่วไปไม่เกิน <strong class="text-ink">3 ปี</strong> นับจากวันที่เก็บรวบรวม
+            เว้นแต่มีเหตุจำเป็นที่ต้องเก็บนานกว่านั้น
+          </p>
+        </div>
+
+        <!-- 6 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">6. สิทธิของเจ้าของข้อมูลส่วนบุคคล</h2>
+          <p class="mb-3">ภายใต้ PDPA ท่านมีสิทธิดังต่อไปนี้:</p>
+          <ul class="list-disc space-y-2 pl-6">
+            <li><strong class="text-ink">สิทธิในการเข้าถึง</strong> — ขอสำเนาข้อมูลส่วนบุคคลของท่าน</li>
+            <li><strong class="text-ink">สิทธิในการแก้ไข</strong> — ขอให้แก้ไขข้อมูลที่ไม่ถูกต้อง</li>
+            <li><strong class="text-ink">สิทธิในการลบ</strong> — ขอให้ลบข้อมูลส่วนบุคคล (Right to Erasure)</li>
+            <li><strong class="text-ink">สิทธิในการคัดค้าน</strong> — คัดค้านการประมวลผลข้อมูลส่วนบุคคล</li>
+            <li><strong class="text-ink">สิทธิในการระงับการใช้</strong> — ขอให้ระงับการประมวลผลชั่วคราว</li>
+            <li><strong class="text-ink">สิทธิในการถอนความยินยอม</strong> — ถอนความยินยอมที่เคยให้ไว้ได้ตลอดเวลา</li>
+            <li><strong class="text-ink">สิทธิในการรับโอนข้อมูล</strong> — ขอรับข้อมูลในรูปแบบที่อ่านได้ด้วยเครื่อง</li>
+          </ul>
+          <p class="mt-3">
+            หากท่านต้องการใช้สิทธิดังกล่าว กรุณาติดต่อเราที่
+            <a href={`mailto:${site.email}`} class="text-brand-600 hover:underline">{site.email}</a>
+            เราจะดำเนินการภายใน 30 วันนับจากได้รับคำขอ
+          </p>
+        </div>
+
+        <!-- 7 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">7. Cookies และเทคโนโลยีติดตาม</h2>
+          <p>
+            เว็บไซต์ของเราอาจใช้ cookies เพื่อปรับปรุงประสบการณ์การใช้งาน ท่านสามารถตั้งค่า
+            เบราว์เซอร์เพื่อปฏิเสธ cookies ได้ อย่างไรก็ตาม การปิด cookies อาจส่งผลต่อ
+            ฟังก์ชันการทำงานบางส่วนของเว็บไซต์
+          </p>
+        </div>
+
+        <!-- 8 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">8. การรักษาความปลอดภัยของข้อมูล</h2>
+          <p>
+            เราใช้มาตรการรักษาความปลอดภัยทางเทคนิคและองค์กรที่เหมาะสม เพื่อปกป้องข้อมูลส่วนบุคคล
+            จากการเข้าถึงโดยไม่ได้รับอนุญาต การสูญหาย หรือการทำลาย รวมถึงการส่งข้อมูลผ่าน HTTPS
+            และการเข้ารหัสข้อมูลที่เหมาะสม
+          </p>
+        </div>
+
+        <!-- 9 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">9. การเชื่อมโยงไปยังเว็บไซต์ภายนอก</h2>
+          <p>
+            เว็บไซต์ของเราอาจมีลิงก์ไปยังเว็บไซต์ของบุคคลภายนอก บริษัทฯ ไม่รับผิดชอบ
+            ต่อแนวทางปฏิบัติด้านความเป็นส่วนตัวของเว็บไซต์เหล่านั้น
+            ท่านควรอ่านนโยบายความเป็นส่วนตัวของเว็บไซต์ดังกล่าวด้วยตนเอง
+          </p>
+        </div>
+
+        <!-- 10 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">10. การเปลี่ยนแปลงนโยบายนี้</h2>
+          <p>
+            บริษัทฯ อาจปรับปรุงนโยบายความเป็นส่วนตัวนี้เป็นครั้งคราว
+            โดยจะแจ้งให้ทราบผ่านการอัปเดตวันที่ที่ระบุไว้ด้านบน
+            การใช้งานเว็บไซต์ต่อเนื่องหลังจากการเปลี่ยนแปลงถือว่าท่านยอมรับนโยบายฉบับที่ปรับปรุงแล้ว
+          </p>
+        </div>
+
+        <!-- 11 -->
+        <div>
+          <h2 class="mb-3 text-xl font-bold text-ink">11. ติดต่อเรา</h2>
+          <p class="mb-3">
+            หากมีคำถามหรือข้อสงสัยเกี่ยวกับนโยบายความเป็นส่วนตัว หรือต้องการใช้สิทธิตาม PDPA
+            กรุณาติดต่อ:
+          </p>
+          <address class="not-italic space-y-1 rounded-xl bg-slate-50 p-5 text-sm">
+            <p class="font-semibold text-ink">{companyName(lang)}</p>
+            <p>{companyAddress(lang)}</p>
+            <p>โทร: <a href={`tel:${site.phoneIntl}`} class="text-brand-600 hover:underline">{site.phone}</a></p>
+            <p>อีเมล: <a href={`mailto:${site.email}`} class="text-brand-600 hover:underline">{site.email}</a></p>
+          </address>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>

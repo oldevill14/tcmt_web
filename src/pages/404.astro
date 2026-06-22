@@ -1,0 +1,28 @@
+---
+// Bilingual 404. Static page served by GitHub Pages for unknown routes.
+// Shows the default (Thai) copy with the English line beneath it.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import { t, localizePath } from '../i18n/ui';
+---
+
+<BaseLayout lang="th" path="/" title="404" description={t('th', '404.subtitle')} noindex>
+  <section class="section">
+    <div class="container-tcm flex min-h-[50vh] flex-col items-center justify-center text-center">
+      <p class="text-7xl font-extrabold text-brand-600">404</p>
+      <h1 class="mt-4 text-2xl font-bold text-ink sm:text-3xl">
+        {t('th', '404.title')}
+      </h1>
+      <p class="mt-2 text-muted">{t('th', '404.subtitle')}</p>
+      <p class="mt-1 text-sm text-muted">{t('en', '404.subtitle')}</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <Button href={localizePath('/', 'th')} variant="primary">
+          {t('th', 'btn.backHome')}
+        </Button>
+        <Button href={localizePath('/', 'en')} variant="secondary">
+          {t('en', 'btn.backHome')}
+        </Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

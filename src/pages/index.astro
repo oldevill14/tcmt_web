@@ -1,0 +1,17 @@
+---
+// Thai homepage (default locale, served at the base path).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeSections from '../components/HomeSections.astro';
+import { t } from '../i18n/ui';
+
+const lang = 'th' as const;
+---
+
+<BaseLayout
+  lang={lang}
+  path="/"
+  title={t(lang, 'nav.home')}
+  description={t(lang, 'home.hero.subtitle')}
+>
+  <HomeSections lang={lang} />
+</BaseLayout>

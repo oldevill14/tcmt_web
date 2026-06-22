@@ -1,0 +1,173 @@
+---
+// Thai project detail page — served at /projects/[slug]
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import { t, localizePath, type Lang } from '../../i18n/ui';
+import { filterByLocale, entrySlug } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const lang = 'th' as const;
+  const allProjects = await getCollection('projects');
+  const projects = filterByLocale(allProjects, lang);
+  return projects.map((project) => ({
+    params: { slug: entrySlug(project) },
+    props: { project, lang },
+  }));
+}
+
+const { project, lang } = Astro.props as {
+  project: Awaited<ReturnType<typeof getCollection<'projects'>>>[number];
+  lang: Lang;
+};
+
+const sectorLabel: Record<string, string> = {
+  gov: t(lang, 'projects.filter.gov'),
+  edu: t(lang, 'projects.filter.edu'),
+  private: t(lang, 'projects.filter.private'),
+};
+
+const slug = entrySlug(project);
+const { Content } = await render(project);
+---
+
+<BaseLayout
+  lang={lang}
+  path={`/projects/${slug}`}
+  title={project.data.title}
+  description={project.data.summary}
+>
+  <!-- Page hero -->
+  <section class="bg-brand-900 pb-16 pt-24 sm:pt-28">
+    <div class="container-tcm">
+      <nav class="mb-6 flex flex-wrap items-center gap-2 text-sm text-brand-300" aria-label="breadcrumb">
+        <a href={localizePath('/', lang)} class="hover:text-white transition-colors">{t(lang, 'nav.home')}</a>
+        <span aria-hidden="true">›</span>
+        <a href={localizePath('/projects', lang)} class="hover:text-white transition-colors">{t(lang, 'nav.projects')}</a>
+        <span aria-hidden="true">›</span>
+        <span class="text-white" aria-current="page">{project.data.client}</span>
+      </nav>
+
+      <span class="mb-4 inline-flex rounded-full bg-brand-600/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-300">
+        {sectorLabel[project.data.sector]}
+      </span>
+
+      <h1 class="mt-2 max-w-3xl text-4xl font-bold text-white sm:text-5xl leading-tight">
+        {project.data.title}
+      </h1>
+      <p class="mt-4 max-w-2xl text-lg text-brand-300">
+        {project.data.summary}
+      </p>
+      <div class="mt-8">
+        <Button href={localizePath('/contact', lang)} variant="white" size="md">
+          {t(lang, 'btn.getQuote')}
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meta strip -->
+  <section class="border-b border-slate-100 bg-white py-8">
+    <div class="container-tcm">
+      <dl class="flex flex-wrap gap-x-10 gap-y-4 text-sm">
+        <div>
+          <dt class="font-semibold text-ink">{t(lang, 'projects.client')}</dt>
+          <dd class="mt-1 text-muted">{project.data.client}</dd>
+        </div>
+        <div>
+          <dt class="font-semibold text-ink">{t(lang, 'projects.year')}</dt>
+          <dd class="mt-1 text-muted">{project.data.year}</dd>
+        </div>
+        <div>
+          <dt class="font-semibold text-ink">{t(lang, 'projects.sector')}</dt>
+          <dd class="mt-1 text-muted">{sectorLabel[project.data.sector]}</dd>
+        </div>
+        {project.data.tags.length > 0 && (
+          <div>
+            <dt class="font-semibold text-ink">Tags</dt>
+            <dd class="mt-1 flex flex-wrap gap-2">
+              {project.data.tags.map((tag) => (
+                <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs text-slate-600">{tag}</span>
+              ))}
+            </dd>
+          </div>
+        )}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Main body -->
+  <section class="section">
+    <div class="container-tcm">
+      <div class="mx-auto max-w-3xl">
+        <div class="project-content">
+          <Content />
+        </div>
+
+        <div class="mt-12 flex flex-wrap gap-4">
+          <Button href={localizePath('/projects', lang)} variant="secondary">
+            ← {t(lang, 'nav.projects')}
+          </Button>
+          <Button href={localizePath('/contact', lang)} variant="primary">
+            {t(lang, 'btn.contactUs')}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner lang={lang} />
+</BaseLayout>
+
+<style>
+  .project-content :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .project-content :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .project-content :global(p) {
+    color: #64748b;
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .project-content :global(ul) {
+    margin: 1rem 0 1rem 1.5rem;
+    list-style-type: disc;
+  }
+  .project-content :global(ol) {
+    margin: 1rem 0 1rem 1.5rem;
+    list-style-type: decimal;
+  }
+  .project-content :global(li) {
+    color: #64748b;
+    line-height: 1.75;
+    margin-bottom: 0.375rem;
+  }
+  .project-content :global(blockquote) {
+    border-left: 4px solid #2f80ed;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: #64748b;
+    font-style: italic;
+  }
+  .project-content :global(strong) {
+    font-weight: 600;
+    color: #0f172a;
+  }
+  .project-content :global(a) {
+    color: #1565d8;
+  }
+  .project-content :global(a:hover) {
+    text-decoration: underline;
+  }
+</style>

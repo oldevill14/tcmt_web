@@ -1,0 +1,101 @@
+---
+// Thai clients & partners page — logo grids for gov clients and tech partners.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import LogoGrid from '../components/LogoGrid.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { t, withBase } from '../i18n/ui';
+import { clients, partners } from '../data/site';
+
+const lang = 'th' as const;
+
+// Gov clients: name in Thai, no logos yet (placeholder chips)
+const govItems = clients
+  .filter((c) => c.sector === 'gov')
+  .map((c) => ({
+    name: c.name[lang],
+    logo: c.logo,
+    url: c.url,
+  }));
+
+// Partners: name + placeholder SVG logos from /public/logos/
+const partnerLogoMap: Record<string, string> = {
+  Cisco: withBase('/logos/cisco.svg'),
+  Dell: withBase('/logos/dell.svg'),
+  Oracle: withBase('/logos/oracle.svg'),
+  Acer: withBase('/logos/acer.svg'),
+  ASUS: withBase('/logos/asus.svg'),
+  Lenovo: withBase('/logos/lenovo.svg'),
+  Fujitsu: withBase('/logos/fujitsu.svg'),
+  Epson: withBase('/logos/epson.svg'),
+};
+
+const partnerItems = partners.map((p) => ({
+  name: p.name,
+  logo: p.logo ?? partnerLogoMap[p.name],
+  url: p.url,
+}));
+---
+
+<BaseLayout
+  lang={lang}
+  path="/clients"
+  title={t(lang, 'clients.title')}
+  description={t(lang, 'clients.subtitle')}
+>
+  <!-- Page hero -->
+  <section class="bg-brand-900 py-16 sm:py-20">
+    <div class="container-tcm text-center">
+      <SectionTitle
+        eyebrow={t(lang, 'nav.clients')}
+        title={t(lang, 'clients.title')}
+        subtitle={t(lang, 'clients.subtitle')}
+        invert
+      />
+    </div>
+  </section>
+
+  <!-- Government clients -->
+  <section class="section">
+    <div class="container-tcm">
+      <SectionTitle
+        title={t(lang, 'clients.gov.title')}
+        subtitle="หน่วยงานภาครัฐที่ไว้วางใจเลือกใช้บริการ TCM Technology"
+        align="left"
+        as="h2"
+      />
+      <div class="mt-10">
+        <LogoGrid items={govItems} columns={3} />
+      </div>
+
+      <!-- Trust statement -->
+      <div class="mt-12 rounded-2xl bg-slate-50 p-8 ring-1 ring-slate-200">
+        <p class="text-base leading-relaxed text-muted">
+          TCM Technology ให้บริการแก่หน่วยงานภาครัฐระดับกระทรวงและกรม รวมถึงองค์กรอิสระชั้นนำ
+          มากกว่า 25 ปี ด้วยมาตรฐานการทำงานที่เป็นเลิศ ความโปร่งใส และการส่งมอบงานตรงเวลา
+          ทำให้ได้รับความไว้วางใจต่อเนื่องในทุกโครงการ
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology partners -->
+  <section class="section bg-slate-50">
+    <div class="container-tcm">
+      <SectionTitle
+        title={t(lang, 'clients.partners.title')}
+        subtitle="เราทำงานร่วมกับแบรนด์เทคโนโลยีชั้นนำระดับโลก เพื่อนำเสนอโซลูชันที่ดีที่สุดให้ลูกค้า"
+        align="left"
+        as="h2"
+      />
+      <div class="mt-10">
+        <LogoGrid items={partnerItems} columns={4} />
+      </div>
+      <p class="mt-6 text-xs text-muted">
+        * โลโก้แสดงเพื่อระบุแบรนด์พาร์ตเนอร์ที่ใช้งานร่วมกัน ลิขสิทธิ์โลโก้เป็นของเจ้าของแต่ละแบรนด์
+      </p>
+    </div>
+  </section>
+
+  <CtaBanner lang={lang} />
+</BaseLayout>
