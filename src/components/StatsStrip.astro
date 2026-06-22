@@ -1,38 +1,207 @@
 ---
-// Trust stats strip (25+ yrs, gov clients, etc). Reads from site.stats.
+// StatsStrip — trust metrics with animated counters.
+// Uses IntersectionObserver (progressive enhancement) to count up numbers on scroll.
+// On dark canvas (invert=true): accent-cyan labels, white numbers, subtle glow pill.
+// On light background: brand-700 numbers, muted labels.
 import { t, type Lang } from '../i18n/ui';
 import { stats } from '../data/site';
 
 interface Props {
   lang: Lang;
-  invert?: boolean; // dark background variant
+  invert?: boolean;
 }
 const { lang, invert = false } = Astro.props;
+
+// Parse numeric part and suffix for each stat so the counter knows the end value.
+// e.g. "25+" → { num: 25, suffix: '+' }, "24/7" → { num: null, suffix: '24/7' }
+interface ParsedStat {
+  raw: string;
+  num: number | null;
+  suffix: string;
+  labelKey: typeof stats[number]['labelKey'];
+}
+
+const parsed: ParsedStat[] = stats.map((s) => {
+  const match = s.value.match(/^(\d+)(.*)$/);
+  return {
+    raw: s.value,
+    num: match ? parseInt(match[1], 10) : null,
+    suffix: match ? match[2] : s.value,
+    labelKey: s.labelKey,
+  };
+});
 ---
 
 <div
   class:list={[
-    'grid grid-cols-2 gap-6 sm:grid-cols-4',
-    invert ? 'text-white' : 'text-ink',
+    'stats-strip grid grid-cols-2 gap-6 sm:grid-cols-4',
+    invert ? 'stats-strip--invert' : '',
   ]}
+  data-stats-strip
 >
-  {
-    stats.map((s) => (
-      <div class="text-center">
-        <div
-          class:list={[
-            'text-3xl font-extrabold sm:text-4xl',
-            invert ? 'text-white' : 'text-brand-700',
-          ]}
-        >
-          {s.value}
-        </div>
-        <div
-          class:list={['mt-1 text-sm', invert ? 'text-brand-300' : 'text-muted']}
-        >
-          {t(lang, s.labelKey)}
-        </div>
+  {parsed.map((s, idx) => (
+    <div class="stat-item text-center" data-index={idx}>
+      <div class:list={['stat-value', invert ? 'stat-value--invert' : '']}>
+        {s.num !== null ? (
+          <>
+            <span
+              class="stat-counter"
+              data-target={s.num}
+              data-suffix={s.suffix}
+              aria-label={`${s.raw}`}
+            >
+              {s.raw}
+            </span>
+          </>
+        ) : (
+          <span class="stat-static">{s.raw}</span>
+        )}
       </div>
-    ))
-  }
+      <div class:list={['stat-label', invert ? 'stat-label--invert' : '']}>
+        {t(lang, s.labelKey)}
+      </div>
+    </div>
+  ))}
 </div>
+
+<style>
+  .stats-strip {
+    position: relative;
+  }
+
+  /* ── Individual stat item ── */
+  .stat-item {
+    position: relative;
+    padding: 1.25rem 0.75rem;
+    border-radius: 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  /* Divider line between items on small screens (vertical bar on md+) */
+  .stat-item + .stat-item {
+    border-top: 1px solid rgba(226, 232, 240, 0.5);
+  }
+
+  @media (min-width: 640px) {
+    .stat-item + .stat-item {
+      border-top: none;
+      border-left: 1px solid rgba(226, 232, 240, 0.25);
+    }
+  }
+
+  .stats-strip--invert .stat-item + .stat-item {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* ── Value ── */
+  .stat-value {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: #0b3d91; /* brand-700 */
+    margin-bottom: 0.5rem;
+    /* subtle pop animation when counter starts */
+    transition: transform 0.2s ease;
+  }
+
+  .stat-value--invert {
+    /* gradient-text on dark */
+    background: linear-gradient(100deg, #ffffff 0%, #a9d1ff 45%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* ── Label ── */
+  .stat-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #64748b;
+    letter-spacing: 0.01em;
+  }
+
+  .stat-label--invert {
+    color: #93c5fd; /* light blue on dark */
+  }
+
+  /* ── Animated glow ring on dark variant (CSS-only hover) ── */
+  .stats-strip--invert .stat-item:hover {
+    transform: translateY(-2px);
+  }
+  .stats-strip--invert .stat-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    opacity: 0;
+    background: radial-gradient(ellipse at center, rgba(56,189,248,0.12) 0%, transparent 70%);
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .stats-strip--invert .stat-item:hover::after {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  // Progressive-enhanced animated counters.
+  // Counts from 0 → target over ~1.2s on first scroll into view.
+  (function () {
+    const strip = document.querySelector<HTMLElement>('[data-stats-strip]');
+    if (!strip) return;
+
+    const counters = strip.querySelectorAll<HTMLElement>('[data-target]');
+    if (!counters.length) return;
+
+    let started = false;
+
+    function easeOut(t: number): number {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function animateCounter(el: HTMLElement): void {
+      const target = parseInt(el.dataset.target ?? '0', 10);
+      const suffix = el.dataset.suffix ?? '';
+      const duration = 1200; // ms
+      const start = performance.now();
+
+      function step(now: number): void {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = Math.round(easeOut(progress) * target);
+        el.textContent = `${value}${suffix}`;
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = `${target}${suffix}`;
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    function startAll(): void {
+      if (started) return;
+      started = true;
+      counters.forEach(animateCounter);
+    }
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            startAll();
+            io.disconnect();
+          }
+        },
+        { threshold: 0.35 }
+      );
+      io.observe(strip);
+    } else {
+      // No IntersectionObserver — just show final values (already in HTML)
+    }
+
+    // Fallback: if page is already scrolled past the element
+    const rect = strip.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85) startAll();
+  })();
+</script>

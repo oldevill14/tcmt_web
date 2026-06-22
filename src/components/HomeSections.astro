@@ -1,7 +1,7 @@
 ---
-// Composes the full homepage body for a given lang, so the th + en index pages
-// stay thin (each just sets <BaseLayout> + <HomeSections lang=.../>).
-import { t, localizePath, type Lang } from '../i18n/ui';
+// Composes the full homepage body for a given lang (DESIGN V2), so the th + en
+// index pages stay thin. Distinct eyebrow kickers on every SectionTitle (P0 fix).
+import { t, localizePath, withBase, type Lang } from '../i18n/ui';
 import { services, clients, partners } from '../data/site';
 import Hero from './Hero.astro';
 import SectionTitle from './SectionTitle.astro';
@@ -19,44 +19,178 @@ const { lang } = Astro.props;
 const govClients = clients
   .filter((c) => c.sector === 'gov')
   .map((c) => ({ name: c.name[lang], logo: c.logo, url: c.url }));
+
+// Partner logos (real SVGs in /public/logos). Build a marquee-friendly list.
 const partnerItems = partners.map((p) => ({
   name: p.name,
-  logo: p.logo,
+  logo: withBase(`/logos/${p.name.toLowerCase()}.svg`),
   url: p.url,
 }));
+// duplicate the list so the infinite marquee loops seamlessly
+const marqueeItems = [...partnerItems, ...partnerItems];
+
+// Bento capability cards (hardware vs software vs support).
+// Pre-resolve titles/bodies here so JSX stays clean (no inline type casts in templates).
+type K = Parameters<typeof t>[1];
+const caps = [
+  {
+    title: t(lang, 'home.capabilities.hardware.title' as K),
+    body: t(lang, 'home.capabilities.hardware.body' as K),
+    icon: 'server',
+    span: 'lg:col-span-3 lg:row-span-2',
+    accent: true,
+  },
+  {
+    title: t(lang, 'home.capabilities.software.title' as K),
+    body: t(lang, 'home.capabilities.software.body' as K),
+    icon: 'code',
+    span: 'lg:col-span-3',
+    accent: false,
+  },
+  {
+    title: t(lang, 'home.capabilities.support.title' as K),
+    body: t(lang, 'home.capabilities.support.body' as K),
+    icon: 'pulse',
+    span: 'lg:col-span-3',
+    accent: false,
+  },
+];
+const capIcons: Record<string, string> = {
+  server:
+    '<rect x="3" y="4" width="18" height="6" rx="1.5" /><rect x="3" y="14" width="18" height="6" rx="1.5" /><path d="M7 7h.01M7 17h.01" />',
+  code: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16" />',
+  pulse: '<path d="M3 12h4l2 5 4-12 2 7h6" />',
+};
 ---
 
 <Hero lang={lang} />
 
-<!-- Stats strip on dark continuation -->
-<section class="bg-brand-900 pb-16 pt-2 sm:pb-20">
-  <div class="container-tcm">
+<!-- Trust stats on dark continuation (seamless with hero) -->
+<section class="relative bg-canvas-950 pb-20 pt-2 text-white sm:pb-24">
+  <div class="pointer-events-none absolute inset-0 bg-dot-dark bg-dot opacity-[0.4]" aria-hidden="true"></div>
+  <div class="container-tcm relative" data-reveal>
     <StatsStrip lang={lang} invert />
+  </div>
+</section>
+
+<!-- Capabilities bento: hardware AND software (positioning) -->
+<section class="section bg-bg-soft" style="background-color: var(--bg-soft);">
+  <div class="container-tcm">
+    <div data-reveal>
+      <SectionTitle
+        eyebrow={t(lang, 'home.capabilities.eyebrow')}
+        title={t(lang, 'home.capabilities.title')}
+        subtitle={t(lang, 'home.capabilities.subtitle')}
+        gradient
+      />
+    </div>
+    <div class="mt-12 grid gap-5 lg:grid-cols-6">
+      {
+        caps.map((c, i) => (
+          <div
+            class:list={[
+              'group relative flex flex-col overflow-hidden rounded-3xl p-7 hover-lift',
+              c.span,
+              c.accent
+                ? 'bg-canvas-900 text-white'
+                : 'card-surface !p-7',
+            ]}
+            data-reveal
+            data-reveal-delay={i * 90}
+          >
+            {c.accent && (
+              <>
+                <div
+                  class="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-accent-gradient opacity-25 blur-2xl transition-opacity duration-500 group-hover:opacity-40"
+                  aria-hidden="true"
+                />
+                <div
+                  class="pointer-events-none absolute inset-0 bg-grid-dark bg-grid opacity-[0.4]"
+                  aria-hidden="true"
+                />
+              </>
+            )}
+            <span
+              class:list={[
+                'relative mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl',
+                c.accent
+                  ? 'bg-accent-gradient-soft text-white shadow-glow-cyan'
+                  : 'bg-brand-500/10 text-brand-600',
+              ]}
+              aria-hidden="true"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-6 w-6"
+                set:html={capIcons[c.icon]}
+              />
+            </span>
+            <h3
+              class:list={[
+                'relative font-semibold',
+                c.accent ? 'text-xl text-white' : 'text-lg text-ink',
+              ]}
+            >
+              {c.title}
+            </h3>
+            <p
+              class:list={[
+                'relative mt-2 text-sm leading-relaxed',
+                c.accent ? 'text-slate-300' : 'text-muted',
+              ]}
+            >
+              {c.body}
+            </p>
+            {c.accent && (
+              <div class="relative mt-auto pt-6">
+                <Button
+                  href={localizePath('/services', lang)}
+                  variant="glass"
+                  size="sm"
+                >
+                  {t(lang, 'btn.viewServices')}
+                </Button>
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
   </div>
 </section>
 
 <!-- Services preview -->
 <section class="section">
   <div class="container-tcm">
-    <SectionTitle
-      eyebrow={t(lang, 'nav.services')}
-      title={t(lang, 'home.services.title')}
-      subtitle={t(lang, 'home.services.subtitle')}
-    />
+    <div data-reveal>
+      <SectionTitle
+        eyebrow={t(lang, 'home.services.eyebrow')}
+        title={t(lang, 'home.services.title')}
+        subtitle={t(lang, 'home.services.subtitle')}
+      />
+    </div>
     <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
-        services.map((s) => (
-          <ServiceCard
-            slug={s.slug}
-            title={s.title[lang]}
-            summary={s.summary[lang]}
-            icon={s.icon}
-            href={localizePath(`/services/${s.slug}`, lang)}
-          />
+        services.map((s, i) => (
+          <div data-reveal data-reveal-delay={(i % 3) * 80}>
+            <ServiceCard
+              slug={s.slug}
+              title={s.title[lang]}
+              summary={s.summary[lang]}
+              icon={s.icon}
+              href={localizePath(`/services/${s.slug}`, lang)}
+            />
+          </div>
         ))
       }
     </div>
-    <div class="mt-10 text-center">
+    <div class="mt-12 text-center" data-reveal>
       <Button href={localizePath('/services', lang)} variant="secondary" size="md">
         {t(lang, 'btn.viewServices')}
       </Button>
@@ -65,30 +199,59 @@ const partnerItems = partners.map((p) => ({
 </section>
 
 <!-- Clients strip -->
-<section class="section bg-slate-50">
+<section class="section bg-bg-soft" style="background-color: var(--bg-soft);">
   <div class="container-tcm">
-    <SectionTitle
-      eyebrow={t(lang, 'nav.clients')}
-      title={t(lang, 'home.clients.title')}
-      subtitle={t(lang, 'home.clients.subtitle')}
-    />
-    <div class="mt-12">
+    <div data-reveal>
+      <SectionTitle
+        eyebrow={t(lang, 'home.clients.eyebrow')}
+        title={t(lang, 'home.clients.title')}
+        subtitle={t(lang, 'home.clients.subtitle')}
+      />
+    </div>
+    <div class="mt-12" data-reveal>
       <LogoGrid items={govClients} columns={3} />
     </div>
   </div>
 </section>
 
-<!-- Partners strip -->
+<!-- Partners marquee (real logos, grayscale -> color on hover) -->
 <section class="section">
   <div class="container-tcm">
-    <SectionTitle
-      eyebrow={t(lang, 'clients.partners.title')}
-      title={t(lang, 'home.partners.title')}
-      subtitle={t(lang, 'home.partners.subtitle')}
-    />
-    <div class="mt-12">
-      <LogoGrid items={partnerItems} columns={4} />
+    <div data-reveal>
+      <SectionTitle
+        eyebrow={t(lang, 'home.partners.eyebrow')}
+        title={t(lang, 'home.partners.title')}
+        subtitle={t(lang, 'home.partners.subtitle')}
+      />
     </div>
+  </div>
+  <div class="mt-12 marquee" data-reveal>
+    <ul class="marquee__track gap-4 sm:gap-6" aria-label={t(lang, 'home.partners.title')}>
+      {
+        marqueeItems.map((p, i) => (
+          <li class="shrink-0" aria-hidden={i >= partnerItems.length ? 'true' : undefined}>
+            <a
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={p.name}
+              tabindex={i >= partnerItems.length ? -1 : undefined}
+              class="group flex h-24 w-44 items-center justify-center rounded-2xl bg-white px-6 ring-1 ring-slate-100 transition hover:shadow-card"
+            >
+              <img
+                src={p.logo}
+                alt={p.name}
+                loading="lazy"
+                decoding="async"
+                width="120"
+                height="40"
+                class="max-h-9 w-auto object-contain opacity-60 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+              />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>
 

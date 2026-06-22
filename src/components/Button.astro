@@ -1,9 +1,10 @@
 ---
 // Button / link component. Renders an <a> when `href` is given, else a <button>.
-// Variants follow the brand system (BUILD-BRIEF §3).
+// DESIGN V2 variants: primary, secondary, ghost, white (kept for back-compat)
+// + gradient (signature accent) + glass (for dark/hero backgrounds).
 interface Props {
   href?: string;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'white';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'white' | 'gradient' | 'glass';
   size?: 'sm' | 'md' | 'lg';
   type?: 'button' | 'submit' | 'reset';
   class?: string;
@@ -20,14 +21,21 @@ const {
 } = Astro.props;
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:opacity-60 disabled:pointer-events-none';
+  'group/btn relative inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan focus-visible:ring-offset-2 disabled:opacity-60 disabled:pointer-events-none';
 
 const variants: Record<string, string> = {
-  primary: 'bg-brand-600 text-white hover:bg-brand-700 shadow-sm hover:shadow-md',
+  primary:
+    'bg-brand-600 text-white shadow-sm hover:bg-brand-700 hover:shadow-md',
   secondary:
-    'bg-brand-50/0 text-brand-700 ring-1 ring-inset ring-brand-300 hover:bg-brand-300/10',
-  ghost: 'text-brand-700 hover:bg-brand-300/10',
-  white: 'bg-white text-brand-700 hover:bg-slate-100 shadow-sm',
+    'text-brand-700 ring-1 ring-inset ring-brand-300 hover:bg-brand-500/10 hover:ring-brand-500',
+  ghost: 'text-brand-700 hover:bg-brand-500/10',
+  white: 'bg-white text-brand-700 shadow-sm hover:bg-slate-100',
+  // signature: electric accent gradient with glow on hover
+  gradient:
+    'bg-accent-gradient-soft text-white shadow-[0_8px_24px_-8px_rgba(47,128,237,0.6)] hover:shadow-[0_14px_36px_-8px_rgba(56,189,248,0.7)] hover:-translate-y-0.5',
+  // frosted glass for dark backgrounds (hero)
+  glass:
+    'bg-white/10 text-white ring-1 ring-inset ring-white/25 backdrop-blur-md hover:bg-white/20 hover:ring-white/40',
 };
 
 const sizes: Record<string, string> = {
@@ -36,7 +44,7 @@ const sizes: Record<string, string> = {
   lg: 'px-7 py-3.5 text-base',
 };
 
-const cls = [base, variants[variant], sizes[size], className].join(' ');
+const cls = [base, variants[variant] ?? variants.primary, sizes[size], className].join(' ');
 ---
 
 {

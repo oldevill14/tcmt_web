@@ -1,31 +1,98 @@
 ---
-// Logo grid / strip for clients or partners. Falls back to a neutral text chip
-// when no logo image is provided (placeholder until real vector logos arrive).
+// LogoGrid — two display modes:
+//   mode="grid"    — static grid (default). Gov clients use this with glass name-chips.
+//   mode="marquee" — infinite scrolling strip of real brand logos (partners page + home).
+//
+// For grid mode: if item has a logo, show the image; otherwise render an elegant glass chip.
+// For marquee mode: each item must have a logo; items are duplicated by the caller for seamless looping.
+
 interface LogoItem {
   name: string;
-  logo?: string; // path under /public (already base-prefixed by caller) or external
+  logo?: string; // base-prefixed path or external URL
   url?: string;
+  acronym?: string; // short label shown in gov-chip when no logo
+  desc?: string;    // optional subtitle line for gov chips
 }
 
 interface Props {
   items: LogoItem[];
+  mode?: 'grid' | 'marquee';
   columns?: 2 | 3 | 4 | 6;
   class?: string;
+  ariaLabel?: string;
 }
 
-const { items, columns = 6, class: className = '' } = Astro.props;
+const {
+  items,
+  mode = 'grid',
+  columns = 4,
+  class: className = '',
+  ariaLabel,
+} = Astro.props;
 
 const colCls: Record<number, string> = {
-  2: 'grid-cols-2',
-  3: 'grid-cols-2 sm:grid-cols-3',
-  4: 'grid-cols-2 sm:grid-cols-4',
+  2: 'grid-cols-1 sm:grid-cols-2',
+  3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+  4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
   6: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6',
 };
 ---
 
-<ul class:list={['grid items-stretch gap-4', colCls[columns], className]}>
-  {
-    items.map((item) => {
+{mode === 'marquee' ? (
+  /* ── Marquee: infinite logo strip ─────────────────────────────────── */
+  <div class:list={['marquee', className]}>
+    <ul
+      class="marquee__track gap-4 sm:gap-6"
+      aria-label={ariaLabel}
+    >
+      {items.map((item, i) => {
+        const isDupe = i >= items.length / 2;
+        return (
+          <li class="shrink-0" aria-hidden={isDupe ? 'true' : undefined}>
+            {item.url ? (
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={item.name}
+                tabindex={isDupe ? -1 : undefined}
+                class="group flex h-24 w-44 items-center justify-center rounded-2xl bg-white px-6 ring-1 ring-slate-100 transition hover:shadow-card"
+              >
+                <img
+                  src={item.logo}
+                  alt={item.name}
+                  loading="lazy"
+                  decoding="async"
+                  width="120"
+                  height="40"
+                  class="max-h-9 w-auto object-contain opacity-60 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                />
+              </a>
+            ) : (
+              <div
+                title={item.name}
+                class="group flex h-24 w-44 items-center justify-center rounded-2xl bg-white px-6 ring-1 ring-slate-100"
+              >
+                <img
+                  src={item.logo}
+                  alt={item.name}
+                  loading="lazy"
+                  decoding="async"
+                  width="120"
+                  height="40"
+                  class="max-h-9 w-auto object-contain opacity-60 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                />
+              </div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+) : (
+  /* ── Grid: static grid (logo or glass name-chip) ──────────────────── */
+  <ul class:list={['grid gap-4 sm:gap-5', colCls[columns], className]}>
+    {items.map((item) => {
       const inner = item.logo ? (
         <img
           src={item.logo}
@@ -35,30 +102,88 @@ const colCls: Record<number, string> = {
           class="max-h-12 w-auto object-contain opacity-80 transition group-hover:opacity-100"
         />
       ) : (
-        <span class="text-center text-sm font-medium text-muted">{item.name}</span>
+        /* Elegant glass name-chip for clients without a logo */
+        <div class="gov-chip">
+          <span class="gov-chip__acronym">{item.acronym ?? (item.name.split('').filter(c => c === c.toUpperCase() && c !== ' ').join('').slice(0, 4) || item.name.slice(0, 2).toUpperCase())}</span>
+          <span class="gov-chip__name">{item.name}</span>
+          {item.desc && <span class="gov-chip__desc">{item.desc}</span>}
+        </div>
       );
+
       return (
-        <li>
+        <li class="list-none">
           {item.url ? (
             <a
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
               title={item.name}
-              class="group flex h-24 items-center justify-center rounded-xl bg-white p-4 ring-1 ring-slate-100 transition hover:shadow-card"
+              class:list={[
+                'group flex h-full flex-col items-center justify-center rounded-2xl p-5 text-center transition',
+                item.logo
+                  ? 'min-h-[5.5rem] bg-white ring-1 ring-slate-100 hover:shadow-card'
+                  : 'hover-lift',
+              ]}
             >
               {inner}
             </a>
           ) : (
             <div
               title={item.name}
-              class="group flex h-24 items-center justify-center rounded-xl bg-white p-4 ring-1 ring-slate-100 transition hover:shadow-card"
+              class:list={[
+                'group flex h-full flex-col items-center justify-center rounded-2xl p-5 text-center',
+                item.logo
+                  ? 'min-h-[5.5rem] bg-white ring-1 ring-slate-100'
+                  : '',
+              ]}
             >
               {inner}
             </div>
           )}
         </li>
       );
-    })
+    })}
+  </ul>
+)}
+
+<style>
+  /* Government agency chip — glass card with accent initial badge */
+  .gov-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
   }
-</ul>
+
+  .gov-chip__acronym {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.625rem;
+    background: linear-gradient(135deg, #1565d8 0%, #38bdf8 100%);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .gov-chip__name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  .gov-chip__desc {
+    font-size: 0.6875rem;
+    color: #64748b;
+    text-align: center;
+    line-height: 1.3;
+  }
+</style>

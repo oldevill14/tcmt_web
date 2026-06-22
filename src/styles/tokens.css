@@ -1,26 +1,61 @@
-/* TCM Technology — design tokens (BUILD-BRIEF §3) */
+/* TCM Technology — DESIGN V2 design tokens (modern premium tech system).
+ * Deep indigo-navy base + electric blue→cyan gradient accent with glow,
+ * glass surfaces, layered shadows. Consumed by tailwind.config.mjs + global.css.
+ * Keep this the single source of truth for raw values; Tailwind mirrors them. */
 :root {
-  /* brand blue palette */
+  /* --- brand blue palette (kept; brief-compatible) --- */
   --brand-900: #0a2540;
+  --brand-800: #0c2f55;
   --brand-700: #0b3d91;
   --brand-600: #1565d8;
   --brand-500: #2f80ed;
+  --brand-400: #4f9cf6;
   --brand-300: #6fb1fc;
+  --brand-200: #a9d1ff;
 
-  /* neutrals */
+  /* --- deep canvas (dark sections) — indigo-navy, richer than flat navy --- */
+  --ink-950: #050b1a; /* near-black navy, hero base */
+  --ink-900: #0a1326; /* dark section base */
+  --ink-850: #0e1a33; /* raised dark surface */
+
+  /* --- accent: electric blue -> cyan (the signature gradient) --- */
+  --accent-blue: #2f80ed;
+  --accent-cyan: #38bdf8;
+  --accent-sky: #5eead4; /* tail teal for tri-stop meshes */
+
+  /* --- neutrals --- */
   --bg: #ffffff;
+  --bg-soft: #f6f8fc; /* faint blue-tinted soft section bg */
   --ink: #0f172a;
   --muted: #64748b;
   --line: #e2e8f0;
 
-  /* gradient used on hero + service cards */
+  /* --- real TCM logo brand marks (faithful to logo-tcm-real.png) --- */
+  --tcm-logo-navy: #2a2a7a; /* deep indigo of "TCM" */
+  --tcm-logo-grey: #6b7488; /* slate-grey of "TECHNOLOGY" */
+
+  /* --- signature gradients --- */
   --brand-gradient: linear-gradient(135deg, #2f80ed, #6fb1fc);
+  --accent-gradient: linear-gradient(120deg, #2f80ed 0%, #38bdf8 55%, #5eead4 100%);
+  --accent-gradient-soft: linear-gradient(120deg, #2f80ed 0%, #38bdf8 100%);
+  --text-gradient: linear-gradient(100deg, #ffffff 0%, #a9d1ff 38%, #38bdf8 100%);
+  --text-gradient-ink: linear-gradient(100deg, #0a2540 0%, #1565d8 55%, #2f80ed 100%);
 
-  /* layout */
+  /* --- glow color (used on hover / accents) --- */
+  --glow-blue: rgba(47, 128, 237, 0.45);
+  --glow-cyan: rgba(56, 189, 248, 0.40);
+
+  /* --- layout --- */
   --container: 1200px;
-  --radius-card: 1rem;
+  --radius-card: 1.25rem;
 
-  /* fonts */
+  /* --- layered shadows (depth system) --- */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.07), 0 10px 30px -12px rgba(15, 23, 42, 0.12);
+  --shadow-card-hover: 0 20px 48px -16px rgba(21, 101, 216, 0.30), 0 6px 16px -8px rgba(15, 23, 42, 0.18);
+  --shadow-glow: 0 0 0 1px rgba(56, 189, 248, 0.20), 0 18px 50px -18px rgba(47, 128, 237, 0.55);
+
+  /* --- fonts --- */
   --font-sans: 'Inter', 'IBM Plex Sans Thai', ui-sans-serif, system-ui, sans-serif;
   --font-thai: 'IBM Plex Sans Thai', 'Inter', ui-sans-serif, system-ui, sans-serif;
 }

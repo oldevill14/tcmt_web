@@ -1,11 +1,14 @@
 ---
-// Section heading with optional eyebrow + subtitle. Used to introduce page sections.
+// Section heading (DESIGN V2) with an eyebrow kicker pill + optional subtitle.
+// Used to introduce page sections. The eyebrow must be a DISTINCT kicker — never
+// equal to the title (audited in HomeSections).
 interface Props {
   title: string;
   subtitle?: string;
   eyebrow?: string;
   align?: 'left' | 'center';
   invert?: boolean; // true on dark backgrounds
+  gradient?: boolean; // render the title with the gradient-text treatment
   as?: 'h1' | 'h2' | 'h3';
   class?: string;
 }
@@ -16,26 +19,52 @@ const {
   eyebrow,
   align = 'center',
   invert = false,
+  gradient = false,
   as = 'h2',
   class: className = '',
 } = Astro.props;
 
 const Heading = as;
 const alignCls = align === 'center' ? 'text-center mx-auto' : 'text-left';
-const titleColor = invert ? 'text-white' : 'text-ink';
-const subColor = invert ? 'text-brand-300' : 'text-muted';
+const titleColor = gradient
+  ? invert
+    ? 'gradient-text-light'
+    : 'gradient-text'
+  : invert
+    ? 'text-white'
+    : 'text-ink';
+const subColor = invert ? 'text-brand-200' : 'text-muted';
+const kickerCls = invert ? 'eyebrow-light' : 'eyebrow';
 ---
 
 <div class:list={['max-w-2xl', alignCls, className]}>
   {
     eyebrow && (
-      <p class="mb-2 text-sm font-semibold uppercase tracking-wider text-brand-500">
+      <p class:list={[kickerCls, 'mb-3', align === 'center' && 'justify-center']}>
+        <span
+          class:list={[
+            'inline-block h-1 w-5 rounded-full',
+            invert ? 'bg-accent-cyan' : 'bg-accent-gradient-soft',
+          ]}
+          aria-hidden="true"
+        />
         {eyebrow}
       </p>
     )
   }
-  <Heading class:list={['text-3xl font-bold sm:text-4xl', titleColor]}>
+  <Heading
+    class:list={[
+      'text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]',
+      titleColor,
+    ]}
+  >
     {title}
   </Heading>
-  {subtitle && <p class:list={['mt-3 text-base sm:text-lg', subColor]}>{subtitle}</p>}
+  {
+    subtitle && (
+      <p class:list={['mt-4 text-base leading-relaxed sm:text-lg', subColor]}>
+        {subtitle}
+      </p>
+    )
+  }
 </div>

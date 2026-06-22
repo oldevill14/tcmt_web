@@ -1,18 +1,34 @@
 ---
-// Generic surface card. Wrap arbitrary content. Optionally a link card.
+// Generic surface card (DESIGN V2). Wrap arbitrary content. Optionally a link card.
+// variant: 'surface' (default white card), 'glass' (frosted, over soft/dark bg),
+//          'gradient-border' (white card with an accent gradient ring), 'dark' (over navy).
 interface Props {
   href?: string;
   class?: string;
   hover?: boolean;
+  variant?: 'surface' | 'glass' | 'gradient-border' | 'dark';
+  padded?: boolean;
 }
 
-const { href, class: className = '', hover = true } = Astro.props;
+const {
+  href,
+  class: className = '',
+  hover = true,
+  variant = 'surface',
+  padded = true,
+} = Astro.props;
 
-const base = 'block rounded-2xl bg-white p-6 shadow-card ring-1 ring-slate-100';
-const hoverCls = hover
-  ? 'transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover'
-  : '';
-const cls = [base, hoverCls, className].join(' ');
+const variants: Record<string, string> = {
+  surface: 'bg-white shadow-card ring-1 ring-slate-100',
+  glass: 'glass',
+  'gradient-border': 'gradient-border bg-white shadow-card',
+  dark: 'glass-dark',
+};
+
+const base = 'block rounded-2xl';
+const pad = padded ? 'p-6' : '';
+const hoverCls = hover ? 'hover-lift' : '';
+const cls = [base, pad, variants[variant] ?? variants.surface, hoverCls, className].join(' ');
 ---
 
 {

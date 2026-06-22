@@ -1,5 +1,6 @@
 ---
 // Full-width gradient CTA banner pointing to /contact.
+// DESIGN V2 — premium animated gradient with glow, glass motif chip, dual CTA.
 import { t, localizePath, type Lang } from '../i18n/ui';
 import Button from './Button.astro';
 
@@ -12,18 +13,52 @@ const { lang } = Astro.props;
 <section class="section">
   <div class="container-tcm">
     <div
-      class="relative overflow-hidden rounded-3xl bg-brand-gradient px-6 py-14 text-center text-white shadow-card sm:px-12 sm:py-16"
+      class="relative overflow-hidden rounded-3xl text-white"
+      style="background: linear-gradient(135deg, #0b3d91 0%, #1565d8 40%, #2f80ed 70%, #38bdf8 100%);"
+      data-reveal
     >
-      <h2 class="mx-auto max-w-2xl text-2xl font-bold sm:text-3xl">
-        {t(lang, 'home.cta.title')}
-      </h2>
-      <p class="mx-auto mt-3 max-w-xl text-white/90">
-        {t(lang, 'home.cta.subtitle')}
-      </p>
-      <div class="mt-8">
-        <Button href={localizePath('/contact', lang)} variant="white" size="lg">
-          {t(lang, 'btn.contactUs')}
-        </Button>
+      <!-- Animated aurora blobs inside banner -->
+      <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl" aria-hidden="true">
+        <div
+          class="absolute -top-[30%] left-[5%] h-[70%] w-[40%] rounded-full opacity-50 blur-3xl animate-aurora"
+          style="background: radial-gradient(circle, rgba(255,255,255,0.25), transparent 70%);"
+        ></div>
+        <div
+          class="absolute bottom-[-25%] right-[5%] h-[70%] w-[35%] rounded-full opacity-40 blur-3xl animate-aurora [animation-delay:-8s]"
+          style="background: radial-gradient(circle, rgba(94,234,212,0.40), transparent 70%);"
+        ></div>
+      </div>
+
+      <!-- Faint grid texture -->
+      <div class="pointer-events-none absolute inset-0 bg-grid-dark bg-grid opacity-[0.3] rounded-3xl" aria-hidden="true"></div>
+
+      <!-- Content -->
+      <div class="relative px-8 py-14 sm:px-14 sm:py-20">
+        <div class="mx-auto max-w-2xl text-center">
+          <!-- Eyebrow chip -->
+          <span class="mb-5 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-white/90 ring-1 ring-inset ring-white/25 backdrop-blur-sm">
+            <span class="h-1.5 w-1.5 rounded-full bg-accent-cyan animate-glow-pulse" aria-hidden="true"></span>
+            {lang === 'th' ? 'ปรึกษาฟรี' : 'Free consultation'}
+          </span>
+
+          <h2 class="text-2xl font-extrabold text-white sm:text-3xl lg:text-4xl" style="text-wrap: balance;">
+            {t(lang, 'home.cta.title')}
+          </h2>
+
+          <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/80">
+            {t(lang, 'home.cta.subtitle')}
+          </p>
+
+          <!-- Dual CTA -->
+          <div class="mt-9 flex flex-wrap items-center justify-center gap-4">
+            <Button href={localizePath('/contact', lang)} variant="white" size="lg">
+              {t(lang, 'btn.contactUs')}
+            </Button>
+            <Button href={localizePath('/services', lang)} variant="glass" size="lg">
+              {t(lang, 'btn.viewServices')}
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

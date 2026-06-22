@@ -1,60 +1,156 @@
 ---
-// Dark navy homepage hero with the TCM TECHNOLOGY wordmark + subtle tech gradient.
+// DESIGN V2 hero: deep indigo-navy canvas with an animated aurora gradient-mesh,
+// faint circuit grid, gradient-text headline conveying BOTH hardware/infrastructure
+// AND software/web development, dual CTA, and a glass dual-capability motif.
+// CSS-only animation (no heavy JS). Premium, not templatey.
 import { t, localizePath, type Lang } from '../i18n/ui';
-import { site } from '../data/site';
 import Button from './Button.astro';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
+
+// Two capability pillars rendered as glass chips in the hero motif.
+// Pre-resolve copy here so JSX stays free of inline type casts.
+type K = Parameters<typeof t>[1];
+const pillars = [
+  {
+    title: t(lang, 'home.hero.pillar.hardware' as K),
+    desc: t(lang, 'home.hero.pillar.hardware.desc' as K),
+    icon: 'server',
+  },
+  {
+    title: t(lang, 'home.hero.pillar.software' as K),
+    desc: t(lang, 'home.hero.pillar.software.desc' as K),
+    icon: 'code',
+  },
+];
+const pillarIcons: Record<string, string> = {
+  server:
+    '<rect x="3" y="4" width="18" height="6" rx="1.5" /><rect x="3" y="14" width="18" height="6" rx="1.5" /><path d="M7 7h.01M7 17h.01" />',
+  code: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16" />',
+};
 ---
 
-<section class="relative overflow-hidden bg-brand-900 text-white">
-  <!-- subtle tech gradient glow -->
+<section class="relative overflow-hidden bg-canvas-950 text-white">
+  <!-- aurora gradient mesh (animated, CSS only) -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <div
+      class="absolute -left-[10%] -top-[20%] h-[55vh] w-[55vh] rounded-full opacity-70 blur-3xl animate-aurora"
+      style="background: radial-gradient(circle, rgba(47,128,237,0.55), transparent 65%);"
+    >
+    </div>
+    <div
+      class="absolute right-[-8%] top-[6%] h-[48vh] w-[48vh] rounded-full opacity-60 blur-3xl animate-aurora [animation-delay:-6s]"
+      style="background: radial-gradient(circle, rgba(56,189,248,0.50), transparent 65%);"
+    >
+    </div>
+    <div
+      class="absolute bottom-[-22%] left-[28%] h-[50vh] w-[50vh] rounded-full opacity-50 blur-3xl animate-aurora [animation-delay:-12s]"
+      style="background: radial-gradient(circle, rgba(94,234,212,0.32), transparent 65%);"
+    >
+    </div>
+  </div>
+
+  <!-- faint circuit grid -->
   <div
-    class="pointer-events-none absolute inset-0"
+    class="pointer-events-none absolute inset-0 bg-grid-dark bg-grid opacity-[0.5]"
     aria-hidden="true"
-    style="background:
-      radial-gradient(600px circle at 80% 10%, rgba(47,128,237,.35), transparent 60%),
-      radial-gradient(700px circle at 10% 90%, rgba(111,177,252,.18), transparent 55%);"
   >
   </div>
+  <!-- top + bottom fades to seat the section -->
   <div
-    class="pointer-events-none absolute inset-0 opacity-[0.07]"
+    class="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-canvas-950 to-transparent"
     aria-hidden="true"
-    style="background-image:
-      linear-gradient(to right, #fff 1px, transparent 1px),
-      linear-gradient(to bottom, #fff 1px, transparent 1px);
-      background-size: 56px 56px;"
   >
   </div>
 
-  <div class="container-tcm relative py-24 sm:py-28 lg:py-36">
-    <div class="max-w-3xl animate-fade-up">
-      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-brand-300">
+  <div class="container-tcm relative grid items-center gap-12 py-24 sm:py-28 lg:grid-cols-12 lg:py-36">
+    <!-- copy -->
+    <div class="lg:col-span-7">
+      <p class="eyebrow-light animate-fade-up">
+        <span class="inline-block h-1.5 w-1.5 rounded-full bg-accent-cyan animate-glow-pulse"></span>
         {t(lang, 'home.hero.eyebrow')}
       </p>
+
       <h1
-        class="text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl lg:text-7xl"
+        class="mt-5 text-display-sm font-extrabold text-white animate-fade-up [animation-delay:80ms] sm:text-display lg:text-display-lg"
       >
-        {site.wordmark}
+        <span class="block">{t(lang, 'home.hero.line1')}</span>
+        <span class="gradient-text-light">{t(lang, 'home.hero.line2')}</span>
       </h1>
-      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
+
+      <p
+        class="mt-6 max-w-xl text-lg leading-relaxed text-slate-300 animate-fade-up [animation-delay:160ms]"
+      >
         {t(lang, 'home.hero.subtitle')}
       </p>
-      <div class="mt-9 flex flex-wrap gap-3">
-        <Button href={localizePath('/contact', lang)} variant="white" size="lg">
+
+      <div class="mt-9 flex flex-wrap gap-3 animate-fade-up [animation-delay:240ms]">
+        <Button href={localizePath('/contact', lang)} variant="gradient" size="lg">
           {t(lang, 'home.hero.cta')}
         </Button>
         <Button
           href={localizePath('/services', lang)}
-          variant="ghost"
+          variant="glass"
           size="lg"
-          class="!text-white ring-1 ring-inset ring-white/30 hover:bg-white/10"
         >
           {t(lang, 'home.hero.ctaSecondary')}
         </Button>
+      </div>
+    </div>
+
+    <!-- dual-capability glass motif -->
+    <div class="lg:col-span-5">
+      <div class="relative mx-auto max-w-md animate-scale-in [animation-delay:200ms]">
+        <!-- glow halo -->
+        <div
+          class="pointer-events-none absolute -inset-6 rounded-[2rem] bg-accent-gradient opacity-25 blur-2xl"
+          aria-hidden="true"
+        >
+        </div>
+
+        <div class="relative gradient-border rounded-3xl bg-white/[0.04] p-5 backdrop-blur-xl">
+          <p class="px-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent-cyan">
+            {t(lang, 'home.hero.motif.label')}
+          </p>
+          <div class="mt-4 grid gap-4">
+            {
+              pillars.map((p, i) => (
+                <div
+                  class="glass-dark flex items-start gap-4 rounded-2xl p-4 animate-fade-up"
+                  style={`animation-delay:${320 + i * 120}ms`}
+                >
+                  <span
+                    class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent-gradient-soft text-white shadow-glow-cyan"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="h-5 w-5"
+                      set:html={pillarIcons[p.icon]}
+                    />
+                  </span>
+                  <div>
+                    <h2 class="text-sm font-semibold text-white">
+                      {p.title}
+                    </h2>
+                    <p class="mt-1 text-xs leading-relaxed text-slate-400">
+                      {p.desc}
+                    </p>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
       </div>
     </div>
   </div>

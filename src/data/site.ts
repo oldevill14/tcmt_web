@@ -141,6 +141,15 @@ export const services: ServiceMeta[] = [
       en: 'Design and installation of HVAC systems for server rooms and offices.',
     },
   },
+  {
+    slug: 'software-development',
+    icon: 'code',
+    title: { th: 'ซอฟต์แวร์และการพัฒนาเว็บ', en: 'Software & Web Development' },
+    summary: {
+      th: 'พัฒนาซอฟต์แวร์ เว็บแอปพลิเคชัน และระบบบูรณาการตามความต้องการขององค์กร',
+      en: 'Custom software, web applications and system integration tailored to your organization.',
+    },
+  },
 ];
 
 // --- Government clients (BUILD-BRIEF §6) ---

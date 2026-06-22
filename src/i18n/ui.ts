@@ -31,20 +31,56 @@ export const ui = {
     'btn.viewServices': 'ดูบริการทั้งหมด',
     'btn.backHome': 'กลับสู่หน้าแรก',
 
-    // --- home ---
-    'home.hero.eyebrow': 'System Integrator ครบวงจร',
+    // --- home: hero ---
+    'home.hero.eyebrow': 'System Integrator ครบวงจร ตั้งแต่ปี 2541',
     'home.hero.title': 'TCM TECHNOLOGY',
+    'home.hero.line1': 'วางโครงสร้างพื้นฐานไอที',
+    'home.hero.line2': 'และพัฒนาซอฟต์แวร์ครบวงจร',
     'home.hero.subtitle':
-      'ที่ปรึกษา ออกแบบ ติดตั้ง และบำรุงรักษาระบบไอทีแบบครบวงจร — ไว้วางใจโดยหน่วยงานภาครัฐ สถาบันการศึกษา และองค์กรเอกชนชั้นนำ มากกว่า 25 ปี',
+      'ตั้งแต่ฮาร์ดแวร์ ระบบเครือข่าย และดาต้าเซ็นเตอร์ ไปจนถึงการพัฒนาซอฟต์แวร์และเว็บแอปพลิเคชัน — ที่ปรึกษา ออกแบบ ติดตั้ง และดูแลโดยทีมที่ไว้วางใจมากว่า 25 ปี',
     'home.hero.cta': 'ปรึกษาโครงการของคุณ',
     'home.hero.ctaSecondary': 'ดูบริการของเรา',
+    'home.hero.motif.label': 'สองความเชี่ยวชาญในทีมเดียว',
+    'home.hero.pillar.hardware': 'ฮาร์ดแวร์และโครงสร้างพื้นฐาน',
+    'home.hero.pillar.hardware.desc':
+      'เครือข่าย ดาต้าเซ็นเตอร์ เซิร์ฟเวอร์ ความปลอดภัย Video Wall และระบบปรับอากาศ',
+    'home.hero.pillar.software': 'ซอฟต์แวร์และเว็บแอปพลิเคชัน',
+    'home.hero.pillar.software.desc':
+      'ออกแบบและพัฒนาเว็บไซต์ ระบบงาน และแอปพลิเคชันตามความต้องการขององค์กร',
+
+    // --- home: capabilities (hardware vs software bento) ---
+    'home.capabilities.eyebrow': 'ขีดความสามารถ',
+    'home.capabilities.title': 'ครบทั้งฮาร์ดแวร์และซอฟต์แวร์ ในที่เดียว',
+    'home.capabilities.subtitle':
+      'เราเป็นทั้งผู้วางระบบไอทีโครงสร้างพื้นฐานและนักพัฒนาซอฟต์แวร์ จึงส่งมอบโซลูชันแบบ end-to-end ได้โดยไม่ต้องประสานหลายผู้ให้บริการ',
+    'home.capabilities.hardware.title': 'ฮาร์ดแวร์และโครงสร้างพื้นฐาน',
+    'home.capabilities.hardware.body':
+      'ออกแบบ จัดหา และติดตั้งระบบเครือข่าย ดาต้าเซ็นเตอร์ เซิร์ฟเวอร์ ระบบความปลอดภัย และอุปกรณ์จากแบรนด์ชั้นนำระดับโลก',
+    'home.capabilities.software.title': 'ซอฟต์แวร์และการพัฒนาเว็บ',
+    'home.capabilities.software.body':
+      'พัฒนาเว็บไซต์ ระบบงานภายใน และแอปพลิเคชันที่ตอบโจทย์ พร้อมเชื่อมต่อกับโครงสร้างพื้นฐานที่เราวางไว้',
+    'home.capabilities.support.title': 'ดูแลและบำรุงรักษา 24/7',
+    'home.capabilities.support.body':
+      'ทีม NOC คอยเฝ้าระวังและแก้ไขปัญหาตลอดเวลา เพื่อให้ระบบของคุณทำงานต่อเนื่อง',
+
+    // --- home: services ---
+    'home.services.eyebrow': 'สิ่งที่เราทำ',
     'home.services.title': 'บริการของเรา',
     'home.services.subtitle':
       'โซลูชันไอทีและระบบงานครบวงจร ตั้งแต่ออกแบบจนถึงบำรุงรักษา',
+
+    // --- home: clients ---
+    'home.clients.eyebrow': 'ความไว้วางใจ',
     'home.clients.title': 'ลูกค้าที่ไว้วางใจเรา',
     'home.clients.subtitle': 'หน่วยงานภาครัฐและองค์กรชั้นนำเลือกใช้บริการของเรา',
+
+    // --- home: partners (P0 fix — eyebrow DISTINCT from title) ---
+    'home.partners.eyebrow': 'ความร่วมมือ',
     'home.partners.title': 'พันธมิตรทางเทคโนโลยี',
     'home.partners.subtitle': 'ทำงานร่วมกับแบรนด์เทคโนโลยีระดับโลก',
+
+    // --- home: stats + cta ---
+    'home.stats.eyebrow': 'ตัวเลขที่พิสูจน์ได้',
     'home.stats.title': 'ตัวเลขที่บอกความน่าเชื่อถือ',
     'home.cta.title': 'พร้อมยกระดับระบบไอทีขององค์กรคุณแล้วหรือยัง?',
     'home.cta.subtitle':
@@ -158,21 +194,57 @@ export const ui = {
     'btn.viewServices': 'View all services',
     'btn.backHome': 'Back to home',
 
-    // --- home ---
-    'home.hero.eyebrow': 'End-to-end System Integrator',
+    // --- home: hero ---
+    'home.hero.eyebrow': 'End-to-end System Integrator since 1998',
     'home.hero.title': 'TCM TECHNOLOGY',
+    'home.hero.line1': 'IT infrastructure that performs,',
+    'home.hero.line2': 'software & web built to scale',
     'home.hero.subtitle':
-      'Consulting, design, installation and maintenance of end-to-end IT systems — trusted by government agencies, educational institutions and leading enterprises for over 25 years.',
+      'From hardware, networking and data centers to custom software and web applications — consulted, designed, installed and maintained by a team trusted for over 25 years.',
     'home.hero.cta': 'Discuss your project',
     'home.hero.ctaSecondary': 'Explore our services',
+    'home.hero.motif.label': 'Two disciplines, one team',
+    'home.hero.pillar.hardware': 'Hardware & Infrastructure',
+    'home.hero.pillar.hardware.desc':
+      'Networking, data center, servers, security, Video Wall and HVAC systems.',
+    'home.hero.pillar.software': 'Software & Web Development',
+    'home.hero.pillar.software.desc':
+      'Websites, internal systems and applications designed and built for your organization.',
+
+    // --- home: capabilities (hardware vs software bento) ---
+    'home.capabilities.eyebrow': 'Capabilities',
+    'home.capabilities.title': 'Hardware and software, under one roof',
+    'home.capabilities.subtitle':
+      'We build both the physical IT infrastructure and the software that runs on it — delivering end-to-end solutions without juggling multiple vendors.',
+    'home.capabilities.hardware.title': 'Hardware & Infrastructure',
+    'home.capabilities.hardware.body':
+      'Design, supply and install networks, data centers, servers, security systems and equipment from leading global brands.',
+    'home.capabilities.software.title': 'Software & Web Development',
+    'home.capabilities.software.body':
+      'Build websites, internal systems and applications that fit your needs — integrated with the infrastructure we deploy.',
+    'home.capabilities.support.title': '24/7 Support & Maintenance',
+    'home.capabilities.support.body':
+      'Our NOC team monitors and resolves issues around the clock to keep your systems running.',
+
+    // --- home: services ---
+    'home.services.eyebrow': 'What we do',
     'home.services.title': 'Our Services',
     'home.services.subtitle':
       'End-to-end IT and systems solutions — from design to maintenance.',
+
+    // --- home: clients ---
+    'home.clients.eyebrow': 'Trusted by',
     'home.clients.title': 'Trusted by Leading Organizations',
     'home.clients.subtitle':
       'Government agencies and leading institutions rely on our expertise.',
+
+    // --- home: partners (P0 fix — eyebrow DISTINCT from title) ---
+    'home.partners.eyebrow': 'Partnership',
     'home.partners.title': 'Technology Partners',
     'home.partners.subtitle': 'Working with world-class technology brands.',
+
+    // --- home: stats + cta ---
+    'home.stats.eyebrow': 'By the numbers',
     'home.stats.title': 'A Track Record You Can Trust',
     'home.cta.title': 'Ready to elevate your IT infrastructure?',
     'home.cta.subtitle':

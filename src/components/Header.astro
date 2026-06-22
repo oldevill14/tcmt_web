@@ -1,7 +1,7 @@
 ---
-// Sticky header: TCM TECHNOLOGY wordmark + nav (from ui.ts) + LangSwitcher.
+// Sticky glassy header: real TCM logo SVG + nav (from ui.ts) + LangSwitcher.
 // Mobile: a CSS-only disclosure menu (checkbox hack, no JS).
-import { t, localizePath, type Lang } from '../i18n/ui';
+import { t, localizePath, withBase, type Lang } from '../i18n/ui';
 import { site } from '../data/site';
 import LangSwitcher from './LangSwitcher.astro';
 
@@ -25,21 +25,33 @@ function isActive(path: string): boolean {
   if (path === '/') return currentPath === target || currentPath === `${target}/`;
   return currentPath.startsWith(target);
 }
+
+const logoSrc = withBase('/logo-tcm.svg');
 ---
 
 <header
-  class="sticky top-0 z-50 border-b border-slate-100 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/75"
+  class="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/65"
 >
+  <!-- hairline accent gradient on the bottom edge -->
+  <div
+    class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-cyan/50 to-transparent"
+    aria-hidden="true"
+  >
+  </div>
+
   <div class="container-tcm flex h-16 items-center justify-between gap-4">
     <a
       href={localizePath('/', lang)}
-      class="flex items-center gap-2 font-bold tracking-tight text-brand-900"
+      class="group flex items-center"
+      aria-label={site.wordmark}
     >
-      <span
-        class="grid h-8 w-8 place-items-center rounded-lg bg-brand-gradient text-sm font-extrabold text-white"
-        aria-hidden="true">T</span
-      >
-      <span class="text-base sm:text-lg">{site.wordmark}</span>
+      <img
+        src={logoSrc}
+        alt={site.wordmark}
+        width="148"
+        height="42"
+        class="h-9 w-auto transition-transform duration-300 group-hover:scale-[1.03] sm:h-10"
+      />
     </a>
 
     <!-- Desktop nav -->
@@ -50,13 +62,22 @@ function isActive(path: string): boolean {
             href={localizePath(item.path, lang)}
             aria-current={isActive(item.path) ? 'page' : undefined}
             class:list={[
-              'rounded-full px-3 py-2 text-sm font-medium transition',
+              'relative rounded-full px-3.5 py-2 text-sm font-medium transition-colors',
               isActive(item.path)
                 ? 'text-brand-700'
-                : 'text-ink hover:text-brand-700',
+                : 'text-ink/80 hover:text-brand-700',
             ]}
           >
             {t(lang, item.key)}
+            <span
+              class:list={[
+                'pointer-events-none absolute inset-x-3.5 -bottom-px h-0.5 rounded-full bg-accent-gradient-soft transition-transform duration-300',
+                isActive(item.path)
+                  ? 'scale-x-100'
+                  : 'scale-x-0',
+              ]}
+              aria-hidden="true"
+            />
           </a>
         ))
       }
@@ -70,7 +91,7 @@ function isActive(path: string): boolean {
     <input id="nav-toggle" type="checkbox" class="peer hidden" aria-hidden="true" />
     <label
       for="nav-toggle"
-      class="grid h-10 w-10 cursor-pointer place-items-center rounded-lg text-ink ring-1 ring-slate-200 lg:hidden"
+      class="grid h-10 w-10 cursor-pointer place-items-center rounded-xl text-ink ring-1 ring-slate-200 transition hover:ring-brand-300 lg:hidden"
       aria-label={t(lang, 'a11y.openMenu')}
     >
       <svg
@@ -79,6 +100,7 @@ function isActive(path: string): boolean {
         fill="none"
         stroke="currentColor"
         stroke-width="2"
+        stroke-linecap="round"
         class="h-5 w-5"
         aria-hidden="true"
       >
@@ -87,7 +109,7 @@ function isActive(path: string): boolean {
     </label>
 
     <div
-      class="absolute inset-x-0 top-16 hidden border-b border-slate-100 bg-white shadow-sm peer-checked:block lg:!hidden"
+      class="absolute inset-x-0 top-16 hidden border-b border-slate-200/70 bg-white/95 shadow-lg backdrop-blur-xl peer-checked:block lg:!hidden"
     >
       <nav class="container-tcm flex flex-col py-3" aria-label="Mobile">
         {
@@ -96,9 +118,9 @@ function isActive(path: string): boolean {
               href={localizePath(item.path, lang)}
               aria-current={isActive(item.path) ? 'page' : undefined}
               class:list={[
-                'rounded-lg px-3 py-3 text-base font-medium transition',
+                'rounded-xl px-3 py-3 text-base font-medium transition',
                 isActive(item.path)
-                  ? 'bg-slate-50 text-brand-700'
+                  ? 'bg-brand-500/10 text-brand-700'
                   : 'text-ink hover:bg-slate-50',
               ]}
             >

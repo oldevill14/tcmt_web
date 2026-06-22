@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 96" role="img" aria-label="TCM Technology">
+  <title>TCM Technology</title>
+  <!-- Faithful recreation of the TCM logo: bold geometric "TCM" in deep indigo-navy
+       with a small registered-mark square hugging the top-right of the M, and spaced
+       "TECHNOLOGY" beneath in slate-grey. Colors overridable via CSS vars (light/inverse). -->
+  <g
+    fill="var(--logo-navy, #2a2a7a)"
+    font-family="Inter, 'Helvetica Neue', Arial, sans-serif"
+  >
+    <!-- TCM wordmark: heavy condensed, tight tracking -->
+    <text
+      x="0"
+      y="58"
+      font-size="68"
+      font-weight="800"
+      letter-spacing="-1.5"
+    >TCM</text>
+    <!-- registered-mark square (small filled tick at top-right of M) -->
+    <rect x="180" y="13" width="11" height="11" rx="1.5" />
+  </g>
+  <!-- TECHNOLOGY: lighter slate-grey, wide tracking, spans under TCM -->
+  <text
+    x="2"
+    y="86"
+    font-size="20"
+    font-weight="600"
+    letter-spacing="5.1"
+    fill="var(--logo-grey, #6b7488)"
+    font-family="Inter, 'Helvetica Neue', Arial, sans-serif"
+  >TECHNOLOGY</text>
+</svg>

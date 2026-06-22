@@ -59,5 +59,34 @@ const lang: Lang = langProp ?? getLang(Astro.url);
       <slot />
     </main>
     <Footer lang={lang} />
+
+    <!-- Scroll-reveal activator (progressive enhancement, site-wide).
+         Reveals [data-reveal] elements as they enter the viewport.
+         No-op / fully visible if JS disabled or reduced-motion is preferred. -->
+    <script is:inline>
+      (() => {
+        const els = document.querySelectorAll('[data-reveal]');
+        if (!els.length) return;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce || !('IntersectionObserver' in window)) {
+          els.forEach((el) => el.classList.add('is-visible'));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const el = entry.target;
+              const delay = el.getAttribute('data-reveal-delay');
+              if (delay) el.style.transitionDelay = delay + 'ms';
+              el.classList.add('is-visible');
+              io.unobserve(el);
+            });
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.08 }
+        );
+        els.forEach((el) => io.observe(el));
+      })();
+    </script>
   </body>
 </html>

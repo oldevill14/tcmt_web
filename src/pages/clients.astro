@@ -1,24 +1,36 @@
 ---
-// Thai clients & partners page — logo grids for gov clients and tech partners.
+// Thai clients & partners page — premium redesign.
+// Partners: real brand SVGs in a full marquee strip (grayscale → color on hover).
+// Gov clients: elegant glass name-chip cards in a bento grid.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionTitle from '../components/SectionTitle.astro';
-import LogoGrid from '../components/LogoGrid.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import { t, withBase } from '../i18n/ui';
 import { clients, partners } from '../data/site';
 
 const lang = 'th' as const;
 
-// Gov clients: name in Thai, no logos yet (placeholder chips)
+// Gov clients with acronym generation for glass chips
 const govItems = clients
   .filter((c) => c.sector === 'gov')
-  .map((c) => ({
-    name: c.name[lang],
-    logo: c.logo,
-    url: c.url,
-  }));
+  .map((c) => {
+    const name = c.name[lang];
+    // derive a short acronym from Thai initialisms embedded in the name
+    // or fall back to the first 2 Thai chars
+    const enName = c.name['en'];
+    const acronymMatch = enName.match(/\(([^)]+)\)/);
+    const acronym = acronymMatch
+      ? acronymMatch[1].slice(0, 6)
+      : enName
+          .split(' ')
+          .filter((w) => /^[A-Z]/.test(w))
+          .map((w) => w[0])
+          .join('')
+          .slice(0, 4) || name.slice(0, 2);
+    return { name, acronym, logo: c.logo, url: c.url };
+  });
 
-// Partners: name + placeholder SVG logos from /public/logos/
+// Partner logos (real SVGs from /public/logos/)
 const partnerLogoMap: Record<string, string> = {
   Cisco: withBase('/logos/cisco.svg'),
   Dell: withBase('/logos/dell.svg'),
@@ -35,6 +47,9 @@ const partnerItems = partners.map((p) => ({
   logo: p.logo ?? partnerLogoMap[p.name],
   url: p.url,
 }));
+
+// Duplicate for seamless marquee loop
+const marqueeItems = [...partnerItems, ...partnerItems];
 ---
 
 <BaseLayout
@@ -43,54 +58,172 @@ const partnerItems = partners.map((p) => ({
   title={t(lang, 'clients.title')}
   description={t(lang, 'clients.subtitle')}
 >
-  <!-- Page hero -->
-  <section class="bg-brand-900 py-16 sm:py-20">
-    <div class="container-tcm text-center">
-      <SectionTitle
-        eyebrow={t(lang, 'nav.clients')}
-        title={t(lang, 'clients.title')}
-        subtitle={t(lang, 'clients.subtitle')}
-        invert
-      />
+  <!-- ── Page Hero (dark canvas) ──────────────────────────────────────── -->
+  <section class="relative overflow-hidden bg-canvas-950 pb-24 pt-20 sm:pt-28">
+    <!-- Grid texture -->
+    <div
+      class="pointer-events-none absolute inset-0 bg-grid-dark bg-grid opacity-[0.35]"
+      aria-hidden="true"
+    ></div>
+    <!-- Accent glow orb -->
+    <div
+      class="pointer-events-none absolute -top-32 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full"
+      style="background: radial-gradient(ellipse, rgba(47,128,237,0.22) 0%, transparent 70%);"
+      aria-hidden="true"
+    ></div>
+
+    <div class="container-tcm relative text-center">
+      <p class="eyebrow-light mb-5">
+        <span
+          style="display:inline-block;width:1.75rem;height:2px;border-radius:1px;background:linear-gradient(90deg,#2f80ed,#38bdf8);margin-right:0.6rem;vertical-align:middle;"
+          aria-hidden="true"
+        ></span>
+        {t(lang, 'nav.clients')}
+      </p>
+      <h1
+        class="text-display-sm font-extrabold text-white sm:text-display lg:text-display-lg"
+        style="text-wrap:balance;"
+      >
+        <span class="gradient-text-light">{t(lang, 'clients.title')}</span>
+      </h1>
+      <p class="mx-auto mt-5 max-w-2xl text-base text-brand-300 sm:text-lg">
+        {t(lang, 'clients.subtitle')}
+      </p>
     </div>
   </section>
 
-  <!-- Government clients -->
-  <section class="section">
+  <!-- ── Government Clients ──────────────────────────────────────────── -->
+  <section class="section" style="background-color: var(--bg-soft);">
     <div class="container-tcm">
-      <SectionTitle
-        title={t(lang, 'clients.gov.title')}
-        subtitle="หน่วยงานภาครัฐที่ไว้วางใจเลือกใช้บริการ TCM Technology"
-        align="left"
-        as="h2"
-      />
-      <div class="mt-10">
-        <LogoGrid items={govItems} columns={3} />
+      <div data-reveal>
+        <SectionTitle
+          eyebrow="ความไว้วางใจจากภาครัฐ"
+          title={t(lang, 'clients.gov.title')}
+          subtitle="หน่วยงานภาครัฐระดับกระทรวงและกรมที่ไว้วางใจเลือกใช้บริการ TCM Technology"
+          align="left"
+          as="h2"
+        />
       </div>
+
+      <!-- Glass bento grid of gov clients -->
+      <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal data-reveal-delay="80">
+        {govItems.map((item) => (
+          <li class="list-none">
+            <div class="gov-card group">
+              <!-- Accent initial badge -->
+              <span class="gov-card__badge" aria-hidden="true">
+                {item.acronym}
+              </span>
+              <span class="gov-card__name">{item.name}</span>
+              <!-- Subtle right arrow on hover -->
+              <span class="gov-card__arrow" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+          </li>
+        ))}
+      </ul>
 
       <!-- Trust statement -->
-      <div class="mt-12 rounded-2xl bg-slate-50 p-8 ring-1 ring-slate-200">
-        <p class="text-base leading-relaxed text-muted">
-          TCM Technology ให้บริการแก่หน่วยงานภาครัฐระดับกระทรวงและกรม รวมถึงองค์กรอิสระชั้นนำ
-          มากกว่า 25 ปี ด้วยมาตรฐานการทำงานที่เป็นเลิศ ความโปร่งใส และการส่งมอบงานตรงเวลา
-          ทำให้ได้รับความไว้วางใจต่อเนื่องในทุกโครงการ
-        </p>
+      <div class="mt-10 rounded-2xl border border-slate-200 bg-white p-8 shadow-card" data-reveal>
+        <div class="flex gap-4">
+          <div
+            class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+            style="background: linear-gradient(135deg, #1565d8, #38bdf8);"
+            aria-hidden="true"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p class="text-base leading-relaxed text-muted">
+            TCM Technology ให้บริการแก่หน่วยงานภาครัฐระดับกระทรวงและกรม รวมถึงองค์กรอิสระชั้นนำ
+            มากกว่า 25 ปี ด้วยมาตรฐานการทำงานที่เป็นเลิศ ความโปร่งใส และการส่งมอบงานตรงเวลา
+            ทำให้ได้รับความไว้วางใจต่อเนื่องในทุกโครงการ
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Technology partners -->
-  <section class="section bg-slate-50">
+  <!-- ── Technology Partners (Marquee) ───────────────────────────────── -->
+  <section class="section">
     <div class="container-tcm">
-      <SectionTitle
-        title={t(lang, 'clients.partners.title')}
-        subtitle="เราทำงานร่วมกับแบรนด์เทคโนโลยีชั้นนำระดับโลก เพื่อนำเสนอโซลูชันที่ดีที่สุดให้ลูกค้า"
-        align="left"
-        as="h2"
-      />
-      <div class="mt-10">
-        <LogoGrid items={partnerItems} columns={4} />
+      <div data-reveal>
+        <SectionTitle
+          eyebrow={t(lang, 'home.partners.eyebrow')}
+          title={t(lang, 'clients.partners.title')}
+          subtitle="เราทำงานร่วมกับแบรนด์เทคโนโลยีชั้นนำระดับโลก เพื่อนำเสนอโซลูชันที่ดีที่สุดให้ลูกค้า"
+          align="left"
+          as="h2"
+        />
       </div>
+    </div>
+
+    <!-- Full-bleed marquee strip -->
+    <div class="mt-12 marquee" data-reveal>
+      <ul
+        class="marquee__track gap-4 sm:gap-6"
+        aria-label={t(lang, 'clients.partners.title')}
+      >
+        {marqueeItems.map((p, i) => {
+          const isDupe = i >= partnerItems.length;
+          return (
+            <li class="shrink-0" aria-hidden={isDupe ? 'true' : undefined}>
+              <a
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={p.name}
+                tabindex={isDupe ? -1 : undefined}
+                class="partner-logo-card group"
+              >
+                <img
+                  src={p.logo}
+                  alt={p.name}
+                  loading="lazy"
+                  decoding="async"
+                  width="120"
+                  height="40"
+                  class="max-h-9 w-auto object-contain opacity-60 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                />
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+
+    <!-- Partner logo grid (static, below marquee) for full visibility -->
+    <div class="container-tcm mt-14" data-reveal data-reveal-delay="60">
+      <ul class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-4">
+        {partnerItems.map((p) => (
+          <li class="list-none">
+            <a
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={p.name}
+              class="group flex h-28 flex-col items-center justify-center gap-2 rounded-2xl bg-white px-6 py-4 ring-1 ring-slate-100 transition hover:shadow-card hover-lift"
+            >
+              <img
+                src={p.logo}
+                alt={p.name}
+                loading="lazy"
+                decoding="async"
+                width="120"
+                height="40"
+                class="max-h-10 w-auto object-contain opacity-60 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+              />
+              <span class="text-xs font-medium text-muted transition group-hover:text-ink">
+                {p.name}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
       <p class="mt-6 text-xs text-muted">
         * โลโก้แสดงเพื่อระบุแบรนด์พาร์ตเนอร์ที่ใช้งานร่วมกัน ลิขสิทธิ์โลโก้เป็นของเจ้าของแต่ละแบรนด์
       </p>
@@ -99,3 +232,88 @@ const partnerItems = partners.map((p) => ({
 
   <CtaBanner lang={lang} />
 </BaseLayout>
+
+<style>
+  /* Gov client glass cards */
+  .gov-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05), 0 4px 16px -8px rgba(15, 23, 42, 0.08);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.3s ease;
+    cursor: default;
+  }
+
+  .gov-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px -10px rgba(21, 101, 216, 0.22), 0 2px 8px -4px rgba(15, 23, 42, 0.12);
+    border-color: rgba(47, 128, 237, 0.22);
+  }
+
+  .gov-card__badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.6rem;
+    background: linear-gradient(135deg, #1565d8 0%, #38bdf8 100%);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    padding: 0 0.25rem;
+  }
+
+  .gov-card__name {
+    flex: 1;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.4;
+  }
+
+  .gov-card__arrow {
+    color: #94a3b8;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .gov-card:hover .gov-card__arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: #2f80ed;
+  }
+
+  /* Partner logo marquee card */
+  .partner-logo-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 6rem;
+    width: 11rem;
+    padding: 0 1.5rem;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .partner-logo-card:hover {
+    box-shadow: 0 4px 20px -8px rgba(21, 101, 216, 0.25);
+    border-color: rgba(47, 128, 237, 0.2);
+  }
+</style>

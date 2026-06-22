@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 96" role="img" aria-label="TCM Technology">
+  <title>TCM Technology</title>
+  <!-- Inverse (light) variant for dark backgrounds: white "TCM" + light-slate "TECHNOLOGY".
+       Fills are hardcoded (an SVG loaded via <img> cannot inherit parent CSS vars). -->
+  <g fill="#ffffff" font-family="Inter, 'Helvetica Neue', Arial, sans-serif">
+    <text x="0" y="58" font-size="68" font-weight="800" letter-spacing="-1.5">TCM</text>
+    <rect x="180" y="13" width="11" height="11" rx="1.5" />
+  </g>
+  <text
+    x="2"
+    y="86"
+    font-size="20"
+    font-weight="600"
+    letter-spacing="5.1"
+    fill="#94a3c4"
+    font-family="Inter, 'Helvetica Neue', Arial, sans-serif"
+  >TECHNOLOGY</text>
+</svg>
