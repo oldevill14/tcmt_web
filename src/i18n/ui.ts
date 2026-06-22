@@ -30,6 +30,9 @@ export const ui = {
     'btn.getQuote': 'ขอใบเสนอราคา',
     'btn.viewServices': 'ดูบริการทั้งหมด',
     'btn.backHome': 'กลับสู่หน้าแรก',
+    // T4 — Contact Sales is the PRIMARY conversion across the site
+    'btn.contactSales': 'ปรึกษาทีม / ขอใบเสนอราคา',
+    'btn.consult': 'ปรึกษาทีมของเรา',
 
     // --- home: hero ---
     'home.hero.eyebrow': 'System Integrator ครบวงจร ตั้งแต่ปี 2541',
@@ -74,10 +77,48 @@ export const ui = {
     'home.clients.title': 'ลูกค้าที่ไว้วางใจเรา',
     'home.clients.subtitle': 'หน่วยงานภาครัฐและองค์กรชั้นนำเลือกใช้บริการของเรา',
 
-    // --- home: partners (P0 fix — eyebrow DISTINCT from title) ---
-    'home.partners.eyebrow': 'ความร่วมมือ',
-    'home.partners.title': 'พันธมิตรทางเทคโนโลยี',
-    'home.partners.subtitle': 'ทำงานร่วมกับแบรนด์เทคโนโลยีระดับโลก',
+    // --- home: trust band (T1 — credentials / Trust & Authority) ---
+    'home.trust.founded.title': 'ก่อตั้งปี 2541',
+    'home.trust.founded.desc': 'ประสบการณ์มากกว่า 25 ปี',
+    'home.trust.gov.title': 'ไว้วางใจโดยภาครัฐ',
+    'home.trust.gov.desc': 'หน่วยงานราชการชั้นนำเลือกใช้',
+    'home.trust.support.title': 'บริการ & ดูแล 24/7',
+    'home.trust.support.desc': 'ทีม NOC เฝ้าระวังตลอดเวลา',
+    'home.trust.si.title': 'System Integrator',
+    'home.trust.si.desc': 'วางระบบครบวงจร end-to-end',
+
+    // --- home: authorized partners (T1 — reframe marquee as authorized) ---
+    'home.partners.eyebrow': 'ได้รับการแต่งตั้งอย่างเป็นทางการ',
+    'home.partners.title': 'ตัวแทนจำหน่าย/พันธมิตรที่ได้รับการแต่งตั้งจากแบรนด์ชั้นนำ',
+    'home.partners.subtitle':
+      'เราเป็นพันธมิตรและตัวแทนจำหน่ายที่ได้รับการแต่งตั้งจากผู้ผลิตเทคโนโลยีระดับโลก จึงจัดหา ติดตั้ง และดูแลอุปกรณ์แท้พร้อมการรับประกันจากผู้ผลิตได้โดยตรง',
+
+    // --- home: solutions by sector (T2 — Enterprise Gateway tabs) ---
+    'home.sectors.eyebrow': 'โซลูชันตามภาคส่วน',
+    'home.sectors.title': 'ออกแบบมาเพื่อองค์กรของคุณ',
+    'home.sectors.subtitle':
+      'เราเข้าใจบริบทและข้อกำหนดที่ต่างกันของแต่ละภาคส่วน และส่งมอบโซลูชันที่เหมาะกับแต่ละองค์กร',
+    'home.sectors.tab.gov': 'ภาครัฐ',
+    'home.sectors.tab.edu': 'สถาบันการศึกษา',
+    'home.sectors.tab.enterprise': 'องค์กรเอกชน',
+    'home.sectors.gov.value':
+      'วางระบบที่มั่นคง ปลอดภัย และตรวจสอบได้ ตอบโจทย์ระเบียบจัดซื้อจัดจ้างและการให้บริการประชาชน',
+    'home.sectors.gov.item1': 'โครงสร้างพื้นฐานเครือข่าย LAN/WAN ทั่วประเทศ',
+    'home.sectors.gov.item2': 'ดาต้าเซ็นเตอร์และระบบความปลอดภัยสารสนเทศ',
+    'home.sectors.gov.item3': 'ระบบงานและเว็บแอปพลิเคชันสำหรับบริการประชาชน',
+    'home.sectors.gov.item4': 'บำรุงรักษาและดูแลระบบตามสัญญา (SLA)',
+    'home.sectors.edu.value':
+      'รองรับการเรียนการสอน การวิจัย และผู้ใช้งานจำนวนมาก ด้วยเครือข่ายและระบบที่เสถียร',
+    'home.sectors.edu.item1': 'เครือข่ายแคมปัสและ Wi-Fi ความหนาแน่นสูง',
+    'home.sectors.edu.item2': 'ห้องเซิร์ฟเวอร์และระบบจัดเก็บข้อมูลงานวิจัย',
+    'home.sectors.edu.item3': 'ระบบจอแสดงผล / Video Wall สำหรับห้องควบคุมและห้องเรียน',
+    'home.sectors.edu.item4': 'อบรมและถ่ายทอดความรู้แก่เจ้าหน้าที่ผู้ดูแลระบบ',
+    'home.sectors.enterprise.value':
+      'เพิ่มความคล่องตัวและความปลอดภัยให้ธุรกิจ ด้วยโครงสร้างพื้นฐานและซอฟต์แวร์ที่ปรับขยายได้',
+    'home.sectors.enterprise.item1': 'เครือข่ายองค์กรและการเชื่อมต่อหลายสาขา',
+    'home.sectors.enterprise.item2': 'ระบบความปลอดภัยและการปกป้องข้อมูล',
+    'home.sectors.enterprise.item3': 'พัฒนาซอฟต์แวร์และเว็บแอปพลิเคชันตามความต้องการ',
+    'home.sectors.enterprise.item4': 'อินเทอร์เน็ตความเร็วสูงและบริการดูแล 24/7',
 
     // --- home: stats + cta ---
     'home.stats.eyebrow': 'ตัวเลขที่พิสูจน์ได้',
@@ -123,6 +164,10 @@ export const ui = {
     'projects.client': 'ลูกค้า',
     'projects.year': 'ปี',
     'projects.sector': 'ภาคส่วน',
+    // T3 — case-study scope framing
+    'projects.scope': 'ขอบเขตงานที่ส่งมอบ',
+    'projects.services': 'บริการที่ส่งมอบ',
+    'projects.caseStudy': 'กรณีศึกษา',
 
     // --- clients ---
     'clients.title': 'ลูกค้าและพันธมิตร',
@@ -193,6 +238,9 @@ export const ui = {
     'btn.getQuote': 'Get a quote',
     'btn.viewServices': 'View all services',
     'btn.backHome': 'Back to home',
+    // T4 — Contact Sales is the PRIMARY conversion across the site
+    'btn.contactSales': 'Contact sales / Get a quote',
+    'btn.consult': 'Talk to our team',
 
     // --- home: hero ---
     'home.hero.eyebrow': 'End-to-end System Integrator since 1998',
@@ -238,10 +286,48 @@ export const ui = {
     'home.clients.subtitle':
       'Government agencies and leading institutions rely on our expertise.',
 
-    // --- home: partners (P0 fix — eyebrow DISTINCT from title) ---
-    'home.partners.eyebrow': 'Partnership',
-    'home.partners.title': 'Technology Partners',
-    'home.partners.subtitle': 'Working with world-class technology brands.',
+    // --- home: trust band (T1 — credentials / Trust & Authority) ---
+    'home.trust.founded.title': 'Founded in 1998',
+    'home.trust.founded.desc': 'Over 25 years of experience',
+    'home.trust.gov.title': 'Trusted by government',
+    'home.trust.gov.desc': 'Chosen by leading public agencies',
+    'home.trust.support.title': '24/7 service & support',
+    'home.trust.support.desc': 'NOC team monitoring around the clock',
+    'home.trust.si.title': 'System Integrator',
+    'home.trust.si.desc': 'End-to-end delivery, one partner',
+
+    // --- home: authorized partners (T1 — reframe marquee as authorized) ---
+    'home.partners.eyebrow': 'Officially appointed',
+    'home.partners.title': 'Authorized partner of leading global brands',
+    'home.partners.subtitle':
+      'As an appointed partner and authorized reseller of world-class technology manufacturers, we source, install and maintain genuine equipment with manufacturer-backed warranties.',
+
+    // --- home: solutions by sector (T2 — Enterprise Gateway tabs) ---
+    'home.sectors.eyebrow': 'Solutions by sector',
+    'home.sectors.title': 'Built for your kind of organization',
+    'home.sectors.subtitle':
+      'We understand the distinct context and requirements of each sector, and tailor solutions to fit each organization.',
+    'home.sectors.tab.gov': 'Government',
+    'home.sectors.tab.edu': 'Education',
+    'home.sectors.tab.enterprise': 'Enterprise',
+    'home.sectors.gov.value':
+      'Reliable, secure and auditable systems that meet procurement requirements and public-service demands.',
+    'home.sectors.gov.item1': 'Nationwide LAN/WAN network infrastructure',
+    'home.sectors.gov.item2': 'Data centers and information-security systems',
+    'home.sectors.gov.item3': 'Applications and web systems for citizen services',
+    'home.sectors.gov.item4': 'Maintenance and support under SLA',
+    'home.sectors.edu.value':
+      'Stable networks and systems that support teaching, research and large user populations.',
+    'home.sectors.edu.item1': 'Campus networks and high-density Wi-Fi',
+    'home.sectors.edu.item2': 'Server rooms and research data storage',
+    'home.sectors.edu.item3': 'Video Wall and display systems for control rooms and classrooms',
+    'home.sectors.edu.item4': 'Training and knowledge transfer for IT staff',
+    'home.sectors.enterprise.value':
+      'Greater agility and security for your business, with scalable infrastructure and software.',
+    'home.sectors.enterprise.item1': 'Enterprise networks and multi-branch connectivity',
+    'home.sectors.enterprise.item2': 'Security systems and data protection',
+    'home.sectors.enterprise.item3': 'Custom software and web application development',
+    'home.sectors.enterprise.item4': 'High-speed internet and 24/7 support',
 
     // --- home: stats + cta ---
     'home.stats.eyebrow': 'By the numbers',
@@ -288,6 +374,10 @@ export const ui = {
     'projects.client': 'Client',
     'projects.year': 'Year',
     'projects.sector': 'Sector',
+    // T3 — case-study scope framing
+    'projects.scope': 'Scope delivered',
+    'projects.services': 'Services delivered',
+    'projects.caseStudy': 'Case study',
 
     // --- clients ---
     'clients.title': 'Clients & Partners',

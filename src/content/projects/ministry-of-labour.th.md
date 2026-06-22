@@ -6,6 +6,7 @@ sector: gov
 year: 2022
 summary: วางระบบเครือข่าย LAN/WAN และโครงสร้างพื้นฐานไอทีครบวงจร เพื่อรองรับการให้บริการประชาชนของกระทรวงแรงงาน
 tags: [networking, infrastructure, lan]
+services: [สำรวจและออกแบบเครือข่าย, ติดตั้งระบบ LAN/WAN, วางสาย Structured Cabling, ระบบบริหารจัดการเครือข่าย (NMS), อบรมเจ้าหน้าที่]
 order: 1
 draft: false
 ---

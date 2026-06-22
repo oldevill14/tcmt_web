@@ -46,18 +46,21 @@ const sectorLabels: Record<string, string> = {
     <div class="container-tcm">
       <div class="mb-10 flex flex-wrap justify-center gap-3" role="tablist" aria-label={t(lang, 'projects.filter.all')}>
         {Object.entries(sectorLabels).map(([key, label]) => (
-          <span
+          <button
+            type="button"
             role="tab"
+            aria-selected={key === 'all' ? 'true' : 'false'}
             data-sector={key}
             class={[
-              'sector-tab cursor-pointer rounded-full px-5 py-2 text-sm font-semibold transition-colors duration-200',
+              'sector-tab inline-flex min-h-[44px] cursor-pointer items-center rounded-full px-5 py-2.5 text-sm font-semibold transition-colors duration-200',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan focus-visible:ring-offset-2',
               key === 'all'
                 ? 'bg-brand-600 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-brand-50 hover:text-brand-700',
+                : 'bg-slate-100 text-slate-700 hover:bg-brand-500/10 hover:text-brand-700',
             ].join(' ')}
           >
             {label}
-          </span>
+          </button>
         ))}
       </div>
 
@@ -71,16 +74,37 @@ const sectorLabels: Record<string, string> = {
               <article data-sector={project.data.sector} class="project-card">
                 <Card href={localizePath(`/projects/${slug}`, lang)} hover class="h-full flex flex-col">
                   <div class="flex flex-col gap-3 h-full">
-                    {/* Sector badge */}
-                    <span class="inline-flex w-fit rounded-full bg-brand-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-600">
-                      {sectorLabels[project.data.sector]}
-                    </span>
+                    {/* Sector chip + case-study marker (T3) */}
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="inline-flex w-fit items-center gap-1.5 rounded-full bg-brand-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-600">
+                        <span class="h-1.5 w-1.5 rounded-full bg-accent-gradient-soft" aria-hidden="true" />
+                        {sectorLabels[project.data.sector]}
+                      </span>
+                      <span class="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-slate-600">
+                        {t(lang, 'projects.caseStudy')}
+                      </span>
+                    </div>
                     <h2 class="text-lg font-bold text-ink leading-snug">
                       {project.data.title}
                     </h2>
-                    <p class="text-sm text-muted line-clamp-3 flex-1">
+                    <p class="text-sm text-muted line-clamp-3">
                       {project.data.summary}
                     </p>
+                    {/* T3 — services delivered chips (credible scope, no metrics) */}
+                    {project.data.services.length > 0 && (
+                      <div class="flex flex-wrap gap-1.5">
+                        {project.data.services.slice(0, 3).map((svc) => (
+                          <span class="rounded-md bg-slate-50 px-2 py-0.5 text-[0.72rem] font-medium text-slate-600 ring-1 ring-inset ring-slate-200">
+                            {svc}
+                          </span>
+                        ))}
+                        {project.data.services.length > 3 && (
+                          <span class="rounded-md px-1.5 py-0.5 text-[0.72rem] font-semibold text-brand-600">
+                            +{project.data.services.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
                     <dl class="mt-auto flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted border-t border-slate-100 pt-4">
                       <div>
                         <dt class="inline font-medium text-ink">{t(lang, 'projects.client')}: </dt>
@@ -115,11 +139,12 @@ const sectorLabels: Record<string, string> = {
 
       tabs.forEach((t) => {
         const isActive = t.dataset.sector === sector;
+        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
         t.classList.toggle('bg-brand-600', isActive);
         t.classList.toggle('text-white', isActive);
         t.classList.toggle('bg-slate-100', !isActive);
-        t.classList.toggle('text-slate-600', !isActive);
-        t.classList.toggle('hover:bg-brand-50', !isActive);
+        t.classList.toggle('text-slate-700', !isActive);
+        t.classList.toggle('hover:bg-brand-500/10', !isActive);
         t.classList.toggle('hover:text-brand-700', !isActive);
       });
 

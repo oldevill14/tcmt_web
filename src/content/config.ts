@@ -36,6 +36,8 @@ const projects = defineCollection({
       summary: z.string(),
       cover: image().optional(),
       tags: z.array(z.string()).default([]),
+      // T3 — case-study "services delivered" chips (credible scope, no metrics).
+      services: z.array(z.string()).default([]),
       order: z.number().default(0),
       draft: z.boolean().default(false),
     }),

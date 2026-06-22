@@ -56,7 +56,7 @@ const colCls: Record<number, string> = {
                 rel="noopener noreferrer"
                 title={item.name}
                 tabindex={isDupe ? -1 : undefined}
-                class="group flex h-24 w-44 items-center justify-center rounded-2xl bg-white px-6 ring-1 ring-slate-100 transition hover:shadow-card"
+                class="group flex h-24 w-44 cursor-pointer items-center justify-center rounded-2xl bg-white px-6 ring-1 ring-slate-100 transition hover:shadow-card"
               >
                 <img
                   src={item.logo}
@@ -182,7 +182,7 @@ const colCls: Record<number, string> = {
 
   .gov-chip__desc {
     font-size: 0.6875rem;
-    color: #64748b;
+    color: var(--muted); /* AA-safe muted */
     text-align: center;
     line-height: 1.3;
   }

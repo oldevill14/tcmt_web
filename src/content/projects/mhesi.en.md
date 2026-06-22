@@ -6,6 +6,7 @@ sector: gov
 year: 2021
 summary: IT infrastructure and network installation for the Ministry of Higher Education, Science, Research and Innovation, supporting coordination across Thailand's higher education and research institutions.
 tags: [networking, it-infrastructure, data-center]
+services: [IT infrastructure deployment, Network installation, Server room / data center, Inter-agency connectivity, Maintenance & support]
 order: 5
 draft: false
 ---

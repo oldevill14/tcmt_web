@@ -118,7 +118,7 @@ const parsed: ParsedStat[] = stats.map((s) => {
   .stat-label {
     font-size: 0.8125rem;
     font-weight: 500;
-    color: #64748b;
+    color: var(--muted); /* AA-safe muted (4.5:1+) */
     letter-spacing: 0.01em;
   }
 
@@ -154,6 +154,13 @@ const parsed: ParsedStat[] = stats.map((s) => {
 
     const counters = strip.querySelectorAll<HTMLElement>('[data-target]');
     if (!counters.length) return;
+
+    // Respect reduced-motion: skip the count-up animation entirely and show the
+    // final values (they're already rendered server-side, so this is a no-op exit).
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    if (reduceMotion) return;
 
     let started = false;
 

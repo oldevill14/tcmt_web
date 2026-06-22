@@ -6,6 +6,7 @@ sector: gov
 year: 2022
 summary: High-performance network and server infrastructure for GISTDA, supporting Thailand's space technology and geo-informatics operations.
 tags: [networking, it-infrastructure, server]
+services: [High-performance network design, Server infrastructure, Data storage systems, Geo-informatics integration, Maintenance & support]
 order: 6
 draft: false
 ---

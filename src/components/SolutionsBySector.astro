@@ -1,0 +1,350 @@
+---
+// T2 — Solutions by Sector (Enterprise Gateway pattern), DESIGN V2 evolution.
+//
+// Accessibility & progressive enhancement strategy:
+//   • No-JS base: CSS-only tabs driven by hidden radio inputs (one per sector).
+//     The first radio is `checked`, so its panel shows; the others' panels are
+//     hidden via `:checked ~` sibling selectors. Clicking a <label> switches.
+//     => fully usable, keyboard-focusable, and reduced-motion safe without JS.
+//   • JS upgrade: the inline <script> promotes the labels to a real ARIA tablist
+//     (role=tablist/tab/tabpanel, aria-selected, roving tabindex, ←/→/Home/End).
+//
+// Reuses v2 tokens: card-surface, accent-gradient, eyebrow, gradient-text, data-reveal.
+import { t, localizePath, type Lang } from '../i18n/ui';
+import SectionTitle from './SectionTitle.astro';
+import Button from './Button.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+type K = Parameters<typeof t>[1];
+
+const checkIcon =
+  '<path d="M20 6 9 17l-5-5" />';
+
+// Per-sector icon (distinct, coherent stroke set).
+const sectorIcons: Record<string, string> = {
+  gov: '<path d="M3 21h18" /><path d="M5 21V10l7-5 7 5v11" /><path d="M9 21v-6h6v6" /><path d="M5 10h14" />',
+  edu: '<path d="m12 4 9 5-9 5-9-5 9-5Z" /><path d="M21 9v5" /><path d="M7 11v4c0 1.5 2.2 3 5 3s5-1.5 5-3v-4" />',
+  enterprise: '<path d="M3 21V7l7-4v18" /><path d="M10 21V11l8-3v13" /><path d="M3 21h18" /><path d="M6.5 8h.01M6.5 12h.01M6.5 16h.01M14 12h.01M14 16h.01" />',
+};
+
+// A unique base id so multiple instances (defensive) never collide on input names.
+const uid = 'sectors';
+
+const sectors: {
+  id: string;
+  tab: K;
+  value: K;
+  items: K[];
+}[] = [
+  {
+    id: 'gov',
+    tab: 'home.sectors.tab.gov' as K,
+    value: 'home.sectors.gov.value' as K,
+    items: [
+      'home.sectors.gov.item1' as K,
+      'home.sectors.gov.item2' as K,
+      'home.sectors.gov.item3' as K,
+      'home.sectors.gov.item4' as K,
+    ],
+  },
+  {
+    id: 'edu',
+    tab: 'home.sectors.tab.edu' as K,
+    value: 'home.sectors.edu.value' as K,
+    items: [
+      'home.sectors.edu.item1' as K,
+      'home.sectors.edu.item2' as K,
+      'home.sectors.edu.item3' as K,
+      'home.sectors.edu.item4' as K,
+    ],
+  },
+  {
+    id: 'enterprise',
+    tab: 'home.sectors.tab.enterprise' as K,
+    value: 'home.sectors.enterprise.value' as K,
+    items: [
+      'home.sectors.enterprise.item1' as K,
+      'home.sectors.enterprise.item2' as K,
+      'home.sectors.enterprise.item3' as K,
+      'home.sectors.enterprise.item4' as K,
+    ],
+  },
+];
+---
+
+<section class="section bg-bg-soft" style="background-color: var(--bg-soft);">
+  <div class="container-tcm">
+    <div data-reveal>
+      <SectionTitle
+        eyebrow={t(lang, 'home.sectors.eyebrow')}
+        title={t(lang, 'home.sectors.title')}
+        subtitle={t(lang, 'home.sectors.subtitle')}
+        gradient
+      />
+    </div>
+
+    <div class="sector-tabs mx-auto mt-12 max-w-4xl" data-sector-tabs data-reveal>
+      {/* Hidden radios drive the CSS-only no-JS fallback. */}
+      {
+        sectors.map((s, i) => (
+          <input
+            type="radio"
+            name={uid}
+            id={`${uid}-radio-${s.id}`}
+            class="sector-radio sr-only"
+            checked={i === 0}
+            tabindex="-1"
+            aria-hidden="true"
+          />
+        ))
+      }
+
+      {/* Tablist (labels). JS promotes these to role=tab with roving tabindex. */}
+      <div
+        class="sector-tablist mb-7 flex flex-wrap justify-center gap-2 sm:gap-3"
+        role="tablist"
+        aria-label={t(lang, 'home.sectors.title')}
+      >
+        {
+          sectors.map((s, i) => (
+            <label
+              for={`${uid}-radio-${s.id}`}
+              id={`${uid}-tab-${s.id}`}
+              class="sector-tab group cursor-pointer select-none rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan focus-visible:ring-offset-2"
+              role="tab"
+              tabindex={i === 0 ? '0' : '-1'}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`${uid}-panel-${s.id}`}
+              data-sector-tab={s.id}
+            >
+              <span class="inline-flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-4 w-4"
+                  aria-hidden="true"
+                  set:html={sectorIcons[s.id]}
+                />
+                {t(lang, s.tab)}
+              </span>
+            </label>
+          ))
+        }
+      </div>
+
+      {/* Panels */}
+      {
+        sectors.map((s, i) => (
+          <div
+            id={`${uid}-panel-${s.id}`}
+            class="sector-panel"
+            role="tabpanel"
+            aria-labelledby={`${uid}-tab-${s.id}`}
+            data-sector-panel={s.id}
+            hidden={i !== 0 ? true : undefined}
+          >
+            <div class="card-surface !p-7 sm:!p-9">
+              <p class="text-base font-medium leading-relaxed text-ink sm:text-lg">
+                {t(lang, s.value)}
+              </p>
+              <ul class="mt-6 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+                {s.items.map((item) => (
+                  <li class="flex items-start gap-3">
+                    <span
+                      class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-accent-gradient-soft text-white"
+                      aria-hidden="true"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="h-3.5 w-3.5"
+                        set:html={checkIcon}
+                      />
+                    </span>
+                    <span class="text-sm leading-relaxed text-muted">{t(lang, item)}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-8">
+                <Button href={localizePath('/contact', lang)} variant="gradient" size="md">
+                  {t(lang, 'btn.contactSales')}
+                </Button>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ---- CSS-only tab styling + no-JS panel switching ---- */
+  .sector-tab {
+    background: #fff;
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--line);
+  }
+  .sector-tab:hover {
+    border-color: var(--brand-300);
+    color: var(--brand-700);
+  }
+
+  /* No-JS: each radio (sibling) maps to its tab + panel.
+     Order in DOM: radio.gov, radio.edu, radio.enterprise, then tablist, then panels.
+     Use :checked ~ to target the matching label & panel. */
+  .sector-radio:nth-of-type(1):checked ~ .sector-tablist [data-sector-tab='gov'],
+  .sector-radio:nth-of-type(2):checked ~ .sector-tablist [data-sector-tab='edu'],
+  .sector-radio:nth-of-type(3):checked ~ .sector-tablist [data-sector-tab='enterprise'] {
+    background: var(--accent-gradient-soft);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 8px 22px -10px rgba(47, 128, 237, 0.6);
+  }
+
+  /* Hide all panels, then reveal the one matching the checked radio. */
+  .sector-panel {
+    display: none;
+  }
+  .sector-radio:nth-of-type(1):checked ~ [data-sector-panel='gov'],
+  .sector-radio:nth-of-type(2):checked ~ [data-sector-panel='edu'],
+  .sector-radio:nth-of-type(3):checked ~ [data-sector-panel='enterprise'] {
+    display: block;
+    animation: sector-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes sector-fade {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* When JS is active we manage [hidden] directly; let JS-selected tabs win.
+     These rules must override the radio-driven `:checked ~` display above, so
+     they are scoped under `.js-on` (added by the script) and use `[hidden]`. */
+  .sector-tabs.js-on .sector-panel[hidden] {
+    display: none;
+  }
+  .sector-tabs.js-on .sector-panel:not([hidden]) {
+    display: block;
+    animation: sector-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .sector-tabs.js-on .sector-tab[aria-selected='true'] {
+    background: var(--accent-gradient-soft);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 8px 22px -10px rgba(47, 128, 237, 0.6);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sector-panel,
+    .sector-tabs.js-on .sector-panel:not([hidden]) {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Progressive enhancement: promote the CSS radio-tabs into a true ARIA tablist
+  // with roving tabindex + arrow-key navigation. Falls back to CSS-only if this
+  // script never runs.
+  type Group = {
+    root: HTMLElement;
+    tabs: HTMLElement[];
+    panels: Map<string, HTMLElement>;
+  };
+
+  function activate(group: Group, id: string, focus = true) {
+    group.tabs.forEach((tab) => {
+      const isActive = tab.dataset.sectorTab === id;
+      tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      tab.setAttribute('tabindex', isActive ? '0' : '-1');
+      if (isActive && focus) tab.focus();
+    });
+    group.panels.forEach((panel, key) => {
+      if (key === id) panel.removeAttribute('hidden');
+      else panel.setAttribute('hidden', '');
+    });
+  }
+
+  document
+    .querySelectorAll<HTMLElement>('[data-sector-tabs]')
+    .forEach((root) => {
+      const tabs = Array.from(
+        root.querySelectorAll<HTMLElement>('[data-sector-tab]'),
+      );
+      const panels = new Map<string, HTMLElement>();
+      root
+        .querySelectorAll<HTMLElement>('[data-sector-panel]')
+        .forEach((p) => panels.set(p.dataset.sectorPanel ?? '', p));
+      if (tabs.length === 0) return;
+
+      const group: Group = { root, tabs, panels };
+      root.classList.add('js-on');
+
+      tabs.forEach((tab, i) => {
+        const id = tab.dataset.sectorTab ?? '';
+
+        tab.addEventListener('click', (e) => {
+          // The <label> would also toggle the radio; that's fine (keeps state in
+          // sync for anyone without JS), but we drive ARIA ourselves.
+          activate(group, id, false);
+        });
+
+        tab.addEventListener('keydown', (e: KeyboardEvent) => {
+          let next = -1;
+          switch (e.key) {
+            case 'ArrowRight':
+            case 'ArrowDown':
+              next = (i + 1) % tabs.length;
+              break;
+            case 'ArrowLeft':
+            case 'ArrowUp':
+              next = (i - 1 + tabs.length) % tabs.length;
+              break;
+            case 'Home':
+              next = 0;
+              break;
+            case 'End':
+              next = tabs.length - 1;
+              break;
+            case 'Enter':
+            case ' ':
+              e.preventDefault();
+              activate(group, id, false);
+              return;
+            default:
+              return;
+          }
+          e.preventDefault();
+          const target = tabs[next];
+          activate(group, target.dataset.sectorTab ?? '', true);
+        });
+      });
+
+      // Ensure the initial selected tab's panel is the only one shown.
+      const selected =
+        tabs.find((t) => t.getAttribute('aria-selected') === 'true') ?? tabs[0];
+      activate(group, selected.dataset.sectorTab ?? '', false);
+    });
+</script>

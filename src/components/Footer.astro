@@ -63,7 +63,7 @@ const logoSrc = withBase('/logo-tcm-inverse.svg');
             <li>
               <a
                 href={localizePath(item.path, lang)}
-                class="text-slate-400 transition hover:text-accent-cyan"
+                class="cursor-pointer text-slate-400 transition hover:text-accent-cyan"
               >
                 {t(lang, item.key)}
               </a>
@@ -84,7 +84,7 @@ const logoSrc = withBase('/logo-tcm-inverse.svg');
             <li>
               <a
                 href={localizePath(`/services/${s.slug}`, lang)}
-                class="text-slate-400 transition hover:text-accent-cyan"
+                class="cursor-pointer text-slate-400 transition hover:text-accent-cyan"
               >
                 {s.title[lang]}
               </a>

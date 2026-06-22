@@ -10,6 +10,8 @@ import StatsStrip from './StatsStrip.astro';
 import LogoGrid from './LogoGrid.astro';
 import CtaBanner from './CtaBanner.astro';
 import Button from './Button.astro';
+import TrustBand from './TrustBand.astro';
+import SolutionsBySector from './SolutionsBySector.astro';
 
 interface Props {
   lang: Lang;
@@ -72,6 +74,16 @@ const capIcons: Record<string, string> = {
     <StatsStrip lang={lang} invert />
   </div>
 </section>
+
+<!-- T1 — Trust & Authority credentials band (seats under hero, light surface) -->
+<section class="relative -mt-10 pb-4 sm:-mt-12">
+  <div class="container-tcm relative">
+    <TrustBand lang={lang} />
+  </div>
+</section>
+
+<!-- T2 — Solutions by Sector (Enterprise Gateway: gov / education / enterprise) -->
+<SolutionsBySector lang={lang} />
 
 <!-- Capabilities bento: hardware AND software (positioning) -->
 <section class="section bg-bg-soft" style="background-color: var(--bg-soft);">

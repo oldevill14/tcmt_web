@@ -33,7 +33,7 @@ const cls = [base, pad, variants[variant] ?? variants.surface, hoverCls, classNa
 
 {
   href ? (
-    <a href={href} class={cls}>
+    <a href={href} class={`${cls} cursor-pointer`}>
       <slot />
     </a>
   ) : (

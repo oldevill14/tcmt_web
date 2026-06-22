@@ -6,6 +6,7 @@ sector: gov
 year: 2022
 summary: End-to-end LAN/WAN network design and IT infrastructure upgrade to support the Ministry of Labour's nationwide public services.
 tags: [networking, infrastructure, lan]
+services: [Network survey & design, LAN/WAN installation, Structured cabling, Network management system (NMS), Staff training]
 order: 1
 draft: false
 ---

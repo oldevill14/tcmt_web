@@ -17,7 +17,7 @@ const href = switchLangPath(Astro.url, target);
   hreflang={target}
   aria-label={t(lang, 'a11y.langSwitch')}
   class:list={[
-    'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-ink ring-1 ring-slate-200 transition hover:bg-slate-50 hover:text-brand-700',
+    'inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold text-ink ring-1 ring-slate-200 transition hover:bg-slate-50 hover:text-brand-700',
     className,
   ]}
 >

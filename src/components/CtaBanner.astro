@@ -49,10 +49,10 @@ const { lang } = Astro.props;
             {t(lang, 'home.cta.subtitle')}
           </p>
 
-          <!-- Dual CTA -->
+          <!-- T4 — Contact Sales is the PRIMARY conversion; view services is secondary -->
           <div class="mt-9 flex flex-wrap items-center justify-center gap-4">
             <Button href={localizePath('/contact', lang)} variant="white" size="lg">
-              {t(lang, 'btn.contactUs')}
+              {t(lang, 'btn.contactSales')}
             </Button>
             <Button href={localizePath('/services', lang)} variant="glass" size="lg">
               {t(lang, 'btn.viewServices')}

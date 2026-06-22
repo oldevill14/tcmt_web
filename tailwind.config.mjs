@@ -33,7 +33,8 @@ export default {
           grey: '#6b7488',
         },
         ink: '#0f172a',
-        muted: '#64748b',
+        // muted body text — AA-safe on white (6.09:1) AND soft bg (#f6f8fc, 5.73:1)
+        muted: '#566377',
       },
       fontFamily: {
         sans: ['Inter', 'IBM Plex Sans Thai', 'ui-sans-serif', 'system-ui', 'sans-serif'],

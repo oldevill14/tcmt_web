@@ -39,9 +39,10 @@ const variants: Record<string, string> = {
 };
 
 const sizes: Record<string, string> = {
-  sm: 'px-4 py-2 text-sm',
-  md: 'px-5 py-2.5 text-sm',
-  lg: 'px-7 py-3.5 text-base',
+  // min-height keeps touch targets comfortable (~40-48px) without bloating the visual padding
+  sm: 'min-h-[44px] px-4 py-2 text-sm',
+  md: 'min-h-[44px] px-5 py-2.5 text-sm',
+  lg: 'min-h-[52px] px-7 py-3.5 text-base',
 };
 
 const cls = [base, variants[variant] ?? variants.primary, sizes[size], className].join(' ');

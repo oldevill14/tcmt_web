@@ -6,6 +6,7 @@ sector: gov
 year: 2021
 summary: IT infrastructure design and installation to support the Department of Employment's job-placement systems and expanding digital public services.
 tags: [networking, it-infrastructure, server]
+services: [IT infrastructure design, Network installation, Server deployment, Job-placement system integration, Maintenance & support]
 order: 2
 draft: false
 ---

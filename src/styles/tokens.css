@@ -27,7 +27,9 @@
   --bg: #ffffff;
   --bg-soft: #f6f8fc; /* faint blue-tinted soft section bg */
   --ink: #0f172a;
-  --muted: #64748b;
+  /* muted body text — darkened from slate-500 (#64748b) so it clears WCAG AA 4.5:1
+     even on the soft tinted section bg (#f6f8fc): white 6.09:1, soft 5.73:1. */
+  --muted: #566377;
   --line: #e2e8f0;
 
   /* --- real TCM logo brand marks (faithful to logo-tcm-real.png) --- */

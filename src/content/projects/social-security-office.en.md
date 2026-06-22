@@ -6,6 +6,7 @@ sector: gov
 year: 2023
 summary: Network infrastructure upgrade and IT security hardening for the Social Security Office, protecting subscriber data and supporting digital service expansion.
 tags: [networking, security, infrastructure]
+services: [Network upgrade, IT security hardening, Subscriber data protection, Monitoring & detection, Maintenance & support]
 order: 4
 draft: false
 ---

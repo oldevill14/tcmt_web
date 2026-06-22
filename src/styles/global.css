@@ -183,7 +183,7 @@
 
   /* ---- eyebrow kicker (consistent across sections) ---- */
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-brand-500;
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-brand-600;
   }
   .eyebrow-light {
     @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent-cyan;

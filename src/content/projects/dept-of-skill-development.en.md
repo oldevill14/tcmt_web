@@ -6,6 +6,7 @@ sector: gov
 year: 2020
 summary: Design and installation of network infrastructure and a mini server room for the Department of Skill Development, supporting nationwide vocational training services.
 tags: [networking, data-center, infrastructure]
+services: [Network design, Mini data center build, Server deployment, Power & cooling provisioning, Administrator training]
 order: 3
 draft: false
 ---
