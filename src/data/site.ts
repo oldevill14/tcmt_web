@@ -25,7 +25,6 @@ export const site = {
   phone: '02-661-8884',
   phoneIntl: '+6626618884',
   email: 'tcmtech@tcmtech.co.th',
-  webmail: 'https://webmail.tcmtech.co.th',
 
   // Google Maps embed for CTI Tower (Ratchadaphisek). Embeddable iframe src.
   mapEmbed:

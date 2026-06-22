@@ -131,7 +131,6 @@ collections:
           - { name: address_en, label: Address (EN), widget: text }
           - { name: phone, label: Phone, widget: string }
           - { name: email, label: Email, widget: string }
-          - { name: webmail, label: Webmail URL, widget: string }
           - name: socials
             label: Social links
             widget: object

@@ -112,7 +112,6 @@ export const ui = {
     'contact.info.address': 'ที่อยู่',
     'contact.info.phone': 'โทรศัพท์',
     'contact.info.email': 'อีเมล',
-    'contact.info.webmail': 'เว็บเมล',
     'contact.info.hours': 'เวลาทำการ',
     'contact.info.hoursValue': 'จันทร์–ศุกร์ 08:30–17:30 น.',
 
@@ -243,7 +242,6 @@ export const ui = {
     'contact.info.address': 'Address',
     'contact.info.phone': 'Phone',
     'contact.info.email': 'Email',
-    'contact.info.webmail': 'Webmail',
     'contact.info.hours': 'Business hours',
     'contact.info.hoursValue': 'Mon–Fri, 08:30–17:30',
 

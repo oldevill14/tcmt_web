@@ -91,7 +91,7 @@ Define zod schemas in `src/content/config.ts`. Each entry has BOTH `th` and `en`
 
 **Partners (tech)**: Cisco, Dell, Oracle, Acer, ASUS, Lenovo, Fujitsu, Epson. (placeholder logos ok; TODO real.)
 
-**Contact**: TCM Technology Co., Ltd. — ชั้น 22 อาคาร CTI Tower, 191/40 ถนนรัชดาภิเษก แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110 · โทร 02-661-8884 · อีเมล tcmtech@tcmtech.co.th · Webmail: https://webmail.tcmtech.co.th · Google Maps embed for CTI Tower.
+**Contact**: TCM Technology Co., Ltd. — ชั้น 22 อาคาร CTI Tower, 191/40 ถนนรัชดาภิเษก แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110 · โทร 02-661-8884 · อีเมล tcmtech@tcmtech.co.th · Google Maps embed for CTI Tower. (webmail discontinued — do not include)
 **Footer**: © 2017–2026 TCM Technology Co., Ltd. All rights reserved.
 
 ## 7. SEO / quality bars
