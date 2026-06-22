@@ -1,15 +1,17 @@
 ---
 // Toggles th <-> en while preserving the current path. Pure link, no JS.
-import { switchLangPath, t, type Lang } from '../i18n/ui';
+import { switchLangPath, localizePath, t, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
   class?: string;
+  /** On routes with no localized sibling (e.g. 404), link to the other locale's home instead. */
+  toHome?: boolean;
 }
 
-const { lang, class: className = '' } = Astro.props;
+const { lang, class: className = '', toHome = false } = Astro.props;
 const target: Lang = lang === 'th' ? 'en' : 'th';
-const href = switchLangPath(Astro.url, target);
+const href = toHome ? localizePath('/', target) : switchLangPath(Astro.url, target);
 ---
 
 <a

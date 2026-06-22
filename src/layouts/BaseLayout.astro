@@ -16,6 +16,8 @@ interface Props {
   path?: string;
   image?: string;
   noindex?: boolean;
+  /** Make the language toggle link to the other locale's home (used on 404 — no localized sibling). */
+  langSwitchHome?: boolean;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   image,
   noindex = false,
   lang: langProp,
+  langSwitchHome = false,
 } = Astro.props;
 
 const lang: Lang = langProp ?? getLang(Astro.url);
@@ -54,7 +57,7 @@ const lang: Lang = langProp ?? getLang(Astro.url);
     >
       {t(lang, 'a11y.skipToContent')}
     </a>
-    <Header lang={lang} />
+    <Header lang={lang} langSwitchHome={langSwitchHome} />
     <main id="main" class="flex-1">
       <slot />
     </main>

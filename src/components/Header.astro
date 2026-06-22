@@ -8,8 +8,10 @@ import Button from './Button.astro';
 
 interface Props {
   lang: Lang;
+  /** Pass-through: make the language toggle link to the other locale's home (used on 404). */
+  langSwitchHome?: boolean;
 }
-const { lang } = Astro.props;
+const { lang, langSwitchHome = false } = Astro.props;
 
 const nav: { key: Parameters<typeof t>[1]; path: string }[] = [
   { key: 'nav.home', path: '/' },
@@ -69,7 +71,7 @@ const logoSrc = withBase('/logo-tcm.svg');
     </nav>
 
     <div class="hidden items-center gap-3 lg:flex">
-      <LangSwitcher lang={lang} />
+      <LangSwitcher lang={lang} toHome={langSwitchHome} />
       <!-- T4 — Contact Sales is the PRIMARY conversion (header) — blue pill -->
       <Button href={localizePath('/contact', lang)} variant="primary" size="sm">
         {t(lang, 'btn.contactSales')}
@@ -129,7 +131,7 @@ const logoSrc = withBase('/logo-tcm.svg');
           </Button>
         </div>
         <div class="px-3 py-3">
-          <LangSwitcher lang={lang} />
+          <LangSwitcher lang={lang} toHome={langSwitchHome} />
         </div>
       </nav>
     </div>
