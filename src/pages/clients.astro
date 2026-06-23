@@ -27,7 +27,7 @@ const govItems = clients
           .map((w) => w[0])
           .join('')
           .slice(0, 4) || name.slice(0, 2);
-    return { name, acronym, logo: c.logo, url: c.url };
+    return { name, acronym, logo: c.logo ? withBase(c.logo) : '', url: c.url };
   });
 
 // Partner logos (real SVGs from /public/logos/)
@@ -95,10 +95,20 @@ const marqueeItems = [...partnerItems, ...partnerItems];
         {govItems.map((item) => (
           <li class="list-none">
             <div class="gov-card group">
-              <!-- Accent initial badge -->
-              <span class="gov-card__badge" aria-hidden="true">
-                {item.acronym}
-              </span>
+              <!-- Agency emblem (acronym badge as fallback) -->
+              {item.logo ? (
+                <img
+                  class="gov-card__logo"
+                  src={item.logo}
+                  alt={item.name}
+                  width="44"
+                  height="44"
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <span class="gov-card__badge" aria-hidden="true">{item.acronym}</span>
+              )}
               <span class="gov-card__name">{item.name}</span>
               <!-- Subtle right arrow on hover -->
               <span class="gov-card__arrow" aria-hidden="true">
@@ -255,6 +265,14 @@ const marqueeItems = [...partnerItems, ...partnerItems];
     text-transform: uppercase;
     flex-shrink: 0;
     padding: 0 0.25rem;
+  }
+
+  .gov-card__logo {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.6rem;
+    object-fit: contain;
+    flex-shrink: 0;
   }
 
   .gov-card__name {

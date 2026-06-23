@@ -164,18 +164,22 @@ export const clients: ClientMeta[] = [
   {
     name: { th: 'กระทรวงแรงงาน', en: 'Ministry of Labour' },
     sector: 'gov',
+    logo: '/logos/gov-mol.svg',
   },
   {
     name: { th: 'กรมการจัดหางาน', en: 'Department of Employment' },
     sector: 'gov',
+    logo: '/logos/gov-doe.svg',
   },
   {
     name: { th: 'กรมพัฒนาฝีมือแรงงาน', en: 'Department of Skill Development' },
     sector: 'gov',
+    logo: '/logos/gov-dsd.svg',
   },
   {
     name: { th: 'สำนักงานประกันสังคม', en: 'Social Security Office' },
     sector: 'gov',
+    logo: '/logos/gov-sso.svg',
   },
   {
     name: {
@@ -183,6 +187,7 @@ export const clients: ClientMeta[] = [
       en: 'Ministry of Higher Education, Science, Research and Innovation (MHESI)',
     },
     sector: 'gov',
+    logo: '/logos/gov-mhesi.svg',
   },
   {
     name: {
@@ -190,6 +195,7 @@ export const clients: ClientMeta[] = [
       en: 'Geo-Informatics and Space Technology Development Agency (GISTDA)',
     },
     sector: 'gov',
+    logo: '/logos/gov-gistda.svg',
   },
 ];
 

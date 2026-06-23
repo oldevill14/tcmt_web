@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="กระทรวงแรงงาน"><title>กระทรวงแรงงาน</title><rect width="64" height="64" rx="14" fill="#1e3a8a"/>
+      <g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 28 L32 18 L47 28"/>
+        <line x1="15" y1="46.5" x2="49" y2="46.5"/>
+        <line x1="21" y1="30.5" x2="21" y2="44"/>
+        <line x1="28" y1="30.5" x2="28" y2="44"/>
+        <line x1="36" y1="30.5" x2="36" y2="44"/>
+        <line x1="43" y1="30.5" x2="43" y2="44"/>
+      </g></svg>

@@ -94,13 +94,18 @@ const colCls: Record<number, string> = {
   <ul class:list={['grid gap-4 sm:gap-5', colCls[columns], className]}>
     {items.map((item) => {
       const inner = item.logo ? (
-        <img
-          src={item.logo}
-          alt={item.name}
-          loading="lazy"
-          decoding="async"
-          class="max-h-12 w-auto object-contain opacity-80 transition group-hover:opacity-100"
-        />
+        <>
+          <img
+            src={item.logo}
+            alt={item.name}
+            loading="lazy"
+            decoding="async"
+            width="48"
+            height="48"
+            class="h-12 w-12 object-contain transition group-hover:scale-105"
+          />
+          <span class="mt-2.5 text-[0.8125rem] font-semibold leading-snug text-ink">{item.name}</span>
+        </>
       ) : (
         /* Elegant glass name-chip for clients without a logo */
         <div class="gov-chip">

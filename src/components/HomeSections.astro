@@ -26,7 +26,7 @@ const { lang } = Astro.props;
 
 const govClients = clients
   .filter((c) => c.sector === 'gov')
-  .map((c) => ({ name: c.name[lang], logo: c.logo, url: c.url }));
+  .map((c) => ({ name: c.name[lang], logo: c.logo ? withBase(c.logo) : '', url: c.url }));
 
 // Partner logos (real SVGs in /public/logos). Build a marquee-friendly list.
 const partnerItems = partners.map((p) => ({
