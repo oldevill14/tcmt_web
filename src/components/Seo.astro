@@ -30,44 +30,81 @@ const ogImage = image
 const fullTitle = `${title} · ${site.shortName}`;
 const ogLocale = lang === 'th' ? 'th_TH' : 'en_US';
 
+// --- Brand identity for structured data (Organization is the entity Google uses
+//     to build the brand's Knowledge Graph; logo + sameAs are the key signals). ---
+const orgId = `${siteOrigin}/#organization`;
+const logoUrl = new URL(withBase('/logo-tcm.png'), siteOrigin).href;
+// Official profiles — populated from site.socials (fill them in src/data/site.ts).
+const sameAs = Object.values(site.socials).filter(Boolean);
+const brandDescription =
+  lang === 'th'
+    ? 'บริษัท ทีซีเอ็ม เทคโนโลยี จำกัด — ผู้ให้บริการ System Integrator ครบวงจร: ระบบเครือข่าย ดาต้าเซ็นเตอร์ ความปลอดภัยสารสนเทศ โครงสร้างพื้นฐานไอที และพัฒนาซอฟต์แวร์/เว็บแอปพลิเคชัน ดูแลโดยทีมที่ไว้วางใจมากว่า 25 ปี'
+    : 'TCM Technology Co., Ltd. — full-service System Integrator: networking, data center, IT security, IT infrastructure and custom software/web development, trusted for over 25 years.';
+
+const postalAddress = {
+  '@type': 'PostalAddress',
+  streetAddress: '191/40 Ratchadaphisek Road, CTI Tower 22F',
+  addressLocality: 'Khlong Toei',
+  addressRegion: 'Bangkok',
+  postalCode: '10110',
+  addressCountry: 'TH',
+};
+
 const organizationLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': orgId,
   name: companyName(lang),
   alternateName: site.shortName,
+  legalName: site.name.en,
   url: siteOrigin,
+  logo: logoUrl,
+  image: logoUrl,
+  description: brandDescription,
   slogan: site.slogan,
   foundingDate: String(site.founded),
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '191/40 Ratchadaphisek Road, CTI Tower 22F',
-    addressLocality: 'Khlong Toei',
-    addressRegion: 'Bangkok',
-    postalCode: '10110',
-    addressCountry: 'TH',
-  },
+  address: postalAddress,
   contactPoint: {
     '@type': 'ContactPoint',
     telephone: site.phoneIntl,
     email: site.email,
     contactType: 'customer support',
+    areaServed: 'TH',
+    availableLanguage: ['th', 'en'],
   },
+  areaServed: { '@type': 'Country', name: 'Thailand' },
+  knowsLanguage: ['th', 'en'],
+  ...(sameAs.length ? { sameAs } : {}),
+};
+
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${siteOrigin}/#website`,
+  url: siteOrigin,
+  name: companyName(lang),
+  inLanguage: lang === 'th' ? 'th-TH' : 'en-US',
+  publisher: { '@id': orgId },
 };
 
 const localBusinessLd = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
+  '@id': `${siteOrigin}/#localbusiness`,
   name: companyName(lang),
   url: siteOrigin,
+  logo: logoUrl,
+  image: logoUrl,
   telephone: site.phoneIntl,
   email: site.email,
   priceRange: '$$',
-  address: organizationLd.address,
+  address: postalAddress,
   geo: {
     '@type': 'GeoCoordinates',
     latitude: site.geo.latitude,
     longitude: site.geo.longitude,
   },
+  parentOrganization: { '@id': orgId },
 };
 ---
 
@@ -96,6 +133,7 @@ const localBusinessLd = {
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
 
-<!-- JSON-LD -->
+<!-- JSON-LD (brand identity: Organization + WebSite + LocalBusiness) -->
 <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationLd)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(websiteLd)} />
 <script is:inline type="application/ld+json" set:html={JSON.stringify(localBusinessLd)} />

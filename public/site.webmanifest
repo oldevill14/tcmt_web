@@ -1,0 +1,16 @@
+{
+  "name": "TCM Technology Co., Ltd.",
+  "short_name": "TCM Technology",
+  "description": "System Integrator — เครือข่าย ดาต้าเซ็นเตอร์ ความปลอดภัยสารสนเทศ โครงสร้างพื้นฐานไอที และพัฒนาซอฟต์แวร์/เว็บครบวงจร",
+  "lang": "th",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0b3d91",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
